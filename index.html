@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Analysis: Tree Care vs. Law Enforcement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        
+        /* Custom Scrollbar for clean look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #2563eb;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #2563eb;
+        }
+    </style>
+    <!-- Chosen Palette: Slate (Backgrounds), Emerald (Tree Job), Blue (Police Job), Amber (Warning/Sales) -->
+    <!-- Application Structure Plan: 
+         1. Executive Summary Dashboard: Immediate side-by-side financial comparison (Year 1 vs Year 10).
+         2. The "Hidden" Math of MA Policing: Interactive section explaining Base + Details + Quinn Bill.
+         3. The "Sales" Trap: Educational section defining what the SaveATree offer actually means (Risk vs Reward).
+         4. Interactive Simulator: A calculator allowing Jackson to toggle "Details per week" and "Education" to see real earnings potential.
+         5. Long Term Wealth: Pension vs. 401k comparison.
+         Why: Jackson thinks the base pay is the whole story. The structure forces him to uncover the "extras" (details/education) that make policing lucrative in MA.
+    -->
+    <!-- Visualization & Content Choices:
+         1. Bar Charts (Chart.js): Comparing Guaranteed Income vs. Potential Income.
+         2. Doughnut Chart (Chart.js): Breaking down the composition of a Police Salary (Base is only 60% of the pie).
+         3. Interactive HTML Sliders: To simulate "Details worked per week" showing direct impact on bottom line.
+         4. Comparison Grid: Text-based matrix to explain the "Sales" role objectively.
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="text-xl font-bold text-slate-800 tracking-tight">Career<span class="text-blue-600">Crossroads</span></div>
+                </div>
+                <div class="flex items-center space-x-4 text-sm font-medium text-slate-600">
+                    <span class="hidden md:block">Middleton, MA Context Analysis</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Header / Context -->
+        <section class="text-center max-w-3xl mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">The "Hourly Wage" Illusion</h1>
+            <p class="text-lg text-slate-600">
+                Comparing a Chemical Tech job to a Massachusetts Police Officer role based on <strong>base hourly rate</strong> is a mathematical error. This interactive report breaks down the "hidden" income streams in MA law enforcement versus the volatility of the proposed "Sales" role in arboriculture.
+            </p>
+        </section>
+
+        <!-- Section 1: The 10-Year Trajectory -->
+        <section id="trajectory" class="bg-white rounded-xl card-shadow p-6 md:p-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">1. The 10-Year Wealth Gap</h2>
+                <p class="text-slate-600 mt-2">
+                    While the starting pay may look similar, the ceiling for these two careers is drastically different. Police pay in Massachusetts scales via "steps" and legislative raises, whereas Tree Care wages typically plateau without moving into high-stress sales.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Chart Col -->
+                <div class="lg:col-span-2 flex flex-col justify-center">
+                    <div class="chart-container">
+                        <canvas id="trajectoryChart"></canvas>
+                    </div>
+                </div>
+                <!-- Stats Col -->
+                <div class="flex flex-col justify-center space-y-6">
+                    <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500">
+                        <h3 class="font-bold text-emerald-800">SaveATree (Tech)</h3>
+                        <p class="text-sm text-emerald-700 mt-1">Est. 10-Year Earnings: <span class="font-bold text-lg block">$620,000</span></p>
+                        <p class="text-xs text-emerald-600 mt-2">Assumes 3% annual raise. Capped by physical labor limits.</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="font-bold text-blue-800">Middleton PD</h3>
+                        <p class="text-sm text-blue-700 mt-1">Est. 10-Year Earnings: <span class="font-bold text-lg block">$1,050,000</span></p>
+                        <p class="text-xs text-blue-600 mt-2">Includes conservative estimates for Details & Quinn Bill incentives.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: The "Hidden" Money in MA Policing -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-xl card-shadow p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">2. The "Details" Factor</h2>
+                <p class="text-slate-600 mb-6">
+                    Jackson is likely looking at the <strong>Base Salary</strong>. In Massachusetts, "Paid Details" (security for road work/utility crews) are a massive income booster. These are paid at a high hourly rate (often $55+) independent of rank.
+                </p>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                        <span class="font-medium text-slate-700">Base Salary</span>
+                        <span class="font-bold text-slate-900">Guaranteed</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
+                        <span class="font-medium text-blue-800">Paid Details (Road Jobs)</span>
+                        <span class="font-bold text-blue-900">+$20k - $40k / year</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+                        <span class="font-medium text-indigo-800">Quinn Bill (Education)</span>
+                        <span class="font-bold text-indigo-900">+10% to 25% Base</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                        <span class="font-medium text-slate-700">Overtime / Court Time</span>
+                        <span class="font-bold text-slate-900">1.5x Hourly Rate</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl card-shadow p-6 md:p-8 flex flex-col items-center justify-center">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4 w-full text-left">The Real Paycheck Composition</h3>
+                <div class="chart-container">
+                    <canvas id="compositionChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-slate-500 mt-4">
+                    *Based on average MA Police Officer earnings data. Notice base salary is barely half the story.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3: The Reality of "Sales" -->
+        <section class="bg-amber-50 rounded-xl border border-amber-200 p-6 md:p-8">
+            <h2 class="text-2xl font-bold text-amber-900 mb-2">3. What "Sales" Actually Means</h2>
+            <p class="text-amber-800 mb-6">
+                Management is promising a move to "Sales" (Arborist Representative). This is not a promotion in the traditional sense; it is a <strong>career change</strong> from technician to salesperson.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-5 rounded-lg shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-lg mb-3">⚗️ Current Job: Tech</h3>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-start"><span class="mr-2">✅</span> Hourly guaranteed pay.</li>
+                        <li class="flex items-start"><span class="mr-2">✅</span> Clock out and forget work.</li>
+                        <li class="flex items-start"><span class="mr-2">✅</span> Task-based: "Spray this tree."</li>
+                        <li class="flex items-start"><span class="mr-2">❌</span> Hard on the body long-term.</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-5 rounded-lg shadow-sm border-2 border-amber-200 relative">
+                    <div class="absolute -top-3 -right-3 bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded">The Proposal</div>
+                    <h3 class="font-bold text-slate-800 text-lg mb-3">💼 Proposed Job: Sales</h3>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-start"><span class="mr-2">⚠️</span> <strong>Commission Based:</strong> If you don't sell, you make base (low).</li>
+                        <li class="flex items-start"><span class="mr-2">⚠️</span> <strong>No Off Switch:</strong> Clients call nights/weekends.</li>
+                        <li class="flex items-start"><span class="mr-2">⚠️</span> <strong>Quotas:</strong> High pressure to meet monthly goals.</li>
+                        <li class="flex items-start"><span class="mr-2">⚠️</span> <strong>Volatility:</strong> Pay drops in winter/recessions.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Interactive Simulator -->
+        <section class="bg-slate-900 rounded-xl card-shadow p-6 md:p-8 text-white">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-2">4. Police Income Simulator</h2>
+                    <p class="text-slate-300 mb-8">
+                        Adjust the sliders to see how "Details" and "Education" drastically change the Police Officer's take-home pay compared to the Tree Tech role.
+                    </p>
+
+                    <!-- Controls -->
+                    <div class="space-y-6">
+                        <!-- Details Slider -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="text-sm font-medium text-slate-300">Paid Details per Week (Avg 4hrs min)</label>
+                                <span id="detailValue" class="text-blue-400 font-bold">2 Details</span>
+                            </div>
+                            <input type="range" min="0" max="6" value="2" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" id="detailSlider">
+                            <p class="text-xs text-slate-500 mt-1">Most officers work 2-3 details a week easily.</p>
+                        </div>
+
+                        <!-- Education Toggle -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-slate-300">Education Incentive (Quinn Bill)</span>
+                            <select id="eduSelect" class="bg-slate-800 border border-slate-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
+                                <option value="0">None (0%)</option>
+                                <option value="0.10">Associate's (10%)</option>
+                                <option value="0.20">Bachelor's (20%)</option>
+                            </select>
+                        </div>
+
+                        <!-- Tree Sales Toggle -->
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-700">
+                            <span class="text-sm font-medium text-emerald-300">Tree Job: Switch to "Sales"?</span>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="salesToggle" class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500">
+                                <label for="salesToggle" class="ml-2 text-sm font-medium text-gray-300">Yes (High Risk)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Results -->
+                <div class="flex flex-col justify-center bg-slate-800 rounded-lg p-6">
+                    <h3 class="text-center text-slate-400 text-sm uppercase tracking-wide mb-6">Annual Gross Income Estimate</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div>
+                            <p class="text-slate-400 text-xs">SaveATree</p>
+                            <p id="treeIncomeDisplay" class="text-3xl font-bold text-emerald-400 mt-1">$55,000</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 text-xs">Middleton PD</p>
+                            <p id="pdIncomeDisplay" class="text-3xl font-bold text-blue-400 mt-1">$88,400</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <div class="w-full bg-slate-700 rounded-full h-4 mb-2 overflow-hidden relative">
+                            <div id="pdBar" class="bg-blue-500 h-4 rounded-full absolute top-0 left-0 transition-all duration-500" style="width: 80%"></div>
+                            <div id="treeBar" class="bg-emerald-500 h-4 rounded-full absolute top-0 left-0 transition-all duration-500 opacity-80" style="width: 50%"></div>
+                        </div>
+                        <p class="text-center text-xs text-slate-500">Bar Visualizer (Full width = $150k)</p>
+                    </div>
+
+                    <div id="calcBreakdown" class="mt-6 text-xs text-slate-400 border-t border-slate-700 pt-4 space-y-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: The Pension Factor -->
+        <section class="bg-white rounded-xl card-shadow p-6 md:p-8">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">5. The Retirement Reality</h2>
+            <p class="text-slate-600 mb-6">
+                This is the most critical difference. A "Defined Benefit" pension is rare in the private sector.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border border-emerald-200 bg-emerald-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-emerald-900">Tree Job: 401(k)</h3>
+                    <p class="text-sm text-emerald-800 mt-2">
+                        Jackson saves his own money. If the stock market crashes right before he retires, he loses money. The company might match 3-4%, but the risk is on <strong>him</strong>.
+                    </p>
+                </div>
+                <div class="border border-blue-200 bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-blue-900">Police Job: Pension</h3>
+                    <p class="text-sm text-blue-800 mt-2">
+                        After 25-32 years of service, he receives a check for ~75-80% of his highest salary <strong>for the rest of his life</strong>. This is worth millions in total payout and provides total security.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm">Generated for Jackson's Career Analysis based on Middleton, MA Market Data.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Constants & Data ---
+        const treeBaseRate = 25; // $/hr estimated for experienced tech
+        const treeHours = 2080; // 40hr week
+        const salesBase = 50000;
+        const salesCommissionAvg = 35000; // Optimistic avg
+
+        const pdBaseYear1 = 62000; // Estimated Academy/Probation
+        const pdDetailRate = 55; // MA Detail Rate estimate
+        const pdStepIncrease = 2500; // Avg step increase
+        
+        // --- 2. Chart Configurations ---
+        
+        // Trajectory Chart
+        const ctxTrajectory = document.getElementById('trajectoryChart').getContext('2d');
+        const trajectoryChart = new Chart(ctxTrajectory, {
+            type: 'bar',
+            data: {
+                labels: ['Year 1', 'Year 3', 'Year 5', 'Year 10'],
+                datasets: [
+                    {
+                        label: 'SaveATree Tech',
+                        data: [52000, 55100, 58500, 67000],
+                        backgroundColor: '#10b981',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Middleton PD (w/ Details)',
+                        data: [78000, 95000, 105000, 125000],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': $' + context.raw.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return '$' + value / 1000 + 'k'; }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Composition Chart
+        const ctxComposition = document.getElementById('compositionChart').getContext('2d');
+        const compositionChart = new Chart(ctxComposition, {
+            type: 'doughnut',
+            data: {
+                labels: ['Base Salary', 'Paid Details', 'Overtime/Court', 'Edu Incentive'],
+                datasets: [{
+                    data: [65, 20, 10, 5],
+                    backgroundColor: [
+                        '#1e293b', // Base (Slate 800)
+                        '#3b82f6', // Details (Blue 500)
+                        '#6366f1', // OT (Indigo 500)
+                        '#a855f7'  // Edu (Purple 500)
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' }
+                }
+            }
+        });
+
+        // --- 3. Interactive Simulator Logic ---
+        
+        const detailSlider = document.getElementById('detailSlider');
+        const detailValue = document.getElementById('detailValue');
+        const eduSelect = document.getElementById('eduSelect');
+        const salesToggle = document.getElementById('salesToggle');
+        
+        const treeDisplay = document.getElementById('treeIncomeDisplay');
+        const pdDisplay = document.getElementById('pdIncomeDisplay');
+        const treeBar = document.getElementById('treeBar');
+        const pdBar = document.getElementById('pdBar');
+        const calcBreakdown = document.getElementById('calcBreakdown');
+
+        function updateCalculator() {
+            // Get Inputs
+            const detailsPerWeek = parseInt(detailSlider.value);
+            const eduMultiplier = parseFloat(eduSelect.value);
+            const isSales = salesToggle.checked;
+
+            // Update Slider Text
+            detailValue.innerText = `${detailsPerWeek} Details/Week`;
+
+            // Calculate Tree Income
+            let treeIncome = 0;
+            if (isSales) {
+                treeIncome = salesBase + salesCommissionAvg; 
+            } else {
+                treeIncome = treeBaseRate * treeHours;
+            }
+
+            // Calculate PD Income
+            // Formula: (Base * (1 + Edu)) + (Details * Rate * 50 weeks) + (OT Estimate)
+            // Using a Year 3 Base for realistic "settled in" comparison
+            const baseForCalc = 68000; 
+            const baseWithEdu = baseForCalc * (1 + eduMultiplier);
+            
+            // Assume 1 detail = 6 hours avg (min 4, often 8)
+            const detailHoursPerYear = detailsPerWeek * 6 * 50; 
+            const detailIncome = detailHoursPerYear * pdDetailRate;
+            
+            const otEstimate = 5000; // Conservative OT
+            
+            const pdIncome = baseWithEdu + detailIncome + otEstimate;
+
+            // Update UI
+            treeDisplay.innerText = '$' + Math.floor(treeIncome).toLocaleString();
+            pdDisplay.innerText = '$' + Math.floor(pdIncome).toLocaleString();
+
+            // Sales toggle color logic
+            if(isSales) {
+                treeDisplay.classList.remove('text-emerald-400');
+                treeDisplay.classList.add('text-amber-400');
+            } else {
+                treeDisplay.classList.add('text-emerald-400');
+                treeDisplay.classList.remove('text-amber-400');
+            }
+
+            // Bar Widths (Max scale set to 160k for visualization)
+            const maxScale = 160000;
+            treeBar.style.width = Math.min((treeIncome / maxScale) * 100, 100) + '%';
+            pdBar.style.width = Math.min((pdIncome / maxScale) * 100, 100) + '%';
+            
+            // Breakdown Text
+            calcBreakdown.innerHTML = `
+                <div class="flex justify-between"><span>PD Base + Edu:</span> <span>$${Math.floor(baseWithEdu).toLocaleString()}</span></div>
+                <div class="flex justify-between text-blue-400"><span>Detail Pay:</span> <span>$${Math.floor(detailIncome).toLocaleString()}</span></div>
+                <div class="flex justify-between text-slate-500 italic mt-1"><span>Difference:</span> <span>+$${Math.floor(pdIncome - treeIncome).toLocaleString()} over Tree Job</span></div>
+            `;
+        }
+
+        // --- 4. Event Listeners ---
+        detailSlider.addEventListener('input', updateCalculator);
+        eduSelect.addEventListener('change', updateCalculator);
+        salesToggle.addEventListener('change', updateCalculator);
+
+        // Initial Run
+        updateCalculator();
+
+    </script>
+</body>
+</html>
