@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SavATree Lead Qualification Framework — Who to Target &amp; Why</title>
+<style>
+  :root {
+    --green-dark: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #d8f3dc;
+    --amber: #e6a817;
+    --amber-pale: #fef3c7;
+    --red: #c1292e;
+    --blue: #1d4ed8;
+    --blue-pale: #dbeafe;
+    --bg: #fafaf7;
+    --text: #1a1a1a;
+    --gray: #6b7280;
+    --card-bg: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+  .hero { background: linear-gradient(135deg, var(--green-dark) 0%, #1a4a3a 50%, var(--green-mid) 100%); color: white; padding: 3rem 2rem 2.5rem; text-align: center; }
+  .hero h1 { font-size: 1.85rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .hero .subtitle { font-size: 1.05rem; opacity: 0.85; }
+  .hero .meta { margin-top: 1rem; font-size: 0.85rem; opacity: 0.65; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h2 { font-size: 1.35rem; color: var(--green-dark); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--green-light); }
+  h3 { font-size: 1.1rem; color: var(--green-mid); margin: 1.5rem 0 0.75rem; }
+  p { margin-bottom: 1rem; }
+  ul { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.4rem; }
+
+  .verdict-box { background: var(--green-pale); border-left: 4px solid var(--green-light); padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+  .verdict-box strong { color: var(--green-dark); }
+  .caution-box { background: var(--amber-pale); border-left: 4px solid var(--amber); padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+  .blue-box { background: var(--blue-pale); border-left: 4px solid var(--blue); padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+
+  .card { background: var(--card-bg); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th { background: var(--green-dark); color: white; padding: 0.65rem 0.75rem; text-align: left; font-weight: 600; }
+  td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+  tr:nth-child(even) td { background: #f9fafb; }
+
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
+  .badge-green { background: var(--green-pale); color: var(--green-dark); }
+  .badge-amber { background: var(--amber-pale); color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-blue { background: var(--blue-pale); color: #1e3a8a; }
+
+  .tier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 700px) { .tier-grid { grid-template-columns: 1fr; } }
+
+  .tier-card { border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .tier-card h3 { margin-top: 0; }
+  .tier-card .tier-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .tier-s { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid var(--amber); }
+  .tier-s .tier-label { color: #92400e; }
+  .tier-a { background: linear-gradient(135deg, var(--green-pale) 0%, #b7e4c7 100%); border: 2px solid var(--green-light); }
+  .tier-a .tier-label { color: var(--green-dark); }
+  .tier-b { background: linear-gradient(135deg, var(--blue-pale) 0%, #bfdbfe 100%); border: 2px solid var(--blue); }
+  .tier-b .tier-label { color: #1e3a8a; }
+  .tier-c { background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); border: 2px solid #9ca3af; }
+  .tier-c .tier-label { color: #4b5563; }
+
+  .score-row { display: flex; align-items: center; gap: 0.75rem; margin: 0.5rem 0; }
+  .score-bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+  .score-fill { height: 100%; border-radius: 4px; }
+  .score-label { font-size: 0.82rem; min-width: 140px; }
+  .score-val { font-size: 0.82rem; font-weight: 700; min-width: 35px; text-align: right; }
+
+  .pitch-box { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 1rem 1.25rem; margin: 0.75rem 0; font-style: italic; color: var(--green-dark); }
+
+  .sources { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; font-size: 0.82rem; color: var(--gray); }
+  .sources a { color: var(--green-mid); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>SavATree Lead Qualification Framework</h1>
+  <div class="subtitle">Who to Target, Why They'll Buy, and How Satellite Data Finds Them</div>
+  <div class="meta">SavATree — Jackson's Territory: Melrose, Stoneham, Wilmington, Wakefield, Reading, North Reading</div>
+</div>
+
+<div class="container">
+
+<!-- ========== THE BIG PICTURE ========== -->
+<h2>The Big Picture: Think Contracts, Not Calls</h2>
+
+<div class="verdict-box">
+  <strong>Key insight:</strong> A single residential tree removal is a $500–$3,000 one-time job. An HOA or commercial property maintenance contract is $5,000–$50,000+/year in recurring revenue. The satellite analysis approach is <em>dramatically</em> more powerful for larger properties because: bigger canopy footprint = easier to detect from space, bigger liability exposure = stronger sales pitch, and the decision-maker has a budget and a legal obligation to act.
+</div>
+
+<p>Here's how each property type stacks up as a lead — scored on contract value, likelihood to convert, satellite detectability, and urgency drivers.</p>
+
+<!-- ========== TIER RANKING ========== -->
+<h2>Lead Tier Rankings</h2>
+
+<div class="tier-grid">
+
+  <div class="tier-card tier-s">
+    <div class="tier-label">S-Tier — Top Priority</div>
+    <h3>Condominium / HOA Communities</h3>
+    <div class="score-row"><span class="score-label">Contract Value</span><div class="score-bar"><div class="score-fill" style="width:95%; background:var(--amber);"></div></div><span class="score-val">9.5</span></div>
+    <div class="score-row"><span class="score-label">Conversion Likelihood</span><div class="score-bar"><div class="score-fill" style="width:90%; background:var(--amber);"></div></div><span class="score-val">9.0</span></div>
+    <div class="score-row"><span class="score-label">Satellite Detectability</span><div class="score-bar"><div class="score-fill" style="width:90%; background:var(--amber);"></div></div><span class="score-val">9.0</span></div>
+    <div class="score-row"><span class="score-label">Urgency Drivers</span><div class="score-bar"><div class="score-fill" style="width:95%; background:var(--amber);"></div></div><span class="score-val">9.5</span></div>
+    <p style="margin-top:0.75rem; font-size:0.9rem;"><strong>Why #1:</strong> HOAs are legally obligated to maintain common area trees. Board members face personal liability exposure for negligence. They have maintenance budgets, annual planning cycles, and a fiduciary duty to act. Canopy loss on common areas is highly visible to residents who complain to the board. One documented hazard tree = immediate need for a certified arborist assessment.</p>
+    <p style="font-size:0.9rem;"><strong>Typical contract:</strong> $10K–$50K/yr for annual maintenance + emergency response. Multi-year agreements common.</p>
+    <div class="pitch-box">"Our aerial health assessment identified declining tree canopy across your community's common areas. As board members, you have a duty of care to address potential hazard trees. We'd like to offer a complimentary on-site walkthrough with our ISA Certified Arborist."</div>
+  </div>
+
+  <div class="tier-card tier-s">
+    <div class="tier-label">S-Tier — Top Priority</div>
+    <h3>Commercial Property Managers</h3>
+    <div class="score-row"><span class="score-label">Contract Value</span><div class="score-bar"><div class="score-fill" style="width:90%; background:var(--amber);"></div></div><span class="score-val">9.0</span></div>
+    <div class="score-row"><span class="score-label">Conversion Likelihood</span><div class="score-bar"><div class="score-fill" style="width:85%; background:var(--amber);"></div></div><span class="score-val">8.5</span></div>
+    <div class="score-row"><span class="score-label">Satellite Detectability</span><div class="score-bar"><div class="score-fill" style="width:85%; background:var(--amber);"></div></div><span class="score-val">8.5</span></div>
+    <div class="score-row"><span class="score-label">Urgency Drivers</span><div class="score-bar"><div class="score-fill" style="width:90%; background:var(--amber);"></div></div><span class="score-val">9.0</span></div>
+    <p style="margin-top:0.75rem; font-size:0.9rem;"><strong>Why #1:</strong> Property managers managing office parks, retail centers, and corporate campuses need documented tree risk assessments for insurance compliance. Research shows insurance premiums dropped 12% after implementing documented tree maintenance programs. A single liability claim from a fallen branch can cost $100K+. They're buying risk reduction, not just tree trimming.</p>
+    <p style="font-size:0.9rem;"><strong>Typical contract:</strong> $5K–$30K/yr per property. Property managers with multiple sites = multiplier effect.</p>
+    <div class="pitch-box">"We've identified canopy health changes at your property using satellite vegetation analysis. Documented tree risk assessments can reduce your liability exposure and may lower insurance premiums — we've seen 12% reductions for properties with proactive programs. Can we schedule a complimentary site assessment?"</div>
+  </div>
+
+  <div class="tier-card tier-a">
+    <div class="tier-label">A-Tier — High Value</div>
+    <h3>Municipal / Institutional</h3>
+    <div class="score-row"><span class="score-label">Contract Value</span><div class="score-bar"><div class="score-fill" style="width:85%; background:var(--green-mid);"></div></div><span class="score-val">8.5</span></div>
+    <div class="score-row"><span class="score-label">Conversion Likelihood</span><div class="score-bar"><div class="score-fill" style="width:60%; background:var(--green-mid);"></div></div><span class="score-val">6.0</span></div>
+    <div class="score-row"><span class="score-label">Satellite Detectability</span><div class="score-bar"><div class="score-fill" style="width:95%; background:var(--green-mid);"></div></div><span class="score-val">9.5</span></div>
+    <div class="score-row"><span class="score-label">Urgency Drivers</span><div class="score-bar"><div class="score-fill" style="width:80%; background:var(--green-mid);"></div></div><span class="score-val">8.0</span></div>
+    <p style="margin-top:0.75rem; font-size:0.9rem;"><strong>Includes:</strong> Schools, churches, parks departments, town DPW, hospitals, assisted living facilities. Large campuses with significant tree populations. Conversion is slower (procurement processes, bidding) but contracts are large and long-term.</p>
+    <p style="font-size:0.9rem;"><strong>Typical contract:</strong> $15K–$100K+ via municipal bid process.</p>
+  </div>
+
+  <div class="tier-card tier-a">
+    <div class="tier-label">A-Tier — High Value</div>
+    <h3>Apartment Complexes / Multifamily</h3>
+    <div class="score-row"><span class="score-label">Contract Value</span><div class="score-bar"><div class="score-fill" style="width:75%; background:var(--green-mid);"></div></div><span class="score-val">7.5</span></div>
+    <div class="score-row"><span class="score-label">Conversion Likelihood</span><div class="score-bar"><div class="score-fill" style="width:80%; background:var(--green-mid);"></div></div><span class="score-val">8.0</span></div>
+    <div class="score-row"><span class="score-label">Satellite Detectability</span><div class="score-bar"><div class="score-fill" style="width:80%; background:var(--green-mid);"></div></div><span class="score-val">8.0</span></div>
+    <div class="score-row"><span class="score-label">Urgency Drivers</span><div class="score-bar"><div class="score-fill" style="width:85%; background:var(--green-mid);"></div></div><span class="score-val">8.5</span></div>
+    <p style="margin-top:0.75rem; font-size:0.9rem;"><strong>Why strong:</strong> Landlords/property management companies have tenant safety obligations. A hazard tree near a parking lot or walkway is a lawsuit waiting to happen. Similar dynamics to commercial — they want documentation and proactive maintenance to reduce insurance exposure.</p>
+    <p style="font-size:0.9rem;"><strong>Typical contract:</strong> $3K–$15K/yr per complex.</p>
+  </div>
+
+  <div class="tier-card tier-b">
+    <div class="tier-label">B-Tier — Solid Volume</div>
+    <h3>High-Value Residential (>$600K)</h3>
+    <div class="score-row"><span class="score-label">Contract Value</span><div class="score-bar"><div class="score-fill" style="width:50%; background:var(--blue);"></div></div><span class="score-val">5.0</span></div>
+    <div class="score-row"><span class="score-label">Conversion Likelihood</span><div class="score-bar"><div class="score-fill" style="width:70%; background:var(--blue);"></div></div><span class="score-val">7.0</span></div>
+    <div class="score-row"><span class="score-label">Satellite Detectability</span><div class="score-bar"><div class="score-fill" style="width:65%; background:var(--blue);"></div></div><span class="score-val">6.5</span></div>
+    <div class="score-row"><span class="score-label">Urgency Drivers</span><div class="score-bar"><div class="score-fill" style="width:70%; background:var(--blue);"></div></div><span class="score-val">7.0</span></div>
+    <p style="margin-top:0.75rem; font-size:0.9rem;"><strong>The sweet spot for residential:</strong> Homeowners with $600K+ properties on larger lots (0.5+ acres) care about property value, curb appeal, and neighbor liability. They're the ones who'll actually hire an arborist vs. "my buddy with a chainsaw." In Jackson's towns, this is a meaningful segment — median home values run $500K–$700K+.</p>
+    <p style="font-size:0.9rem;"><strong>Typical job:</strong> $1K–$5K per visit, 1–2x/year.</p>
+  </div>
+
+  <div class="tier-card tier-c">
+    <div class="tier-label">C-Tier — Opportunistic</div>
+    <h3>Standard Residential (&lt;$600K)</h3>
+    <div class="score-row"><span class="score-label">Contract Value</span><div class="score-bar"><div class="score-fill" style="width:25%; background:#9ca3af;"></div></div><span class="score-val">2.5</span></div>
+    <div class="score-row"><span class="score-label">Conversion Likelihood</span><div class="score-bar"><div class="score-fill" style="width:40%; background:#9ca3af;"></div></div><span class="score-val">4.0</span></div>
+    <div class="score-row"><span class="score-label">Satellite Detectability</span><div class="score-bar"><div class="score-fill" style="width:40%; background:#9ca3af;"></div></div><span class="score-val">4.0</span></div>
+    <div class="score-row"><span class="score-label">Urgency Drivers</span><div class="score-bar"><div class="score-fill" style="width:45%; background:#9ca3af;"></div></div><span class="score-val">4.5</span></div>
+    <p style="margin-top:0.75rem; font-size:0.9rem;">Small lots, price-sensitive buyers, less likely to hire a certified arborist. Still worth capturing as inbound leads (they're already SavATree's bread and butter) but not the focus for satellite-driven outbound prospecting. These are better served by Facebook ads and form fills — the current model.</p>
+  </div>
+
+</div>
+
+<!-- ========== URGENCY DRIVERS ========== -->
+<h2>The Urgency Drivers — Why They Buy</h2>
+
+<p>This is the key to the pitch. You're not selling tree trimming — you're selling risk reduction, liability protection, property value preservation, and insurance savings. Here's the complete menu of urgency levers by property type:</p>
+
+<table>
+  <tr>
+    <th>Urgency Driver</th>
+    <th>HOA/Condo</th>
+    <th>Commercial</th>
+    <th>Multifamily</th>
+    <th>Residential</th>
+  </tr>
+  <tr>
+    <td><strong>Legal liability for hazard trees</strong><br><span style="font-size:0.82rem; color:var(--gray);">MA law: owner liable if they "knew or should have known" a tree was dangerous</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+  </tr>
+  <tr>
+    <td><strong>Insurance premium reduction</strong><br><span style="font-size:0.82rem; color:var(--gray);">Documented maintenance programs shown to reduce premiums ~12%</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-green">Low</span></td>
+  </tr>
+  <tr>
+    <td><strong>Board/fiduciary duty</strong><br><span style="font-size:0.82rem; color:var(--gray);">HOA board members can be personally liable for negligence</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><strong>Tenant/visitor safety</strong><br><span style="font-size:0.82rem; color:var(--gray);">Pedestrian areas, parking lots, playgrounds, walkways</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+    <td><span class="badge badge-green">Low</span></td>
+  </tr>
+  <tr>
+    <td><strong>Property value / curb appeal</strong><br><span style="font-size:0.82rem; color:var(--gray);">Mature trees add 10–15% to property value; dead trees subtract</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+  </tr>
+  <tr>
+    <td><strong>Storm damage prevention</strong><br><span style="font-size:0.82rem; color:var(--gray);">Proactive pruning prevents emergency calls and insurance claims</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+  </tr>
+  <tr>
+    <td><strong>Neighbor liability (MA-specific)</strong><br><span style="font-size:0.82rem; color:var(--gray);">In MA, if your unhealthy tree damages a neighbor's property, you pay</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-amber">Moderate</span></td>
+    <td><span class="badge badge-red">Critical</span></td>
+  </tr>
+</table>
+
+<!-- ========== SATELLITE DETECTION BY TYPE ========== -->
+<h2>Satellite Detection Feasibility by Property Type</h2>
+
+<table>
+  <tr>
+    <th>Property Type</th>
+    <th>Typical Canopy</th>
+    <th>Sentinel-2 (10m)</th>
+    <th>NAIP (0.6m)</th>
+    <th>Best Approach</th>
+  </tr>
+  <tr>
+    <td><strong>HOA/Condo Complex</strong></td>
+    <td>2–20 acres of common area with trees, often mature plantings</td>
+    <td><span class="badge badge-green">Excellent</span> — common areas are large enough for multi-pixel NDVI</td>
+    <td><span class="badge badge-green">Excellent</span> — individual tree-level detail</td>
+    <td>Sentinel-2 NDVI time-series flags the community; NAIP confirms which specific areas are declining</td>
+  </tr>
+  <tr>
+    <td><strong>Commercial Campus</strong></td>
+    <td>1–10 acres, parking lot perimeter trees, landscaping buffers</td>
+    <td><span class="badge badge-green">Good</span> — parking lot trees show as strong NDVI contrast against pavement</td>
+    <td><span class="badge badge-green">Excellent</span></td>
+    <td>NDVI drop in perimeter zones is highly detectable; trees next to dark pavement have strong spectral contrast</td>
+  </tr>
+  <tr>
+    <td><strong>Apartment Complex</strong></td>
+    <td>1–5 acres, courtyard trees, perimeter screening</td>
+    <td><span class="badge badge-amber">Moderate</span> — smaller footprint, buildings mix signal</td>
+    <td><span class="badge badge-green">Good</span></td>
+    <td>NAIP-primary with Sentinel-2 as screening filter</td>
+  </tr>
+  <tr>
+    <td><strong>Municipal/Institutional</strong></td>
+    <td>5–50+ acres, school grounds, parks, church lots</td>
+    <td><span class="badge badge-green">Excellent</span> — largest canopy footprints</td>
+    <td><span class="badge badge-green">Excellent</span></td>
+    <td>Easiest to detect; large homogeneous canopy areas make NDVI change very reliable</td>
+  </tr>
+  <tr>
+    <td><strong>Residential (large lot)</strong></td>
+    <td>0.5–2 acres, scattered mature trees</td>
+    <td><span class="badge badge-amber">Fair</span> — 1–3 pixels per lot, noisy</td>
+    <td><span class="badge badge-green">Good</span></td>
+    <td>NAIP-primary; Sentinel-2 can flag neighborhoods but not individual lots</td>
+  </tr>
+  <tr>
+    <td><strong>Residential (small lot)</strong></td>
+    <td>&lt;0.25 acres, 1–3 trees</td>
+    <td><span class="badge badge-red">Poor</span> — sub-pixel, can't isolate</td>
+    <td><span class="badge badge-amber">Marginal</span></td>
+    <td>Not viable for satellite-driven outreach at MVP stage</td>
+  </tr>
+</table>
+
+<!-- ========== LEAD SCORING MODEL ========== -->
+<h2>Proposed Lead Scoring Model</h2>
+
+<p>Every flagged property gets a composite score (0–100) based on four weighted factors:</p>
+
+<table>
+  <tr>
+    <th>Factor</th>
+    <th>Weight</th>
+    <th>What It Measures</th>
+    <th>Data Source</th>
+  </tr>
+  <tr>
+    <td><strong>Canopy Decline Severity</strong></td>
+    <td>30%</td>
+    <td>NDVI drop magnitude over 2–3 year window. >20% drop = high score.</td>
+    <td>Sentinel-2 / NAIP analysis</td>
+  </tr>
+  <tr>
+    <td><strong>Property Classification</strong></td>
+    <td>30%</td>
+    <td>S-tier (HOA/commercial) = 30pts, A-tier = 22pts, B-tier = 15pts, C-tier = 8pts</td>
+    <td>MassGIS land use codes + assessor data</td>
+  </tr>
+  <tr>
+    <td><strong>Liability Exposure</strong></td>
+    <td>25%</td>
+    <td>Pedestrian areas, parking lots, proximity to buildings, public-facing. Higher foot traffic = higher score.</td>
+    <td>Aerial imagery + land use classification</td>
+  </tr>
+  <tr>
+    <td><strong>Property Value</strong></td>
+    <td>15%</td>
+    <td>Higher assessed value = more likely to invest in professional tree care. Also indicates ability to pay.</td>
+    <td>Town assessor records</td>
+  </tr>
+</table>
+
+<div class="blue-box">
+  <strong>Example scoring:</strong> A 40-unit condo complex in Wakefield with 25% NDVI decline on common area trees near a parking lot, assessed at $8M total: Canopy Decline (25/30) + Property Class (30/30) + Liability (22/25) + Value (13/15) = <strong>90/100</strong> — hot lead, call immediately.
+</div>
+
+<!-- ========== REVISED MVP STRATEGY ========== -->
+<h2>Revised MVP Strategy — Go Big First</h2>
+
+<p>Based on this analysis, the satellite analysis MVP should <strong>start with the biggest targets, not individual homes</strong>:</p>
+
+<div class="card">
+  <strong>Phase 1 (Week 1–2): HOAs, Condos, and Commercial</strong>
+  <ul>
+    <li>Identify all HOA/condo communities and commercial properties in the 6 target towns using MassGIS land use data</li>
+    <li>Run Sentinel-2 NDVI change detection on these larger properties (they're big enough for reliable detection)</li>
+    <li>Score and rank the top 20–30 flagged properties</li>
+    <li>Use Apollo/Clay to find decision-makers: HOA board presidents, property managers, facility managers</li>
+    <li>Jackson does targeted outreach with satellite imagery as a conversation starter</li>
+  </ul>
+</div>
+
+<div class="card">
+  <strong>Phase 2 (Week 3–4): Multifamily and Institutional</strong>
+  <ul>
+    <li>Expand to apartment complexes, schools, churches, assisted living</li>
+    <li>Same NDVI workflow, slightly smaller footprints</li>
+    <li>These leads often come through property management companies — use Apollo to find the management firm, not the building owner</li>
+  </ul>
+</div>
+
+<div class="card">
+  <strong>Phase 3 (Month 2+): High-Value Residential</strong>
+  <ul>
+    <li>Only pursue residential leads where NAIP confirms large-lot properties with significant canopy</li>
+    <li>Filter to homes assessed >$600K with >0.5 acres</li>
+    <li>These are supplemental volume, not the core strategy</li>
+  </ul>
+</div>
+
+<!-- ========== WHAT WE BUILD NEXT ========== -->
+<h2>What We Build Next</h2>
+
+<p>With the lead qualification framework in place, here's the adjusted technical pipeline:</p>
+
+<table>
+  <tr>
+    <th>#</th>
+    <th>Step</th>
+    <th>Tool</th>
+    <th>Output</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Extract all HOA/condo/commercial parcels from MassGIS for 6 towns</td>
+    <td>Python + MassGIS shapefiles</td>
+    <td>GeoJSON of target properties</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Run Sentinel-2 NDVI change detection (2023 vs 2025 summer composites)</td>
+    <td>Google Earth Engine</td>
+    <td>NDVI decline scores per parcel</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Score and rank leads using the 4-factor model above</td>
+    <td>Python / Excel</td>
+    <td>Ranked lead list with scores</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Find decision-makers (board members, property managers)</td>
+    <td>Apollo + Clay</td>
+    <td>Contact cards with emails and phones</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Track pipeline in Smartsheet</td>
+    <td>Smartsheet</td>
+    <td>Lead pipeline with status tracking</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Generate outreach materials with satellite thumbnails</td>
+    <td>Python + Canva / HTML</td>
+    <td>Personalized one-pagers per lead</td>
+  </tr>
+</table>
+
+<!-- ========== SOURCES ========== -->
+<div class="sources">
+  <h3 style="color: var(--gray); font-size: 0.9rem;">Sources</h3>
+  <ul style="list-style: none; margin-left: 0; padding-left: 0;">
+    <li><a href="https://muccilegal.com/massachusetts-tree-law-when-can-a-landowner-be-liable-for-a-fallen-tree/">MA Tree Liability Law — Mucci Legal</a></li>
+    <li><a href="https://sherwinlawfirm.com/massachusetts-tree-law-when-can-a-property-owner-be-liable-for-a-tree-on-their-land/">MA Property Owner Tree Liability — Sherwin Law</a></li>
+    <li><a href="https://www.mass.gov/info-details/massachusetts-law-about-neighbors-and-trees">Massachusetts Law About Neighbors and Trees — Mass.gov</a></li>
+    <li><a href="https://greenleafcarolina.com/why-arborist-service-is-becoming-a-must-have-for-hoa-and-commercial-properties/">Why Arborist Services Are a Must for HOA & Commercial Properties</a></li>
+    <li><a href="https://www.savatree.com/commercial-services/condo-hoa/">SavATree — HOA Tree & Shrub Care</a></li>
+    <li><a href="https://www.rayzorsedgetreeservice.com/tree-removal-responsibility/">Commercial Property Tree Liability — Rayzor's Edge</a></li>
+    <li><a href="https://www.bouttetree.com/commercial-tree-services-in-atlanta-complete-guide-for-property-managers-business-owners">Commercial Tree Services Guide for Property Managers</a></li>
+    <li><a href="https://www.cedarmanagementgroup.com/tree-falls-on-a-house-in-hoa/">Tree Falls on a House in HOA Community — Cedar Management</a></li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>

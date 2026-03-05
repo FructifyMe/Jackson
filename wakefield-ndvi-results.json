@@ -1,0 +1,318 @@
+{
+  "test_area": {
+    "name": "Wakefield",
+    "state": "MA",
+    "description": "Lake Quannapowitt area \u2014 established residential + town center",
+    "bbox": [
+      -71.095,
+      42.485,
+      -71.055,
+      42.51
+    ]
+  },
+  "imagery": {
+    "baseline": {
+      "scene_id": "S2B_19TCH_20230901_0_L2A",
+      "date": "2023-09-01",
+      "cloud_cover": 0.002515
+    },
+    "comparison": {
+      "scene_id": "S2B_19TCH_20250831_0_L2A",
+      "date": "2025-08-31",
+      "cloud_cover": 0.00354,
+      "label": "Summer 2025"
+    }
+  },
+  "analysis": {
+    "total_pixels": 95810,
+    "vegetated_pixels": 77391,
+    "moderate_decline_pixels": 10444,
+    "severe_decline_pixels": 2904,
+    "total_decline_pixels": 13348,
+    "moderate_pct": 13.5,
+    "severe_pct": 3.75,
+    "moderate_acres": 258.07,
+    "severe_acres": 71.76,
+    "mean_ndvi_baseline": 0.6147,
+    "mean_ndvi_comparison": 0.5779,
+    "mean_change": -0.0421,
+    "hotspot_clusters": 988
+  },
+  "hotspots": [
+    {
+      "cluster_id": 2310,
+      "lat": 42.492758,
+      "lng": -71.089412,
+      "pixels": 577,
+      "area_sqm": 57700,
+      "area_acres": 14.257,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 3048,
+      "lat": 42.48561,
+      "lng": -71.094111,
+      "pixels": 157,
+      "area_sqm": 15700,
+      "area_acres": 3.879,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2857,
+      "lat": 42.487418,
+      "lng": -71.085932,
+      "pixels": 143,
+      "area_sqm": 14300,
+      "area_acres": 3.533,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 187,
+      "lat": 42.507915,
+      "lng": -71.072067,
+      "pixels": 137,
+      "area_sqm": 13700,
+      "area_acres": 3.385,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2552,
+      "lat": 42.490519,
+      "lng": -71.083084,
+      "pixels": 125,
+      "area_sqm": 12500,
+      "area_acres": 3.089,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 179,
+      "lat": 42.507651,
+      "lng": -71.078697,
+      "pixels": 113,
+      "area_sqm": 11300,
+      "area_acres": 2.792,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1623,
+      "lat": 42.498397,
+      "lng": -71.080627,
+      "pixels": 109,
+      "area_sqm": 10900,
+      "area_acres": 2.693,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 357,
+      "lat": 42.50674,
+      "lng": -71.074313,
+      "pixels": 107,
+      "area_sqm": 10700,
+      "area_acres": 2.644,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2067,
+      "lat": 42.495445,
+      "lng": -71.094439,
+      "pixels": 100,
+      "area_sqm": 10000,
+      "area_acres": 2.471,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1420,
+      "lat": 42.498569,
+      "lng": -71.094502,
+      "pixels": 98,
+      "area_sqm": 9800,
+      "area_acres": 2.422,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2422,
+      "lat": 42.492427,
+      "lng": -71.081473,
+      "pixels": 91,
+      "area_sqm": 9100,
+      "area_acres": 2.249,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2364,
+      "lat": 42.49314,
+      "lng": -71.082731,
+      "pixels": 89,
+      "area_sqm": 8900,
+      "area_acres": 2.199,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2275,
+      "lat": 42.494091,
+      "lng": -71.081199,
+      "pixels": 79,
+      "area_sqm": 7900,
+      "area_acres": 1.952,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2554,
+      "lat": 42.490913,
+      "lng": -71.081415,
+      "pixels": 79,
+      "area_sqm": 7900,
+      "area_acres": 1.952,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 9,
+      "lat": 42.509646,
+      "lng": -71.080281,
+      "pixels": 77,
+      "area_sqm": 7700,
+      "area_acres": 1.903,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1834,
+      "lat": 42.496813,
+      "lng": -71.066546,
+      "pixels": 77,
+      "area_sqm": 7700,
+      "area_acres": 1.903,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1518,
+      "lat": 42.49911,
+      "lng": -71.0811,
+      "pixels": 70,
+      "area_sqm": 7000,
+      "area_acres": 1.73,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2944,
+      "lat": 42.486692,
+      "lng": -71.091374,
+      "pixels": 70,
+      "area_sqm": 7000,
+      "area_acres": 1.73,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1848,
+      "lat": 42.496852,
+      "lng": -71.072397,
+      "pixels": 67,
+      "area_sqm": 6700,
+      "area_acres": 1.656,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1138,
+      "lat": 42.501306,
+      "lng": -71.094477,
+      "pixels": 66,
+      "area_sqm": 6600,
+      "area_acres": 1.631,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2999,
+      "lat": 42.486363,
+      "lng": -71.088185,
+      "pixels": 64,
+      "area_sqm": 6400,
+      "area_acres": 1.581,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 781,
+      "lat": 42.503981,
+      "lng": -71.086327,
+      "pixels": 63,
+      "area_sqm": 6300,
+      "area_acres": 1.557,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 964,
+      "lat": 42.502742,
+      "lng": -71.093365,
+      "pixels": 58,
+      "area_sqm": 5800,
+      "area_acres": 1.433,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1893,
+      "lat": 42.496623,
+      "lng": -71.059211,
+      "pixels": 57,
+      "area_sqm": 5700,
+      "area_acres": 1.408,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 3022,
+      "lat": 42.486055,
+      "lng": -71.060788,
+      "pixels": 57,
+      "area_sqm": 5700,
+      "area_acres": 1.408,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2527,
+      "lat": 42.491082,
+      "lng": -71.091911,
+      "pixels": 55,
+      "area_sqm": 5500,
+      "area_acres": 1.359,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2647,
+      "lat": 42.490045,
+      "lng": -71.085478,
+      "pixels": 55,
+      "area_sqm": 5500,
+      "area_acres": 1.359,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1814,
+      "lat": 42.496942,
+      "lng": -71.084411,
+      "pixels": 50,
+      "area_sqm": 5000,
+      "area_acres": 1.235,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 2381,
+      "lat": 42.493388,
+      "lng": -71.091883,
+      "pixels": 48,
+      "area_sqm": 4800,
+      "area_acres": 1.186,
+      "severity": "severe"
+    },
+    {
+      "cluster_id": 1684,
+      "lat": 42.498251,
+      "lng": -71.063582,
+      "pixels": 47,
+      "area_sqm": 4700,
+      "area_acres": 1.161,
+      "severity": "severe"
+    }
+  ],
+  "thresholds": {
+    "vegetation_min_ndvi": 0.4,
+    "moderate_decline": -0.1,
+    "severe_decline": -0.2
+  }
+}

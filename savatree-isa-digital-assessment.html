@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SavATree Tree Risk Assessment — Satellite-Enhanced ISA Form</title>
+<style>
+  :root {
+    --green-dark: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #d8f3dc;
+    --amber: #e6a817;
+    --amber-pale: #fef3c7;
+    --red: #dc2626;
+    --red-pale: #fee2e2;
+    --blue: #2563eb;
+    --blue-pale: #dbeafe;
+    --purple: #7c3aed;
+    --purple-pale: #ede9fe;
+    --bg: #f8fafc;
+    --text: #1a1a1a;
+    --gray: #6b7280;
+    --gray-light: #e5e7eb;
+    --card-bg: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; font-size: 14px; }
+
+  .header {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+    color: white; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .header h1 { font-size: 1.4rem; font-weight: 700; }
+  .header .badge-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .legend-badge { padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+  .lb-sat { background: var(--blue-pale); color: #1e40af; }
+  .lb-onsite { background: var(--amber-pale); color: #92400e; }
+  .lb-auto { background: var(--purple-pale); color: #5b21b6; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+  /* Top info bar */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+  .info-field label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 2px; }
+  .info-field input, .info-field select { width: 100%; padding: 6px 10px; border: 1px solid var(--gray-light); border-radius: 6px; font-size: 0.9rem; }
+  .info-field input:focus, .info-field select:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 2px rgba(45,106,79,0.15); }
+
+  /* Section cards */
+  .section { background: var(--card-bg); border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .section-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--green-pale); }
+  .section-header h2 { font-size: 1.1rem; color: var(--green-dark); }
+  .section-header .source-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .tag-satellite { background: var(--blue-pale); color: #1e40af; }
+  .tag-onsite { background: var(--amber-pale); color: #92400e; }
+  .tag-both { background: linear-gradient(90deg, var(--blue-pale), var(--amber-pale)); color: #4b5563; }
+  .tag-auto { background: var(--purple-pale); color: #5b21b6; }
+
+  /* Form rows */
+  .form-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+  .form-row label { min-width: 160px; font-size: 0.85rem; font-weight: 500; }
+  .form-row .hint { font-size: 0.75rem; color: var(--gray); margin-left: auto; }
+
+  .check-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .check-group label { min-width: auto; display: flex; align-items: center; gap: 4px; cursor: pointer; font-weight: 400; }
+  .check-group input[type="checkbox"], .check-group input[type="radio"] { accent-color: var(--green-mid); }
+
+  input[type="text"], input[type="number"], textarea, select {
+    padding: 5px 8px; border: 1px solid var(--gray-light); border-radius: 5px; font-size: 0.85rem;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 2px rgba(45,106,79,0.12); }
+  textarea { width: 100%; min-height: 60px; resize: vertical; }
+
+  /* Satellite pre-fill highlight */
+  .sat-prefill { background: #eff6ff; border: 1px solid #93c5fd; border-radius: 6px; padding: 0.75rem; margin-bottom: 0.75rem; }
+  .sat-prefill .sat-label { font-size: 0.7rem; font-weight: 700; color: #1e40af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+
+  /* Risk matrices */
+  .matrix-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 700px) { .matrix-container { grid-template-columns: 1fr; } }
+  .matrix-card { background: #f9fafb; border-radius: 8px; padding: 1rem; border: 1px solid var(--gray-light); }
+  .matrix-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--green-dark); }
+
+  table.matrix { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  table.matrix th { background: var(--green-dark); color: white; padding: 5px 8px; text-align: center; font-weight: 600; }
+  table.matrix td { padding: 5px 8px; text-align: center; border: 1px solid var(--gray-light); }
+  .risk-low { background: #d1fae5; color: #065f46; }
+  .risk-mod { background: #fef3c7; color: #92400e; }
+  .risk-high { background: #fed7aa; color: #9a3412; }
+  .risk-extreme { background: #fee2e2; color: #991b1b; font-weight: 700; }
+
+  /* Failure assessment sections */
+  .failure-section { background: #f9fafb; border: 1px solid var(--gray-light); border-radius: 8px; padding: 1rem; margin: 0.75rem 0; }
+  .failure-section h4 { font-size: 0.9rem; color: var(--green-mid); margin-bottom: 0.75rem; }
+
+  /* Overall risk result */
+  .risk-result { text-align: center; padding: 1.5rem; margin: 1rem 0; border-radius: 10px; }
+  .risk-result h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .risk-result .risk-value { font-size: 2rem; font-weight: 800; }
+  .risk-low-bg { background: #d1fae5; border: 2px solid #059669; }
+  .risk-mod-bg { background: #fef3c7; border: 2px solid var(--amber); }
+  .risk-high-bg { background: #fed7aa; border: 2px solid #ea580c; }
+  .risk-extreme-bg { background: #fee2e2; border: 2px solid var(--red); }
+
+  /* Mapping table */
+  .mapping-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 1rem 0; }
+  .mapping-table th { background: var(--green-dark); color: white; padding: 8px; text-align: left; }
+  .mapping-table td { padding: 6px 8px; border-bottom: 1px solid var(--gray-light); vertical-align: top; }
+  .mapping-table tr:nth-child(even) td { background: #f9fafb; }
+
+  .btn { padding: 8px 20px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+  .btn-primary { background: var(--green-mid); color: white; }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-outline { background: white; border: 2px solid var(--green-mid); color: var(--green-mid); }
+  .btn-outline:hover { background: var(--green-pale); }
+
+  .actions { display: flex; gap: 0.75rem; justify-content: center; margin: 1.5rem 0; flex-wrap: wrap; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 2px; margin-bottom: 1.5rem; background: var(--gray-light); border-radius: 8px; overflow: hidden; }
+  .tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-weight: 600; font-size: 0.85rem; background: white; transition: all 0.2s; }
+  .tab.active { background: var(--green-mid); color: white; }
+  .tab:hover:not(.active) { background: var(--green-pale); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  @media (max-width: 600px) { .field-grid { grid-template-columns: 1fr; } }
+
+  .print-only { display: none; }
+  @media print {
+    .no-print { display: none !important; }
+    .print-only { display: block; }
+    .header { padding: 1rem; }
+    body { font-size: 11px; }
+  }
+
+  /* Lead Score Tab Styles */
+  .lead-score-hero { text-align: center; padding: 2rem 1rem; border-radius: 12px; margin-bottom: 1.5rem; position: relative; overflow: hidden; }
+  .lead-score-hero .tier-badge { font-size: 3rem; font-weight: 900; letter-spacing: 0.05em; }
+  .lead-score-hero .score-num { font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem; }
+  .lead-score-hero .tier-desc { font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.85; }
+
+  .score-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  @media (max-width: 700px) { .score-breakdown { grid-template-columns: 1fr; } }
+  .score-factor { background: var(--card-bg); border-radius: 10px; padding: 1.25rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border-left: 4px solid var(--gray-light); }
+  .score-factor.active-green { border-left-color: var(--green-light); }
+  .score-factor.active-blue { border-left-color: var(--blue); }
+  .score-factor.active-amber { border-left-color: var(--amber); }
+  .score-factor.active-purple { border-left-color: var(--purple); }
+  .score-factor .factor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .score-factor .factor-name { font-weight: 700; font-size: 0.9rem; }
+  .score-factor .factor-weight { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; background: #f3f4f6; color: var(--gray); font-weight: 600; }
+  .score-factor .factor-score { font-size: 1.8rem; font-weight: 800; margin: 0.25rem 0; }
+  .score-factor .factor-detail { font-size: 0.8rem; color: var(--gray); }
+  .factor-bar { height: 6px; background: #e5e7eb; border-radius: 3px; margin-top: 0.5rem; overflow: hidden; }
+  .factor-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+  .lead-inputs { background: var(--card-bg); border-radius: 10px; padding: 1.25rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 1.5rem; }
+  .lead-inputs h3 { font-size: 1rem; color: var(--green-dark); margin-bottom: 1rem; }
+  .lead-input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  @media (max-width: 600px) { .lead-input-grid { grid-template-columns: 1fr; } }
+  .lead-input-grid label { font-size: 0.8rem; font-weight: 600; color: var(--gray); display: block; margin-bottom: 2px; }
+  .lead-input-grid select, .lead-input-grid input { width: 100%; padding: 6px 10px; border: 1px solid var(--gray-light); border-radius: 6px; font-size: 0.85rem; }
+
+  .outreach-rec { background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 1.25rem; margin: 1.5rem 0; }
+  .outreach-rec h3 { color: var(--green-dark); font-size: 1rem; margin-bottom: 0.75rem; }
+  .outreach-rec .pitch-line { font-style: italic; color: var(--green-mid); padding: 0.75rem; background: white; border-radius: 6px; margin: 0.5rem 0; font-size: 0.9rem; border-left: 3px solid var(--green-light); }
+  .outreach-rec .action-items { margin-top: 0.75rem; font-size: 0.85rem; }
+  .outreach-rec .action-item { display: flex; align-items: flex-start; gap: 0.5rem; margin: 0.4rem 0; }
+  .outreach-rec .action-item::before { content: "→"; color: var(--green-mid); font-weight: 700; flex-shrink: 0; }
+
+  .urgency-drivers { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+  .urgency-chip { padding: 4px 12px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
+  .chip-high { background: #fee2e2; color: #991b1b; }
+  .chip-med { background: #fef3c7; color: #92400e; }
+  .chip-low { background: #dbeafe; color: #1e3a8a; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>SavATree Tree Risk Assessment</h1>
+    <div style="font-size:0.85rem; opacity:0.8;">Satellite-Enhanced ISA Basic Assessment Form</div>
+  </div>
+  <div class="badge-row no-print">
+    <span class="legend-badge lb-sat">Satellite Pre-fill</span>
+    <span class="legend-badge lb-onsite">On-site Required</span>
+    <span class="legend-badge lb-auto">Auto-calculated</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- Tabs -->
+<div class="tabs no-print">
+  <div class="tab active" onclick="switchTab('assessment')">Assessment Form</div>
+  <div class="tab" onclick="switchTab('mapping')">Field Mapping Guide</div>
+  <div class="tab" onclick="switchTab('matrices')">Risk Matrices</div>
+  <div class="tab" onclick="switchTab('leadscore')">Lead Score</div>
+</div>
+
+<!-- ==================== TAB 1: ASSESSMENT FORM ==================== -->
+<div class="tab-content active" id="tab-assessment">
+
+<!-- Client Info -->
+<div class="info-grid">
+  <div class="info-field"><label>Assessor</label><input type="text" value="Jackson Fructify" /></div>
+  <div class="info-field"><label>Client</label><input type="text" placeholder="Property owner / HOA name" /></div>
+  <div class="info-field"><label>Date</label><input type="text" id="assessDate" /></div>
+  <div class="info-field"><label>Address / Tree Location</label><input type="text" placeholder="123 Main St, Wakefield, MA" /></div>
+  <div class="info-field"><label>Tree Species</label><input type="text" placeholder="e.g., Red Oak" /></div>
+  <div class="info-field"><label>Tree #</label><input type="text" placeholder="1" /></div>
+  <div class="info-field"><label>DBH (inches)</label><input type="number" placeholder="24" /></div>
+  <div class="info-field"><label>Height (ft)</label><input type="number" placeholder="60" /></div>
+  <div class="info-field"><label>Time Frame</label><input type="text" placeholder="12 months" /></div>
+  <div class="info-field"><label>Tools</label><input type="text" placeholder="Visual, mallet, probe" /></div>
+</div>
+
+<!-- Target Table -->
+<div class="section">
+  <div class="section-header">
+    <h2>Targets</h2>
+    <span class="source-tag tag-onsite">On-site</span>
+  </div>
+  <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+    <tr style="background:var(--green-dark); color:white;">
+      <th style="padding:6px; width:30px;">#</th>
+      <th style="padding:6px;">Target Description</th>
+      <th style="padding:6px; width:120px;">Target Zone</th>
+      <th style="padding:6px; width:120px;">Occupancy Rate</th>
+    </tr>
+    <tr>
+      <td style="padding:6px; border-bottom:1px solid #e5e7eb; font-weight:700;">1</td>
+      <td style="padding:6px; border-bottom:1px solid #e5e7eb;"><input type="text" style="width:100%;" placeholder="First priority target (e.g., people near the tree)" /></td>
+      <td style="padding:6px; border-bottom:1px solid #e5e7eb;">
+        <select style="width:100%;"><option>Drip line</option><option>1 X Ht</option><option>1.5 X Ht</option><option>&gt;1.5 X Ht</option></select>
+      </td>
+      <td style="padding:6px; border-bottom:1px solid #e5e7eb;">
+        <select style="width:100%;"><option>Rare</option><option>Occasional</option><option>Frequent</option><option>Constant</option></select>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:6px; border-bottom:1px solid #e5e7eb; font-weight:700;">2</td>
+      <td style="padding:6px; border-bottom:1px solid #e5e7eb;"><input type="text" style="width:100%;" placeholder="Second priority (e.g., structures, vehicles)" /></td>
+      <td style="padding:6px; border-bottom:1px solid #e5e7eb;">
+        <select style="width:100%;"><option>Drip line</option><option>1 X Ht</option><option>1.5 X Ht</option><option>&gt;1.5 X Ht</option></select>
+      </td>
+      <td style="padding:6px; border-bottom:1px solid #e5e7eb;">
+        <select style="width:100%;"><option>Rare</option><option>Occasional</option><option>Frequent</option><option>Constant</option></select>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:6px; font-weight:700;">3</td>
+      <td style="padding:6px;"><input type="text" style="width:100%;" placeholder="Third priority (e.g., structures, vehicles)" /></td>
+      <td style="padding:6px;">
+        <select style="width:100%;"><option>Drip line</option><option>1 X Ht</option><option>1.5 X Ht</option><option>&gt;1.5 X Ht</option></select>
+      </td>
+      <td style="padding:6px;">
+        <select style="width:100%;"><option>Rare</option><option>Occasional</option><option>Frequent</option><option>Constant</option></select>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- Site Conditions -->
+<div class="section">
+  <div class="section-header">
+    <h2>Site Conditions</h2>
+    <span class="source-tag tag-both">Satellite + On-site</span>
+  </div>
+  <div class="sat-prefill">
+    <div class="sat-label">Satellite Pre-fill Available</div>
+    <div style="font-size:0.85rem; color:#374151;">Site changes like grade change and site clearing can be detected from aerial imagery comparison. Hydrology changes may be partially detectable via moisture indices.</div>
+  </div>
+  <div class="form-row">
+    <label>Concerns:</label>
+    <input type="text" style="flex:1;" placeholder="Describe site concerns" />
+    <label style="min-width:auto;"><input type="checkbox" /> None</label>
+  </div>
+  <div class="form-row">
+    <label>Site changes:</label>
+    <div class="check-group">
+      <label><input type="checkbox" /> None</label>
+      <label><input type="checkbox" /> Grade change</label>
+      <label><input type="checkbox" /> Site clearing</label>
+      <label><input type="checkbox" /> Changed hydrology</label>
+      <label><input type="checkbox" /> Other</label>
+    </div>
+  </div>
+</div>
+
+<!-- Crown -->
+<div class="section">
+  <div class="section-header">
+    <h2>Crown</h2>
+    <span class="source-tag tag-satellite">Satellite Primary</span>
+  </div>
+  <div class="sat-prefill">
+    <div class="sat-label">Satellite Pre-fill — NDVI Analysis</div>
+    <div class="field-grid" style="margin-top:0.5rem;">
+      <div>
+        <label style="font-size:0.8rem; font-weight:600;">NDVI Score (current):</label>
+        <input type="number" step="0.01" min="-1" max="1" placeholder="0.00" id="ndviCurrent" style="width:80px;" onchange="updateFoliage()" />
+        <span style="font-size:0.75rem; color:var(--gray);">Range: -1 to 1</span>
+      </div>
+      <div>
+        <label style="font-size:0.8rem; font-weight:600;">NDVI Score (baseline, 2–3yr ago):</label>
+        <input type="number" step="0.01" min="-1" max="1" placeholder="0.00" id="ndviBaseline" style="width:80px;" onchange="updateFoliage()" />
+      </div>
+      <div>
+        <label style="font-size:0.8rem; font-weight:600;">NDVI Change:</label>
+        <span id="ndviChange" style="font-weight:700; font-size:0.95rem;">—</span>
+      </div>
+      <div>
+        <label style="font-size:0.8rem; font-weight:600;">Estimated Health from NDVI:</label>
+        <span id="ndviHealth" style="font-weight:700; font-size:0.95rem;">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <label>Foliage:</label>
+    <div class="check-group">
+      <label><input type="radio" name="foliage" value="dead" /> None (dead)</label>
+      <label><input type="radio" name="foliage" value="seasonal" /> None (seasonal)</label>
+      <label><input type="radio" name="foliage" value="present" checked /> Present:</label>
+    </div>
+  </div>
+  <div class="form-row" style="padding-left:170px;">
+    <label style="min-width:auto;">Normal</label><input type="number" id="folNormal" style="width:60px;" placeholder="%" />%
+    <label style="min-width:auto; margin-left:1rem;">Chlorotic</label><input type="number" id="folChlor" style="width:60px;" placeholder="%" />%
+    <label style="min-width:auto; margin-left:1rem;">Necrotic</label><input type="number" id="folNecr" style="width:60px;" placeholder="%" />%
+  </div>
+  <div class="form-row">
+    <label>Tree Health:</label>
+    <div class="check-group">
+      <label><input type="radio" name="health" value="dead" /> Dead</label>
+      <label><input type="radio" name="health" value="poor" /> Poor</label>
+      <label><input type="radio" name="health" value="fair" /> Fair</label>
+      <label><input type="radio" name="health" value="good" /> Good</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <label>Health concerns:</label>
+    <input type="text" style="flex:1;" placeholder="" />
+    <label style="min-width:auto;"><input type="checkbox" /> None</label>
+  </div>
+  <div class="form-row">
+    <label>Density:</label>
+    <div class="check-group">
+      <label><input type="radio" name="density" /> Sparse</label>
+      <label><input type="radio" name="density" /> Average</label>
+      <label><input type="radio" name="density" /> Dense</label>
+    </div>
+    <input type="text" placeholder="Vines/mistletoe/moss" style="flex:1;" />
+  </div>
+  <div class="form-row">
+    <label>Crown/trunk ratio:</label>
+    <div class="check-group">
+      <label><input type="radio" name="crownratio" /> Small</label>
+      <label><input type="radio" name="crownratio" /> Medium</label>
+      <label><input type="radio" name="crownratio" /> Large</label>
+    </div>
+    <div class="check-group" style="margin-left:1rem;">
+      <label><input type="checkbox" /> Unbalanced</label>
+      <label><input type="checkbox" /> Crown dieback</label>
+      <label><input type="checkbox" /> Excessive end weight</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <label>Wind Exposure:</label>
+    <div class="check-group">
+      <label><input type="radio" name="wind" /> Protected</label>
+      <label><input type="radio" name="wind" /> Partial</label>
+      <label><input type="radio" name="wind" /> Full</label>
+      <label><input type="checkbox" /> Wind funneling</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <label>Pruning history:</label>
+    <div class="check-group">
+      <label><input type="checkbox" /> Topped</label>
+      <label><input type="checkbox" /> Thinned</label>
+      <label><input type="checkbox" /> Lion tailed</label>
+      <label><input type="checkbox" /> Raised</label>
+      <label><input type="checkbox" /> Other</label>
+    </div>
+    <label style="min-width:auto; margin-left:1rem;">LCR:</label>
+    <input type="number" style="width:50px;" placeholder="%" />%
+  </div>
+</div>
+
+<!-- Branches -->
+<div class="section">
+  <div class="section-header">
+    <h2>Branches</h2>
+    <span class="source-tag tag-onsite">On-site Required</span>
+  </div>
+  <div class="form-row"><label><input type="checkbox" /> No concerns</label></div>
+  <div class="field-grid">
+    <div class="form-row"><label><input type="checkbox" /> Dead branches</label><input type="number" style="width:50px;" placeholder="%" />% overall &nbsp; Max dia: <input type="text" style="width:60px;" /></div>
+    <div class="form-row"><label><input type="checkbox" /> Broken/hanging</label># <input type="number" style="width:40px;" /> Max dia: <input type="text" style="width:60px;" /></div>
+    <div class="form-row"><label><input type="checkbox" /> Overextended</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Poor taper</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Weak attachments</label><input type="text" style="flex:1;" /></div>
+    <div class="form-row"><label><input type="checkbox" /> Previous failures</label><label style="min-width:auto;"><input type="checkbox" /> Similar present</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Excessive sprouts</label><label style="min-width:auto;"><input type="checkbox" /> Cracks</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Sapwood/heartwood decay</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Conks/mushrooms</label><input type="text" style="flex:1;" /></div>
+    <div class="form-row"><label><input type="checkbox" /> Cavity opening</label><input type="text" style="width:80px;" /></div>
+    <div class="form-row"><label>Response growth:</label><input type="text" style="flex:1;" /></div>
+  </div>
+</div>
+
+<!-- Trunk -->
+<div class="section">
+  <div class="section-header">
+    <h2>Trunk</h2>
+    <span class="source-tag tag-onsite">On-site Required</span>
+  </div>
+  <div class="form-row"><label><input type="checkbox" /> No concerns</label></div>
+  <div class="field-grid">
+    <div class="form-row"><label><input type="checkbox" /> Codominant stems</label># <input type="number" style="width:40px;" /> <label style="min-width:auto;"><input type="checkbox" /> Included bark</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Decay</label><label style="min-width:auto;"><input type="checkbox" /> Conks/mushrooms</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Cavity opening</label><input type="text" style="width:80px;" /></div>
+    <div class="form-row"><label><input type="checkbox" /> Poor taper</label><label style="min-width:auto;"><input type="checkbox" /> Lean</label><input type="number" style="width:40px;" />° <label style="min-width:auto;"><input type="checkbox" /> Corrected</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Dead/missing bark</label><label style="min-width:auto;"><input type="checkbox" /> Cracks</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Ooze</label><label style="min-width:auto;"><input type="checkbox" /> Lightning damage</label></div>
+  </div>
+</div>
+
+<!-- Root Collar, Roots, and Soil -->
+<div class="section">
+  <div class="section-header">
+    <h2>Root Collar, Roots, and Soil</h2>
+    <span class="source-tag tag-both">Satellite + On-site</span>
+  </div>
+  <div class="sat-prefill">
+    <div class="sat-label">Satellite Partial Pre-fill</div>
+    <div style="font-size:0.85rem;">Soil saturation and pavement/compaction can be partially assessed from satellite moisture indices and aerial imagery. Fill soil and grade changes detectable from multi-temporal comparison.</div>
+  </div>
+  <div class="form-row"><label><input type="checkbox" /> No concerns</label></div>
+  <div class="field-grid">
+    <div class="form-row"><label><input type="checkbox" /> Collar buried/not visible</label>Depth: <input type="text" style="width:60px;" /></div>
+    <div class="form-row"><label><input type="checkbox" /> Stem girdling</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Significant root damage/decay</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Conks/mushrooms</label><input type="text" style="width:80px;" /></div>
+    <div class="form-row"><label><input type="checkbox" /> Cut, distance from trunk:</label><input type="text" style="width:80px;" /></div>
+    <div class="form-row"><label><input type="checkbox" /> Root plate lifted</label></div>
+    <div class="form-row"><label><input type="checkbox" /> Fill soil</label><input type="text" style="width:80px;" /></div>
+  </div>
+  <div class="form-row" style="margin-top:0.5rem;">
+    <label>Soil conditions:</label>
+    <div class="check-group">
+      <label><input type="checkbox" /> Often saturated</label>
+      <label><input type="checkbox" /> Limited volume</label>
+      <label><input type="checkbox" /> Pavement/Compaction</label>
+    </div>
+  </div>
+</div>
+
+<!-- RISK CATEGORIZATION -->
+<div class="section">
+  <div class="section-header">
+    <h2>Risk Categorization &amp; Analysis</h2>
+    <span class="source-tag tag-auto">Auto-calculated</span>
+  </div>
+
+  <!-- Failure Assessment 1: Branch/Crown -->
+  <div class="failure-section">
+    <h4>Failure Assessment 1 — Branch / Crown</h4>
+    <div class="field-grid">
+      <div class="form-row">
+        <label>Tree Part:</label>
+        <select id="fa1-part"><option>Branches</option><option>Trunk</option><option>Root Collar</option><option>Roots</option><option>Soil</option></select>
+      </div>
+      <div class="form-row">
+        <label>Failure Type:</label>
+        <input type="text" id="fa1-type" placeholder="Dead, Hanging, Decay, Crack, etc." style="flex:1;" />
+      </div>
+      <div class="form-row">
+        <label>Target:</label>
+        <input type="text" id="fa1-target" placeholder="Description or #" style="flex:1;" />
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:0.75rem;">
+      <label>Likelihood of Failure:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa1-lof" value="improbable" onchange="calcRisk(1)" /> Improbable</label>
+        <label><input type="radio" name="fa1-lof" value="possible" onchange="calcRisk(1)" /> Possible</label>
+        <label><input type="radio" name="fa1-lof" value="probable" onchange="calcRisk(1)" /> Probable</label>
+        <label><input type="radio" name="fa1-lof" value="imminent" onchange="calcRisk(1)" /> Imminent</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Likelihood of Impact:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa1-loi" value="verylow" onchange="calcRisk(1)" /> Very Low</label>
+        <label><input type="radio" name="fa1-loi" value="low" onchange="calcRisk(1)" /> Low</label>
+        <label><input type="radio" name="fa1-loi" value="medium" onchange="calcRisk(1)" /> Medium</label>
+        <label><input type="radio" name="fa1-loi" value="high" onchange="calcRisk(1)" /> High</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Consequences:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa1-con" value="negligible" onchange="calcRisk(1)" /> Negligible</label>
+        <label><input type="radio" name="fa1-con" value="minor" onchange="calcRisk(1)" /> Minor</label>
+        <label><input type="radio" name="fa1-con" value="significant" onchange="calcRisk(1)" /> Significant</label>
+        <label><input type="radio" name="fa1-con" value="severe" onchange="calcRisk(1)" /> Severe</label>
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:0.5rem;">
+      <label>Matrix 1 Result:</label>
+      <span id="fa1-m1" style="font-weight:700;">—</span>
+      <label style="margin-left:2rem;">Risk Rating (Matrix 2):</label>
+      <span id="fa1-m2" style="font-weight:700; font-size:1.1rem;">—</span>
+    </div>
+  </div>
+
+  <!-- Failure Assessment 2: Trunk -->
+  <div class="failure-section">
+    <h4>Failure Assessment 2 — Trunk</h4>
+    <div class="field-grid">
+      <div class="form-row">
+        <label>Tree Part:</label>
+        <select id="fa2-part"><option>Trunk</option><option>Branches</option><option>Root Collar</option><option>Roots</option><option>Soil</option></select>
+      </div>
+      <div class="form-row">
+        <label>Failure Type:</label>
+        <input type="text" id="fa2-type" placeholder="Dead, Hanging, Decay, Crack, etc." style="flex:1;" />
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:0.75rem;">
+      <label>Likelihood of Failure:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa2-lof" value="improbable" onchange="calcRisk(2)" /> Improbable</label>
+        <label><input type="radio" name="fa2-lof" value="possible" onchange="calcRisk(2)" /> Possible</label>
+        <label><input type="radio" name="fa2-lof" value="probable" onchange="calcRisk(2)" /> Probable</label>
+        <label><input type="radio" name="fa2-lof" value="imminent" onchange="calcRisk(2)" /> Imminent</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Likelihood of Impact:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa2-loi" value="verylow" onchange="calcRisk(2)" /> Very Low</label>
+        <label><input type="radio" name="fa2-loi" value="low" onchange="calcRisk(2)" /> Low</label>
+        <label><input type="radio" name="fa2-loi" value="medium" onchange="calcRisk(2)" /> Medium</label>
+        <label><input type="radio" name="fa2-loi" value="high" onchange="calcRisk(2)" /> High</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Consequences:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa2-con" value="negligible" onchange="calcRisk(2)" /> Negligible</label>
+        <label><input type="radio" name="fa2-con" value="minor" onchange="calcRisk(2)" /> Minor</label>
+        <label><input type="radio" name="fa2-con" value="significant" onchange="calcRisk(2)" /> Significant</label>
+        <label><input type="radio" name="fa2-con" value="severe" onchange="calcRisk(2)" /> Severe</label>
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:0.5rem;">
+      <label>Matrix 1 Result:</label>
+      <span id="fa2-m1" style="font-weight:700;">—</span>
+      <label style="margin-left:2rem;">Risk Rating (Matrix 2):</label>
+      <span id="fa2-m2" style="font-weight:700; font-size:1.1rem;">—</span>
+    </div>
+  </div>
+
+  <!-- Failure Assessment 3: Root/Soil -->
+  <div class="failure-section">
+    <h4>Failure Assessment 3 — Root / Soil</h4>
+    <div class="field-grid">
+      <div class="form-row">
+        <label>Tree Part:</label>
+        <select id="fa3-part"><option>Roots</option><option>Soil</option><option>Root Collar</option><option>Trunk</option><option>Branches</option></select>
+      </div>
+      <div class="form-row">
+        <label>Failure Type:</label>
+        <input type="text" id="fa3-type" placeholder="Dead, Hanging, Decay, Crack, etc." style="flex:1;" />
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:0.75rem;">
+      <label>Likelihood of Failure:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa3-lof" value="improbable" onchange="calcRisk(3)" /> Improbable</label>
+        <label><input type="radio" name="fa3-lof" value="possible" onchange="calcRisk(3)" /> Possible</label>
+        <label><input type="radio" name="fa3-lof" value="probable" onchange="calcRisk(3)" /> Probable</label>
+        <label><input type="radio" name="fa3-lof" value="imminent" onchange="calcRisk(3)" /> Imminent</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Likelihood of Impact:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa3-loi" value="verylow" onchange="calcRisk(3)" /> Very Low</label>
+        <label><input type="radio" name="fa3-loi" value="low" onchange="calcRisk(3)" /> Low</label>
+        <label><input type="radio" name="fa3-loi" value="medium" onchange="calcRisk(3)" /> Medium</label>
+        <label><input type="radio" name="fa3-loi" value="high" onchange="calcRisk(3)" /> High</label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Consequences:</label>
+      <div class="check-group">
+        <label><input type="radio" name="fa3-con" value="negligible" onchange="calcRisk(3)" /> Negligible</label>
+        <label><input type="radio" name="fa3-con" value="minor" onchange="calcRisk(3)" /> Minor</label>
+        <label><input type="radio" name="fa3-con" value="significant" onchange="calcRisk(3)" /> Significant</label>
+        <label><input type="radio" name="fa3-con" value="severe" onchange="calcRisk(3)" /> Severe</label>
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:0.5rem;">
+      <label>Matrix 1 Result:</label>
+      <span id="fa3-m1" style="font-weight:700;">—</span>
+      <label style="margin-left:2rem;">Risk Rating (Matrix 2):</label>
+      <span id="fa3-m2" style="font-weight:700; font-size:1.1rem;">—</span>
+    </div>
+  </div>
+
+  <!-- Overall Risk Rating -->
+  <div id="overallRisk" class="risk-result risk-low-bg" style="display:none;">
+    <h3>Overall Tree Risk Rating</h3>
+    <div class="risk-value" id="overallRiskValue">—</div>
+    <div style="font-size:0.85rem; margin-top:0.5rem; color:var(--gray);" id="overallRiskExplain"></div>
+  </div>
+</div>
+
+<!-- Mitigation -->
+<div class="section">
+  <div class="section-header">
+    <h2>Mitigation Options</h2>
+    <span class="source-tag tag-onsite">On-site</span>
+  </div>
+  <div class="form-row"><label>Option 1:</label><input type="text" style="flex:1;" placeholder="Mitigation option for highest risk(s)" /> Residual Risk: <select><option>Low</option><option>Moderate</option><option>High</option><option>Extreme</option></select></div>
+  <div class="form-row"><label>Option 2:</label><input type="text" style="flex:1;" /> Residual Risk: <select><option>Low</option><option>Moderate</option><option>High</option><option>Extreme</option></select></div>
+  <div class="form-row"><label>Option 3:</label><input type="text" style="flex:1;" /> Residual Risk: <select><option>Low</option><option>Moderate</option><option>High</option><option>Extreme</option></select></div>
+</div>
+
+<!-- Notes -->
+<div class="section">
+  <div class="section-header"><h2>Notes &amp; Descriptions</h2></div>
+  <textarea rows="4" placeholder="Additional notes, explanations, descriptions..."></textarea>
+</div>
+
+<!-- Inspection Limitations -->
+<div class="section">
+  <div class="section-header"><h2>Inspection Limitations &amp; Status</h2></div>
+  <div class="form-row">
+    <label>Limitations:</label>
+    <div class="check-group">
+      <label><input type="checkbox" /> None</label>
+      <label><input type="checkbox" /> Visibility</label>
+      <label><input type="checkbox" /> Access</label>
+      <label><input type="checkbox" /> Vines</label>
+      <label><input type="checkbox" /> Root collar buried</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <label>Data status:</label>
+    <div class="check-group">
+      <label><input type="radio" name="datastatus" /> Final</label>
+      <label><input type="radio" name="datastatus" checked /> Preliminary — Advanced Assessment recommended</label>
+    </div>
+  </div>
+  <div class="form-row">
+    <label>Reassessment in:</label>
+    <input type="text" style="width:120px;" placeholder="12 months" />
+  </div>
+</div>
+
+<div class="actions no-print">
+  <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+  <button class="btn btn-outline" onclick="calcAllRisks()">Recalculate All Risks</button>
+</div>
+
+</div>
+
+<!-- ==================== TAB 2: FIELD MAPPING ==================== -->
+<div class="tab-content" id="tab-mapping">
+
+<div class="section">
+  <h2 style="margin-top:0;">Satellite Detection Capability by ISA Form Field</h2>
+  <p style="color:var(--gray); margin-bottom:1rem;">This table maps every field on the ISA Basic Tree Risk Assessment Form to its satellite/aerial detection capability. Fields marked "Satellite" can be pre-populated before Jackson visits the site.</p>
+
+  <table class="mapping-table">
+    <tr><th>ISA Form Field</th><th>Source</th><th>Satellite Method</th><th>Confidence</th></tr>
+    <tr><td colspan="4" style="background:var(--green-dark); color:white; font-weight:700;">Crown Section</td></tr>
+    <tr><td>Foliage: Normal / Chlorotic / Necrotic %</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>NDVI value mapping. NDVI 0.6–0.9 = Normal. NDVI 0.3–0.6 = Chlorotic range. NDVI &lt;0.3 = Necrotic/dead.</td><td>High</td></tr>
+    <tr><td>Tree Health: Dead / Poor / Fair / Good</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Derived from NDVI + temporal trend. Declining NDVI over 2+ years = Poor/Fair.</td><td>Medium-High</td></tr>
+    <tr><td>Density: Sparse / Average / Dense</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Canopy cover percentage from NAIP classification. &lt;30% = Sparse, 30–70% = Average, &gt;70% = Dense.</td><td>Medium</td></tr>
+    <tr><td>Crown dieback</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Detectable as NDVI decline in outer crown area. High-res NAIP can show gap patterns.</td><td>Medium</td></tr>
+    <tr><td>Relative size crown/trunk</td><td><span class="legend-badge lb-onsite">On-site</span></td><td>Not detectable — requires ground-level visual.</td><td>—</td></tr>
+    <tr><td>Wind Exposure</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Derivable from canopy height model + surrounding structures. Open exposure = Full, surrounded = Protected.</td><td>Medium</td></tr>
+    <tr><td>Pruning history</td><td><span class="legend-badge lb-onsite">On-site</span></td><td>Not detectable from satellite.</td><td>—</td></tr>
+    <tr><td>Live Crown Ratio</td><td><span class="legend-badge lb-onsite">On-site</span></td><td>Requires side view — satellite is top-down only.</td><td>—</td></tr>
+
+    <tr><td colspan="4" style="background:var(--green-dark); color:white; font-weight:700;">Site Conditions</td></tr>
+    <tr><td>Grade change</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Detectable from multi-temporal DEM comparison or aerial imagery change detection.</td><td>Medium</td></tr>
+    <tr><td>Site clearing</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Clearly detectable — large NDVI drop in surrounding area.</td><td>High</td></tr>
+    <tr><td>Changed hydrology</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Partially detectable via moisture indices (NDWI) and soil saturation mapping.</td><td>Low-Medium</td></tr>
+
+    <tr><td colspan="4" style="background:var(--green-dark); color:white; font-weight:700;">Branches (all On-site)</td></tr>
+    <tr><td>Dead branches, broken/hanging, poor taper, weak attachments, decay, cavities, cracks, conks/mushrooms</td><td><span class="legend-badge lb-onsite">On-site</span></td><td>None — requires close visual inspection, below canopy resolution of any satellite.</td><td>—</td></tr>
+
+    <tr><td colspan="4" style="background:var(--green-dark); color:white; font-weight:700;">Trunk (all On-site)</td></tr>
+    <tr><td>Codominant stems, decay, cavities, lean, cracks, bark condition, ooze, lightning damage</td><td><span class="legend-badge lb-onsite">On-site</span></td><td>None — requires ground-level inspection.</td><td>—</td></tr>
+
+    <tr><td colspan="4" style="background:var(--green-dark); color:white; font-weight:700;">Root Collar, Roots, and Soil</td></tr>
+    <tr><td>Soil: Often saturated</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>NDWI moisture index + seasonal wetness patterns from Sentinel-2.</td><td>Medium</td></tr>
+    <tr><td>Pavement / Compaction</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Visible from NAIP aerial imagery — impervious surface around root zone.</td><td>High</td></tr>
+    <tr><td>Fill soil, root damage, girdling, decay, conks</td><td><span class="legend-badge lb-onsite">On-site</span></td><td>Requires excavation or close visual inspection.</td><td>—</td></tr>
+
+    <tr><td colspan="4" style="background:var(--green-dark); color:white; font-weight:700;">Risk Categorization (Page 2)</td></tr>
+    <tr><td>Likelihood of Failure</td><td><span class="legend-badge lb-onsite">On-site</span></td><td>Requires on-site structural assessment.</td><td>—</td></tr>
+    <tr><td>Likelihood of Impact</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Target proximity estimable from aerial imagery — buildings, walkways, parking lots within fall zone.</td><td>Medium</td></tr>
+    <tr><td>Consequences</td><td><span class="legend-badge lb-sat">Satellite</span></td><td>Assessable from property classification + target identification from aerial.</td><td>Medium</td></tr>
+  </table>
+
+  <div class="verdict-box" style="margin-top:1.5rem;">
+    <strong>Summary:</strong> Of the ~35 data fields on the ISA form, satellite/aerial imagery can pre-populate approximately <strong>12 fields</strong> (34%) with medium-to-high confidence. The most valuable pre-fills are the Crown health indicators (foliage health, density, dieback) because they're the primary reason a property gets flagged as a lead in the first place.
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== TAB 3: RISK MATRICES ==================== -->
+<div class="tab-content" id="tab-matrices">
+
+<div class="section">
+  <h2 style="margin-top:0;">ISA Risk Assessment Matrices</h2>
+  <p style="color:var(--gray); margin-bottom:1rem;">These are the exact matrices from the ISA Basic Tree Risk Assessment form. The form auto-calculates using these when you select Likelihood of Failure, Likelihood of Impact, and Consequences.</p>
+
+  <div class="matrix-container">
+    <div class="matrix-card">
+      <h3>Matrix 1: Likelihood of Failure &amp; Impact</h3>
+      <p style="font-size:0.8rem; color:var(--gray); margin-bottom:0.5rem;">Combines Likelihood of Failure with Likelihood of Impact</p>
+      <table class="matrix">
+        <tr><th>Likelihood of Failure</th><th>Very Low</th><th>Low</th><th>Medium</th><th>High</th></tr>
+        <tr><td style="font-weight:700; background:#f3f4f6;">Imminent</td><td class="risk-low">Unlikely</td><td class="risk-mod">Somewhat likely</td><td class="risk-high">Likely</td><td class="risk-extreme">Very likely</td></tr>
+        <tr><td style="font-weight:700; background:#f3f4f6;">Probable</td><td class="risk-low">Unlikely</td><td class="risk-low">Unlikely</td><td class="risk-mod">Somewhat likely</td><td class="risk-high">Likely</td></tr>
+        <tr><td style="font-weight:700; background:#f3f4f6;">Possible</td><td class="risk-low">Unlikely</td><td class="risk-low">Unlikely</td><td class="risk-low">Unlikely</td><td class="risk-mod">Somewhat likely</td></tr>
+        <tr><td style="font-weight:700; background:#f3f4f6;">Improbable</td><td class="risk-low">Unlikely</td><td class="risk-low">Unlikely</td><td class="risk-low">Unlikely</td><td class="risk-low">Unlikely</td></tr>
+      </table>
+    </div>
+
+    <div class="matrix-card">
+      <h3>Matrix 2: Risk Rating</h3>
+      <p style="font-size:0.8rem; color:var(--gray); margin-bottom:0.5rem;">Combines Matrix 1 result with Consequences</p>
+      <table class="matrix">
+        <tr><th>Failure &amp; Impact</th><th>Negligible</th><th>Minor</th><th>Significant</th><th>Severe</th></tr>
+        <tr><td style="font-weight:700; background:#f3f4f6;">Very likely</td><td class="risk-low">Low</td><td class="risk-mod">Moderate</td><td class="risk-high">High</td><td class="risk-extreme">Extreme</td></tr>
+        <tr><td style="font-weight:700; background:#f3f4f6;">Likely</td><td class="risk-low">Low</td><td class="risk-mod">Moderate</td><td class="risk-high">High</td><td class="risk-high">High</td></tr>
+        <tr><td style="font-weight:700; background:#f3f4f6;">Somewhat likely</td><td class="risk-low">Low</td><td class="risk-low">Low</td><td class="risk-mod">Moderate</td><td class="risk-mod">Moderate</td></tr>
+        <tr><td style="font-weight:700; background:#f3f4f6;">Unlikely</td><td class="risk-low">Low</td><td class="risk-low">Low</td><td class="risk-low">Low</td><td class="risk-low">Low</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== TAB 4: LEAD SCORE ==================== -->
+<div class="tab-content" id="tab-leadscore">
+
+<!-- Lead-specific inputs -->
+<div class="lead-inputs">
+  <h3>Property & Lead Information</h3>
+  <p style="font-size:0.82rem; color:var(--gray); margin-bottom:1rem;">These fields feed the SavATree lead scoring model. The NDVI and risk data auto-pull from the Assessment tab.</p>
+  <div class="lead-input-grid">
+    <div>
+      <label>Property Classification</label>
+      <select id="ls-proptype" onchange="calcLeadScore()">
+        <option value="">— Select —</option>
+        <option value="hoa">HOA / Condo Community</option>
+        <option value="commercial">Commercial Property</option>
+        <option value="municipal">Municipal / Institutional</option>
+        <option value="multifamily">Multifamily Rental</option>
+        <option value="residential-high">High-value Residential ($750K+)</option>
+        <option value="residential">Standard Residential</option>
+      </select>
+    </div>
+    <div>
+      <label>Estimated Property Value</label>
+      <select id="ls-propvalue" onchange="calcLeadScore()">
+        <option value="">— Select —</option>
+        <option value="2m">$2M+</option>
+        <option value="1m">$1M–$2M</option>
+        <option value="750k">$750K–$1M</option>
+        <option value="500k">$500K–$750K</option>
+        <option value="300k">$300K–$500K</option>
+        <option value="under300k">Under $300K</option>
+      </select>
+    </div>
+    <div>
+      <label>Number of Trees on Property</label>
+      <select id="ls-treecount" onchange="calcLeadScore()">
+        <option value="">— Select —</option>
+        <option value="50plus">50+</option>
+        <option value="20-50">20–50</option>
+        <option value="10-20">10–20</option>
+        <option value="5-10">5–10</option>
+        <option value="under5">Under 5</option>
+      </select>
+    </div>
+    <div>
+      <label>Proximity to High-Value Targets</label>
+      <select id="ls-proximity" onchange="calcLeadScore()">
+        <option value="">— Select —</option>
+        <option value="direct">Over structure / direct contact</option>
+        <option value="drip">Within drip line of structure</option>
+        <option value="1x">Within 1x tree height</option>
+        <option value="15x">Within 1.5x tree height</option>
+        <option value="none">No high-value targets nearby</option>
+      </select>
+    </div>
+    <div>
+      <label>Known Urgency Drivers</label>
+      <select id="ls-urgency" onchange="calcLeadScore()">
+        <option value="">— Select —</option>
+        <option value="immediate">Storm damage / imminent hazard</option>
+        <option value="insurance">Insurance requirement / liability</option>
+        <option value="legal">HOA/Board legal obligation</option>
+        <option value="complaint">Tenant/neighbor complaint</option>
+        <option value="preventive">Preventive / no immediate urgency</option>
+      </select>
+    </div>
+    <div>
+      <label>Decision-Maker Identified?</label>
+      <select id="ls-dm" onchange="calcLeadScore()">
+        <option value="">— Select —</option>
+        <option value="yes-contact">Yes — have name + contact info</option>
+        <option value="yes-name">Yes — name only</option>
+        <option value="role">Know the role (e.g., Property Manager)</option>
+        <option value="no">No — need to find</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Score Hero -->
+<div id="leadScoreHero" class="lead-score-hero" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); color: #6b7280;">
+  <div class="tier-badge" id="ls-tier">—</div>
+  <div class="score-num" id="ls-total">Score: —/100</div>
+  <div class="tier-desc" id="ls-tier-desc">Fill in the fields above and assessment data to calculate lead score</div>
+</div>
+
+<!-- Score Breakdown -->
+<div class="score-breakdown">
+  <div class="score-factor" id="sf-canopy">
+    <div class="factor-header">
+      <span class="factor-name">Canopy Decline Severity</span>
+      <span class="factor-weight">30% weight</span>
+    </div>
+    <div class="factor-score" id="sf-canopy-score" style="color:var(--gray);">—</div>
+    <div class="factor-detail" id="sf-canopy-detail">Auto-calculated from NDVI change on Assessment tab</div>
+    <div class="factor-bar"><div class="factor-bar-fill" id="sf-canopy-bar" style="width:0%; background:var(--green-light);"></div></div>
+  </div>
+  <div class="score-factor" id="sf-propclass">
+    <div class="factor-header">
+      <span class="factor-name">Property Classification</span>
+      <span class="factor-weight">30% weight</span>
+    </div>
+    <div class="factor-score" id="sf-propclass-score" style="color:var(--gray);">—</div>
+    <div class="factor-detail" id="sf-propclass-detail">Select property type above</div>
+    <div class="factor-bar"><div class="factor-bar-fill" id="sf-propclass-bar" style="width:0%; background:var(--blue);"></div></div>
+  </div>
+  <div class="score-factor" id="sf-liability">
+    <div class="factor-header">
+      <span class="factor-name">Liability Exposure</span>
+      <span class="factor-weight">25% weight</span>
+    </div>
+    <div class="factor-score" id="sf-liability-score" style="color:var(--gray);">—</div>
+    <div class="factor-detail" id="sf-liability-detail">Based on risk rating, proximity, and urgency</div>
+    <div class="factor-bar"><div class="factor-bar-fill" id="sf-liability-bar" style="width:0%; background:var(--amber);"></div></div>
+  </div>
+  <div class="score-factor" id="sf-value">
+    <div class="factor-header">
+      <span class="factor-name">Property Value & Scale</span>
+      <span class="factor-weight">15% weight</span>
+    </div>
+    <div class="factor-score" id="sf-value-score" style="color:var(--gray);">—</div>
+    <div class="factor-detail" id="sf-value-detail">Based on property value and tree count</div>
+    <div class="factor-bar"><div class="factor-bar-fill" id="sf-value-bar" style="width:0%; background:var(--purple);"></div></div>
+  </div>
+</div>
+
+<!-- Urgency Drivers -->
+<div class="section" id="urgencySection" style="display:none;">
+  <div class="section-header"><h2>Urgency Drivers Detected</h2></div>
+  <div class="urgency-drivers" id="urgencyChips"></div>
+</div>
+
+<!-- Outreach Recommendation -->
+<div class="outreach-rec" id="outreachRec" style="display:none;">
+  <h3>Outreach Recommendation</h3>
+  <div id="outreachPriority" style="font-weight:700; margin-bottom:0.5rem;"></div>
+  <div class="pitch-line" id="outreachPitch"></div>
+  <div class="action-items" id="outreachActions"></div>
+</div>
+
+<!-- Contract Estimate -->
+<div class="section" id="contractSection" style="display:none;">
+  <div class="section-header"><h2>Estimated Contract Potential</h2></div>
+  <div style="display:flex; gap:2rem; flex-wrap:wrap; align-items:center;">
+    <div>
+      <div style="font-size:0.8rem; color:var(--gray); text-transform:uppercase; letter-spacing:0.03em;">Initial Service</div>
+      <div style="font-size:1.5rem; font-weight:800; color:var(--green-dark);" id="contractInitial">—</div>
+    </div>
+    <div>
+      <div style="font-size:0.8rem; color:var(--gray); text-transform:uppercase; letter-spacing:0.03em;">Annual Maintenance</div>
+      <div style="font-size:1.5rem; font-weight:800; color:var(--green-mid);" id="contractAnnual">—</div>
+    </div>
+    <div>
+      <div style="font-size:0.8rem; color:var(--gray); text-transform:uppercase; letter-spacing:0.03em;">3-Year Lifetime Value</div>
+      <div style="font-size:1.5rem; font-weight:800; color:var(--blue);" id="contractLTV">—</div>
+    </div>
+  </div>
+</div>
+
+<div class="actions no-print">
+  <button class="btn btn-primary" onclick="calcLeadScore()">Recalculate Lead Score</button>
+  <button class="btn btn-outline" onclick="exportLeadSummary()">Copy Lead Summary</button>
+</div>
+
+</div>
+
+</div><!-- /container -->
+
+<script>
+// Set today's date
+document.getElementById('assessDate').value = new Date().toLocaleDateString('en-US');
+
+// Tab switching
+function switchTab(tabName) {
+  const tabMap = { 'assessment': 'assessment', 'mapping': 'mapping', 'matrices': 'matrices', 'leadscore': 'lead score' };
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.textContent.toLowerCase().includes(tabMap[tabName]));
+  });
+  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  if (tabName === 'leadscore') calcLeadScore();
+}
+
+// NDVI → Foliage estimation
+function updateFoliage() {
+  const current = parseFloat(document.getElementById('ndviCurrent').value);
+  const baseline = parseFloat(document.getElementById('ndviBaseline').value);
+  const changeEl = document.getElementById('ndviChange');
+  const healthEl = document.getElementById('ndviHealth');
+
+  if (!isNaN(current) && !isNaN(baseline)) {
+    const change = ((current - baseline) / baseline * 100).toFixed(1);
+    const absChange = current - baseline;
+    changeEl.textContent = (change > 0 ? '+' : '') + change + '%';
+    changeEl.style.color = absChange >= 0 ? '#059669' : '#dc2626';
+
+    // Health estimation
+    if (current >= 0.7) {
+      healthEl.textContent = 'Good';
+      healthEl.style.color = '#059669';
+    } else if (current >= 0.5) {
+      healthEl.textContent = 'Fair';
+      healthEl.style.color = '#d97706';
+    } else if (current >= 0.3) {
+      healthEl.textContent = 'Poor';
+      healthEl.style.color = '#ea580c';
+    } else {
+      healthEl.textContent = 'Dead / Severely Stressed';
+      healthEl.style.color = '#dc2626';
+    }
+  }
+}
+
+// ISA Matrix 1: Likelihood of Failure × Likelihood of Impact
+const MATRIX1 = {
+  'imminent':   { 'verylow': 'unlikely', 'low': 'somewhat', 'medium': 'likely', 'high': 'verylikely' },
+  'probable':   { 'verylow': 'unlikely', 'low': 'unlikely', 'medium': 'somewhat', 'high': 'likely' },
+  'possible':   { 'verylow': 'unlikely', 'low': 'unlikely', 'medium': 'unlikely', 'high': 'somewhat' },
+  'improbable': { 'verylow': 'unlikely', 'low': 'unlikely', 'medium': 'unlikely', 'high': 'unlikely' }
+};
+
+// ISA Matrix 2: Matrix 1 Result × Consequences
+const MATRIX2 = {
+  'verylikely': { 'negligible': 'Low', 'minor': 'Moderate', 'significant': 'High', 'severe': 'Extreme' },
+  'likely':     { 'negligible': 'Low', 'minor': 'Moderate', 'significant': 'High', 'severe': 'High' },
+  'somewhat':   { 'negligible': 'Low', 'minor': 'Low', 'significant': 'Moderate', 'severe': 'Moderate' },
+  'unlikely':   { 'negligible': 'Low', 'minor': 'Low', 'significant': 'Low', 'severe': 'Low' }
+};
+
+const M1_LABELS = { 'unlikely': 'Unlikely', 'somewhat': 'Somewhat Likely', 'likely': 'Likely', 'verylikely': 'Very Likely' };
+const RISK_COLORS = { 'Low': '#059669', 'Moderate': '#d97706', 'High': '#ea580c', 'Extreme': '#dc2626' };
+
+function getRadioVal(name) {
+  const el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : null;
+}
+
+function calcRisk(n) {
+  const lof = getRadioVal('fa' + n + '-lof');
+  const loi = getRadioVal('fa' + n + '-loi');
+  const con = getRadioVal('fa' + n + '-con');
+  const m1El = document.getElementById('fa' + n + '-m1');
+  const m2El = document.getElementById('fa' + n + '-m2');
+
+  if (lof && loi) {
+    const m1 = MATRIX1[lof][loi];
+    m1El.textContent = M1_LABELS[m1];
+    m1El.style.color = RISK_COLORS[MATRIX2[m1]['severe']] || '#374151';
+
+    if (con) {
+      const risk = MATRIX2[m1][con];
+      m2El.textContent = risk;
+      m2El.style.color = RISK_COLORS[risk];
+      updateOverallRisk();
+    }
+  }
+}
+
+function calcAllRisks() {
+  [1, 2, 3].forEach(n => calcRisk(n));
+}
+
+function updateOverallRisk() {
+  const ratings = [];
+  [1, 2, 3].forEach(n => {
+    const el = document.getElementById('fa' + n + '-m2');
+    if (el.textContent !== '—') ratings.push(el.textContent);
+  });
+
+  if (ratings.length === 0) return;
+
+  const order = ['Low', 'Moderate', 'High', 'Extreme'];
+  const highest = ratings.reduce((max, r) => order.indexOf(r) > order.indexOf(max) ? r : max, 'Low');
+
+  const container = document.getElementById('overallRisk');
+  const valueEl = document.getElementById('overallRiskValue');
+  const explainEl = document.getElementById('overallRiskExplain');
+
+  container.style.display = 'block';
+  container.className = 'risk-result risk-' + highest.toLowerCase() + '-bg';
+  if (highest === 'Moderate') container.className = 'risk-result risk-mod-bg';
+  valueEl.textContent = highest;
+  valueEl.style.color = RISK_COLORS[highest];
+
+  const explanations = {
+    'Low': 'Low risk — routine monitoring recommended. Reassess in 12–24 months.',
+    'Moderate': 'Moderate risk — mitigation recommended within 6–12 months. Document and monitor.',
+    'High': 'High risk — mitigation should be prioritized. Action recommended within 1–6 months.',
+    'Extreme': 'Extreme risk — immediate action required. Restrict access to target zone until mitigated.'
+  };
+  explainEl.textContent = explanations[highest];
+}
+
+// ==================== LEAD SCORING ENGINE ====================
+
+function calcLeadScore() {
+  let canopyScore = 0, propScore = 0, liabilityScore = 0, valueScore = 0;
+  let canopyDetail = '', propDetail = '', liabilityDetail = '', valueDetail = '';
+
+  // 1. CANOPY DECLINE SEVERITY (30%) — from NDVI data on Assessment tab
+  const ndviCur = parseFloat(document.getElementById('ndviCurrent').value);
+  const ndviBas = parseFloat(document.getElementById('ndviBaseline').value);
+  if (!isNaN(ndviCur) && !isNaN(ndviBas) && ndviBas !== 0) {
+    const pctChange = ((ndviCur - ndviBas) / ndviBas) * 100;
+    if (pctChange <= -30) { canopyScore = 10; canopyDetail = 'Severe decline (' + pctChange.toFixed(1) + '%) — critical lead'; }
+    else if (pctChange <= -20) { canopyScore = 8; canopyDetail = 'Major decline (' + pctChange.toFixed(1) + '%) — strong lead'; }
+    else if (pctChange <= -15) { canopyScore = 7; canopyDetail = 'Significant decline (' + pctChange.toFixed(1) + '%)'; }
+    else if (pctChange <= -10) { canopyScore = 5; canopyDetail = 'Moderate decline (' + pctChange.toFixed(1) + '%)'; }
+    else if (pctChange <= -5) { canopyScore = 3; canopyDetail = 'Mild decline (' + pctChange.toFixed(1) + '%)'; }
+    else if (pctChange <= 0) { canopyScore = 1; canopyDetail = 'Minimal change (' + pctChange.toFixed(1) + '%)'; }
+    else { canopyScore = 0; canopyDetail = 'NDVI improving (+' + pctChange.toFixed(1) + '%) — healthy'; }
+  } else if (!isNaN(ndviCur)) {
+    // Fallback: absolute NDVI only
+    if (ndviCur < 0.3) { canopyScore = 9; canopyDetail = 'NDVI ' + ndviCur.toFixed(2) + ' — severely stressed/dead'; }
+    else if (ndviCur < 0.5) { canopyScore = 6; canopyDetail = 'NDVI ' + ndviCur.toFixed(2) + ' — poor health'; }
+    else if (ndviCur < 0.7) { canopyScore = 3; canopyDetail = 'NDVI ' + ndviCur.toFixed(2) + ' — fair health'; }
+    else { canopyScore = 1; canopyDetail = 'NDVI ' + ndviCur.toFixed(2) + ' — healthy canopy'; }
+  } else {
+    // Check tree health radio from assessment
+    const health = getRadioVal('health');
+    if (health === 'dead') { canopyScore = 10; canopyDetail = 'Tree marked dead on assessment'; }
+    else if (health === 'poor') { canopyScore = 7; canopyDetail = 'Poor health noted on assessment'; }
+    else if (health === 'fair') { canopyScore = 4; canopyDetail = 'Fair health noted on assessment'; }
+    else if (health === 'good') { canopyScore = 1; canopyDetail = 'Good health noted on assessment'; }
+    else { canopyDetail = 'No NDVI or health data entered'; }
+  }
+
+  // 2. PROPERTY CLASSIFICATION (30%)
+  const propType = document.getElementById('ls-proptype').value;
+  const propMap = {
+    'hoa': { score: 10, label: 'HOA/Condo — highest value target (S-Tier)', contract: 'recurring' },
+    'commercial': { score: 9, label: 'Commercial — strong liability + budget (S-Tier)', contract: 'recurring' },
+    'municipal': { score: 8, label: 'Municipal/Institutional — budget cycle, public safety (A-Tier)', contract: 'recurring' },
+    'multifamily': { score: 8, label: 'Multifamily Rental — tenant safety, liability (A-Tier)', contract: 'recurring' },
+    'residential-high': { score: 5, label: 'High-value Residential — curb appeal + insurance (B-Tier)', contract: 'project' },
+    'residential': { score: 3, label: 'Standard Residential — one-time service likely (C-Tier)', contract: 'project' }
+  };
+  if (propType && propMap[propType]) {
+    propScore = propMap[propType].score;
+    propDetail = propMap[propType].label;
+  } else { propDetail = 'Select property type'; }
+
+  // 3. LIABILITY EXPOSURE (25%) — from risk rating + proximity + urgency
+  let liabPoints = 0;
+  // From overall risk rating
+  const riskText = document.getElementById('overallRiskValue')?.textContent;
+  if (riskText === 'Extreme') liabPoints += 4;
+  else if (riskText === 'High') liabPoints += 3;
+  else if (riskText === 'Moderate') liabPoints += 2;
+  else if (riskText === 'Low') liabPoints += 1;
+
+  // From proximity
+  const prox = document.getElementById('ls-proximity').value;
+  if (prox === 'direct') liabPoints += 3;
+  else if (prox === 'drip') liabPoints += 2.5;
+  else if (prox === '1x') liabPoints += 1.5;
+  else if (prox === '15x') liabPoints += 0.5;
+
+  // From urgency
+  const urg = document.getElementById('ls-urgency').value;
+  if (urg === 'immediate') liabPoints += 3;
+  else if (urg === 'insurance') liabPoints += 2.5;
+  else if (urg === 'legal') liabPoints += 2;
+  else if (urg === 'complaint') liabPoints += 1.5;
+  else if (urg === 'preventive') liabPoints += 0.5;
+
+  liabilityScore = Math.min(10, Math.round(liabPoints));
+  if (liabPoints > 0) {
+    const urgLabels = { 'immediate': 'Storm/Hazard', 'insurance': 'Insurance', 'legal': 'Legal obligation', 'complaint': 'Complaint', 'preventive': 'Preventive' };
+    liabilityDetail = 'Risk: ' + (riskText || 'N/A') + ' | Proximity: ' + (prox || 'N/A') + ' | Driver: ' + (urgLabels[urg] || 'N/A');
+  } else { liabilityDetail = 'Complete risk assessment and select proximity/urgency'; }
+
+  // 4. PROPERTY VALUE & SCALE (15%)
+  let valPoints = 0;
+  const propVal = document.getElementById('ls-propvalue').value;
+  const treeCount = document.getElementById('ls-treecount').value;
+  const valMap = { '2m': 5, '1m': 4, '750k': 3, '500k': 2, '300k': 1, 'under300k': 0.5 };
+  const treeMap = { '50plus': 5, '20-50': 4, '10-20': 3, '5-10': 2, 'under5': 1 };
+  if (propVal) valPoints += (valMap[propVal] || 0);
+  if (treeCount) valPoints += (treeMap[treeCount] || 0);
+  valueScore = Math.min(10, Math.round(valPoints));
+  if (valPoints > 0) {
+    valueDetail = 'Value: ' + (propVal || 'N/A') + ' | Trees: ' + (treeCount || 'N/A');
+  } else { valueDetail = 'Select property value and tree count'; }
+
+  // WEIGHTED TOTAL
+  const weighted = (canopyScore * 0.30 + propScore * 0.30 + liabilityScore * 0.25 + valueScore * 0.15) * 10;
+  const totalScore = Math.round(weighted);
+
+  // Update UI — factor cards
+  updateFactor('canopy', canopyScore, canopyDetail, 'var(--green-light)', canopyScore > 0);
+  updateFactor('propclass', propScore, propDetail, 'var(--blue)', propScore > 0);
+  updateFactor('liability', liabilityScore, liabilityDetail, 'var(--amber)', liabilityScore > 0);
+  updateFactor('value', valueScore, valueDetail, 'var(--purple)', valueScore > 0);
+
+  // Update hero
+  const hero = document.getElementById('leadScoreHero');
+  const tierEl = document.getElementById('ls-tier');
+  const totalEl = document.getElementById('ls-total');
+  const descEl = document.getElementById('ls-tier-desc');
+
+  totalEl.textContent = 'Score: ' + totalScore + '/100';
+
+  let tier, tierColor, tierBg, tierDesc;
+  if (totalScore >= 75) {
+    tier = 'S-TIER'; tierBg = 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)'; tierColor = '#92400e';
+    tierDesc = 'Priority lead — immediate outreach recommended. High conversion probability.';
+  } else if (totalScore >= 55) {
+    tier = 'A-TIER'; tierBg = 'linear-gradient(135deg, #d8f3dc 0%, #b7e4c7 100%)'; tierColor = '#1a3a2a';
+    tierDesc = 'Strong lead — schedule outreach within 1 week. Good conversion potential.';
+  } else if (totalScore >= 35) {
+    tier = 'B-TIER'; tierBg = 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)'; tierColor = '#1e3a8a';
+    tierDesc = 'Moderate lead — add to nurture sequence. May convert with the right pitch.';
+  } else if (totalScore > 0) {
+    tier = 'C-TIER'; tierBg = 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)'; tierColor = '#4b5563';
+    tierDesc = 'Low priority — monitor for changes. Not worth active pursuit right now.';
+  } else {
+    tier = '—'; tierBg = 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)'; tierColor = '#6b7280';
+    tierDesc = 'Fill in the fields above and assessment data to calculate lead score';
+  }
+
+  tierEl.textContent = tier;
+  tierEl.style.color = tierColor;
+  totalEl.style.color = tierColor;
+  descEl.textContent = tierDesc;
+  descEl.style.color = tierColor;
+  hero.style.background = tierBg;
+
+  // Urgency chips
+  const urgSection = document.getElementById('urgencySection');
+  const chipContainer = document.getElementById('urgencyChips');
+  chipContainer.innerHTML = '';
+  const chips = [];
+
+  if (canopyScore >= 7) chips.push({ text: 'Severe canopy decline', level: 'high' });
+  else if (canopyScore >= 4) chips.push({ text: 'Moderate canopy stress', level: 'med' });
+  if (riskText === 'Extreme' || riskText === 'High') chips.push({ text: 'ISA Risk: ' + riskText, level: 'high' });
+  else if (riskText === 'Moderate') chips.push({ text: 'ISA Risk: Moderate', level: 'med' });
+  if (urg === 'immediate') chips.push({ text: 'Storm/Hazard damage', level: 'high' });
+  if (urg === 'insurance') chips.push({ text: 'Insurance requirement', level: 'high' });
+  if (urg === 'legal') chips.push({ text: 'Legal/Board obligation', level: 'high' });
+  if (urg === 'complaint') chips.push({ text: 'Tenant/Neighbor complaint', level: 'med' });
+  if (prox === 'direct' || prox === 'drip') chips.push({ text: 'Tree over/near structure', level: 'high' });
+  if (propType === 'hoa' || propType === 'commercial') chips.push({ text: 'High-value property type', level: 'med' });
+
+  if (chips.length > 0) {
+    urgSection.style.display = 'block';
+    chips.forEach(c => {
+      const span = document.createElement('span');
+      span.className = 'urgency-chip chip-' + c.level;
+      span.textContent = c.text;
+      chipContainer.appendChild(span);
+    });
+  } else { urgSection.style.display = 'none'; }
+
+  // Outreach recommendation
+  const outreachSection = document.getElementById('outreachRec');
+  const outPriority = document.getElementById('outreachPriority');
+  const outPitch = document.getElementById('outreachPitch');
+  const outActions = document.getElementById('outreachActions');
+
+  if (totalScore > 0 && propType) {
+    outreachSection.style.display = 'block';
+    const pitches = {
+      'hoa': '"Our satellite analysis flagged declining tree health in your community. As an ISA-certified arborist, I can help your board get ahead of liability risks and protect property values — starting with a free walkthrough of the flagged areas."',
+      'commercial': '"We identified several trees on your property showing significant canopy decline. Commercial properties with documented tree maintenance programs see an average 12% reduction in liability premiums. I\'d like to show you our findings and discuss a maintenance plan."',
+      'municipal': '"Our analysis detected areas of canopy decline in public spaces under your jurisdiction. We specialize in proactive municipal tree management and can help you address safety concerns before they become emergencies."',
+      'multifamily': '"We noticed tree health issues on your property that could present safety risks to tenants. As a certified arborist, I can provide a free assessment and help you stay ahead of maintenance needs — reducing both liability and emergency costs."',
+      'residential-high': '"Our aerial analysis detected declining tree health on your property. Healthy, well-maintained trees add 7–15% to property value. I\'d like to do a free walkthrough and show you what we found."',
+      'residential': '"We noticed some tree health changes on your property using our satellite monitoring. I\'d be happy to take a quick look and let you know if any attention is needed — no charge for the consultation."'
+    };
+    outPitch.textContent = pitches[propType] || '';
+
+    if (totalScore >= 75) outPriority.textContent = 'PRIORITY: Immediate outreach — call or visit within 48 hours';
+    else if (totalScore >= 55) outPriority.textContent = 'PRIORITY: Schedule outreach within 1 week';
+    else if (totalScore >= 35) outPriority.textContent = 'PRIORITY: Add to nurture sequence — follow up within 2 weeks';
+    else outPriority.textContent = 'PRIORITY: Low — monitor and revisit in 3 months';
+    outPriority.style.color = totalScore >= 75 ? '#dc2626' : totalScore >= 55 ? '#ea580c' : totalScore >= 35 ? '#d97706' : '#6b7280';
+
+    const dm = document.getElementById('ls-dm').value;
+    let actionItems = [];
+    if (dm === 'no' || dm === 'role') actionItems.push('Use Apollo to identify the decision-maker (' + (propType === 'hoa' ? 'HOA Board President or Property Manager' : propType === 'commercial' ? 'Facilities Manager or Property Owner' : propType === 'municipal' ? 'Public Works Director or Tree Warden' : propType === 'multifamily' ? 'Property Management Company' : 'Property Owner') + ')');
+    if (dm === 'yes-name') actionItems.push('Find contact info (email/phone) via Apollo enrichment');
+    actionItems.push('Prepare property-specific one-pager with satellite imagery comparison');
+    if (canopyScore >= 5) actionItems.push('Include NDVI decline map in outreach materials');
+    if (riskText === 'High' || riskText === 'Extreme') actionItems.push('Emphasize ISA risk rating (' + riskText + ') in pitch');
+    if (propType === 'hoa') actionItems.push('Research HOA meeting schedule — time outreach before next board meeting');
+    if (propType === 'commercial' && urg === 'insurance') actionItems.push('Reference insurance premium reduction data in pitch');
+    actionItems.push('Log lead in Smartsheet pipeline tracker');
+
+    outActions.innerHTML = actionItems.map(a => '<div class="action-item">' + a + '</div>').join('');
+  } else { outreachSection.style.display = 'none'; }
+
+  // Contract estimate
+  const contractSection = document.getElementById('contractSection');
+  if (propType && totalScore > 0) {
+    contractSection.style.display = 'block';
+    const estimates = {
+      'hoa':             { initial: [8000, 25000], annual: [5000, 15000] },
+      'commercial':      { initial: [5000, 20000], annual: [3000, 12000] },
+      'municipal':       { initial: [10000, 50000], annual: [5000, 25000] },
+      'multifamily':     { initial: [3000, 12000], annual: [2000, 8000] },
+      'residential-high':{ initial: [2000, 8000], annual: [1000, 3000] },
+      'residential':     { initial: [500, 3000], annual: [300, 1500] }
+    };
+    const est = estimates[propType];
+    // Scale by tree count
+    let scale = 1;
+    if (treeCount === '50plus') scale = 1.5;
+    else if (treeCount === '20-50') scale = 1.2;
+    else if (treeCount === '10-20') scale = 1;
+    else if (treeCount === '5-10') scale = 0.8;
+    else if (treeCount === 'under5') scale = 0.6;
+
+    const initLow = Math.round(est.initial[0] * scale / 100) * 100;
+    const initHigh = Math.round(est.initial[1] * scale / 100) * 100;
+    const annLow = Math.round(est.annual[0] * scale / 100) * 100;
+    const annHigh = Math.round(est.annual[1] * scale / 100) * 100;
+    const ltvLow = initLow + (annLow * 3);
+    const ltvHigh = initHigh + (annHigh * 3);
+
+    document.getElementById('contractInitial').textContent = '$' + initLow.toLocaleString() + '–$' + initHigh.toLocaleString();
+    document.getElementById('contractAnnual').textContent = '$' + annLow.toLocaleString() + '–$' + annHigh.toLocaleString() + '/yr';
+    document.getElementById('contractLTV').textContent = '$' + ltvLow.toLocaleString() + '–$' + ltvHigh.toLocaleString();
+  } else { contractSection.style.display = 'none'; }
+}
+
+function updateFactor(id, score, detail, color, active) {
+  const scoreEl = document.getElementById('sf-' + id + '-score');
+  const detailEl = document.getElementById('sf-' + id + '-detail');
+  const barEl = document.getElementById('sf-' + id + '-bar');
+  const cardEl = document.getElementById('sf-' + id);
+
+  scoreEl.textContent = score + '/10';
+  scoreEl.style.color = active ? color : 'var(--gray)';
+  detailEl.textContent = detail;
+  barEl.style.width = (score * 10) + '%';
+  barEl.style.background = color;
+
+  const colorClass = id === 'canopy' ? 'active-green' : id === 'propclass' ? 'active-blue' : id === 'liability' ? 'active-amber' : 'active-purple';
+  cardEl.className = 'score-factor' + (active ? ' ' + colorClass : '');
+}
+
+function exportLeadSummary() {
+  const client = document.querySelector('.info-grid input[type="text"]:nth-child(2) input, .info-field:nth-child(2) input')?.value || '';
+  const address = document.querySelector('.info-field:nth-child(4) input')?.value || '';
+  const tier = document.getElementById('ls-tier').textContent;
+  const score = document.getElementById('ls-total').textContent;
+  const propType = document.getElementById('ls-proptype');
+  const propLabel = propType.options[propType.selectedIndex]?.text || '';
+  const pitch = document.getElementById('outreachPitch').textContent;
+
+  const summary = [
+    '=== SAVITRI LEAD SUMMARY ===',
+    'Date: ' + new Date().toLocaleDateString(),
+    'Tier: ' + tier,
+    score,
+    '',
+    'Property: ' + (address || 'Not entered'),
+    'Client: ' + (client || 'Not entered'),
+    'Type: ' + propLabel,
+    '',
+    'Canopy: ' + document.getElementById('sf-canopy-score').textContent + ' | ' + document.getElementById('sf-canopy-detail').textContent,
+    'Property: ' + document.getElementById('sf-propclass-score').textContent + ' | ' + document.getElementById('sf-propclass-detail').textContent,
+    'Liability: ' + document.getElementById('sf-liability-score').textContent + ' | ' + document.getElementById('sf-liability-detail').textContent,
+    'Value: ' + document.getElementById('sf-value-score').textContent + ' | ' + document.getElementById('sf-value-detail').textContent,
+    '',
+    'PITCH:',
+    pitch,
+    '',
+    '==========================='
+  ].join('\n');
+
+  navigator.clipboard.writeText(summary).then(() => {
+    alert('Lead summary copied to clipboard!');
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = summary;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('Lead summary copied to clipboard!');
+  });
+}
+</script>
+
+</body>
+</html>

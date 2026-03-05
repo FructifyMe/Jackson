@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canopy Loss Detection for Arborist Lead Generation — Feasibility Study</title>
+<style>
+  :root {
+    --green-dark: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #d8f3dc;
+    --amber: #e6a817;
+    --red: #c1292e;
+    --bg: #fafaf7;
+    --text: #1a1a1a;
+    --gray: #6b7280;
+    --card-bg: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+    color: white; padding: 3rem 2rem 2.5rem; text-align: center;
+  }
+  .hero h1 { font-size: 1.85rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .hero .subtitle { font-size: 1.05rem; opacity: 0.85; }
+  .hero .meta { margin-top: 1rem; font-size: 0.85rem; opacity: 0.65; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  h2 { font-size: 1.35rem; color: var(--green-dark); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--green-light); }
+  h3 { font-size: 1.1rem; color: var(--green-mid); margin: 1.5rem 0 0.75rem; }
+  p { margin-bottom: 1rem; }
+
+  .verdict-box {
+    background: var(--green-pale); border-left: 4px solid var(--green-light);
+    padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0;
+  }
+  .verdict-box strong { color: var(--green-dark); }
+
+  .caution-box {
+    background: #fef3c7; border-left: 4px solid var(--amber);
+    padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0;
+  }
+
+  .card { background: var(--card-bg); border-radius: 10px; padding: 1.5rem; margin: 1rem 0; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .card-header { font-weight: 700; color: var(--green-dark); margin-bottom: 0.5rem; font-size: 1.05rem; }
+
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.92rem; }
+  th { background: var(--green-dark); color: white; padding: 0.65rem 0.75rem; text-align: left; font-weight: 600; }
+  td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #e5e7eb; }
+  tr:nth-child(even) td { background: #f9fafb; }
+
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
+  .badge-green { background: var(--green-pale); color: var(--green-dark); }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+
+  .tier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 650px) { .tier-grid { grid-template-columns: 1fr; } }
+
+  .pipeline-step {
+    display: flex; align-items: flex-start; gap: 1rem; margin: 1rem 0; padding: 1rem;
+    background: var(--card-bg); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .step-num {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--green-mid);
+    color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem;
+  }
+  .step-body h4 { font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--green-dark); }
+  .step-body p { font-size: 0.9rem; margin-bottom: 0; color: var(--gray); }
+
+  .sources { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; font-size: 0.82rem; color: var(--gray); }
+  .sources a { color: var(--green-mid); }
+
+  ul { margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.4rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Satellite Canopy Analysis for Arborist Lead Generation</h1>
+  <div class="subtitle">Feasibility Study &amp; MVP Plan for SavATree — North of Boston, MA</div>
+  <div class="meta">Prepared for Mike &amp; Jackson Fructify | March 3, 2026</div>
+</div>
+
+<div class="container">
+
+<!-- ========== EXECUTIVE SUMMARY ========== -->
+<h2>Executive Summary</h2>
+
+<div class="verdict-box">
+  <strong>Verdict: Feasible — with the right data tier.</strong><br>
+  Free satellite data (Sentinel-2, Landsat) can detect neighborhood-scale canopy decline but cannot pinpoint individual residential properties. For property-level lead generation in Jackson's six target towns, the most practical MVP combines <strong>free NAIP aerial imagery</strong> (0.6m resolution, updated every 3 years) with <strong>free Sentinel-2 NDVI time-series</strong> to flag areas of decline, then cross-references with property/parcel data to generate actionable leads.
+</div>
+
+<p>The concept is sound and there's real science behind it: multispectral imaging (especially near-infrared) can detect tree stress 12–18 months before it's visible to the human eye. The question is resolution and cost. Here's what we found.</p>
+
+<!-- ========== THE DETECTION METHODS ========== -->
+<h2>Detection Methods: What Actually Works</h2>
+
+<h3>NDVI — The Core Technique</h3>
+<p>NDVI (Normalized Difference Vegetation Index) is the standard metric. It uses near-infrared and red light bands to measure vegetation health on a scale from -1 to +1. Healthy trees score 0.6–0.9; stressed or dead vegetation drops below 0.3. By comparing NDVI values across time (e.g., summer 2023 vs. summer 2025), you can identify where canopy has declined.</p>
+
+<p>Your instinct about infrared was exactly right — NDVI relies on near-infrared reflectance, which is far more sensitive to plant health than visible-light photos. A tree can look green to the eye but already show declining NIR reflectance weeks before leaves start to yellow or thin.</p>
+
+<h3>Method Comparison</h3>
+<table>
+  <tr>
+    <th>Method</th>
+    <th>What It Detects</th>
+    <th>Best For</th>
+    <th>MVP Fit</th>
+  </tr>
+  <tr>
+    <td><strong>NDVI change detection</strong></td>
+    <td>Overall vegetation health decline over time</td>
+    <td>Flagging neighborhoods with canopy loss</td>
+    <td><span class="badge badge-green">Best</span></td>
+  </tr>
+  <tr>
+    <td><strong>NBR (Normalized Burn Ratio)</strong></td>
+    <td>Severe canopy damage, storm damage, removals</td>
+    <td>Post-storm lead generation</td>
+    <td><span class="badge badge-green">Good</span></td>
+  </tr>
+  <tr>
+    <td><strong>Red Edge Index</strong></td>
+    <td>Early chlorophyll stress (disease, drought)</td>
+    <td>Catching problems before they're visible</td>
+    <td><span class="badge badge-amber">Phase 2</span></td>
+  </tr>
+  <tr>
+    <td><strong>LiDAR canopy height</strong></td>
+    <td>Physical tree structure, height loss, thinning</td>
+    <td>Precise individual tree assessment</td>
+    <td><span class="badge badge-red">Expensive</span></td>
+  </tr>
+  <tr>
+    <td><strong>Visual RGB comparison</strong></td>
+    <td>Obvious removals, large dead patches</td>
+    <td>Simple before/after confirmation</td>
+    <td><span class="badge badge-green">Good</span></td>
+  </tr>
+</table>
+
+<!-- ========== ISA CONNECTION ========== -->
+<h2>ISA Tree Risk Assessment — How It Connects</h2>
+
+<p>The ISA (International Society of Arboriculture) uses a qualitative risk matrix with four levels: Low, Moderate, High, and Extreme. Their TRAQ (Tree Risk Assessment Qualification) system evaluates likelihood of failure × consequence of impact. There are three assessment levels:</p>
+
+<ul>
+  <li><strong>Level 1 (Limited Visual):</strong> Rapid assessment from a distance — this is what satellite/aerial analysis could replicate at scale</li>
+  <li><strong>Level 2 (Basic):</strong> Walk-around visual inspection — what Jackson would do on a property visit</li>
+  <li><strong>Level 3 (Advanced):</strong> Detailed investigation with tools — the upsell service</li>
+</ul>
+
+<div class="caution-box">
+  <strong>Key insight:</strong> The ISA doesn't have a specific "canopy loss score" from remote sensing. However, satellite NDVI decline maps directly to a Level 1-style screening: identifying properties that <em>warrant</em> a Level 2 on-site assessment. This is the lead generation hook — "Our aerial analysis flagged potential tree health concerns on your property. We'd like to offer a complimentary Level 2 assessment."
+</div>
+
+<!-- ========== DATA SOURCES ========== -->
+<h2>Satellite &amp; Aerial Data Sources</h2>
+
+<div class="tier-grid">
+  <div class="card">
+    <div class="card-header">Free Tier — MVP</div>
+    <table>
+      <tr><td><strong>Sentinel-2</strong></td><td>10m resolution, 5-day revisit, 13 spectral bands including NIR and Red Edge. Free via Copernicus / Google Earth Engine.</td></tr>
+      <tr><td><strong>Landsat 8/9</strong></td><td>30m resolution, 16-day revisit. Free via USGS. New HLS-VI products (Feb 2025) provide pre-computed NDVI.</td></tr>
+      <tr><td><strong>NAIP Aerial</strong></td><td>0.6m resolution, 4-band (RGBNIR), 3-year cycle. Free via USGS EarthExplorer. Best free option for individual property analysis.</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-header">Paid Tier — Phase 2</div>
+    <table>
+      <tr><td><strong>PlanetScope</strong></td><td>3m resolution, daily revisit, 8 bands. Contact for pricing. Best commercial option for this use case.</td></tr>
+      <tr><td><strong>WorldView</strong></td><td>0.3m resolution, on-demand tasking. $$$. Overkill for lead gen but incredible detail.</td></tr>
+      <tr><td><strong>ForSens (Karuna)</strong></td><td>AI-powered urban tree monitoring platform. Used by NYC Central Park, European cities. Detects decline 16–18 months early.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ========== FEASIBILITY FOR TARGET TOWNS ========== -->
+<h2>Feasibility for Jackson's Target Towns</h2>
+
+<table>
+  <tr>
+    <th>Factor</th>
+    <th>Assessment</th>
+    <th>Rating</th>
+  </tr>
+  <tr>
+    <td><strong>Sentinel-2 coverage</strong></td>
+    <td>All 6 towns are covered. ~5-day revisit. Data available back to 2015.</td>
+    <td><span class="badge badge-green">Go</span></td>
+  </tr>
+  <tr>
+    <td><strong>NAIP coverage</strong></td>
+    <td>Massachusetts NAIP imagery available at 0.6m. Updated on ~3-year cycle.</td>
+    <td><span class="badge badge-green">Go</span></td>
+  </tr>
+  <tr>
+    <td><strong>Individual property detection (10m Sentinel)</strong></td>
+    <td>Too coarse. A typical residential lot in these towns is ~0.25 acres (~30m × 30m). A single Sentinel pixel covers most of a lot, mixing house + trees + lawn.</td>
+    <td><span class="badge badge-red">No</span></td>
+  </tr>
+  <tr>
+    <td><strong>Individual property detection (0.6m NAIP)</strong></td>
+    <td>Sufficient to distinguish individual large trees on residential lots. A mature oak crown (~15m) spans 25 NAIP pixels across.</td>
+    <td><span class="badge badge-green">Go</span></td>
+  </tr>
+  <tr>
+    <td><strong>Seasonal timing (MA)</strong></td>
+    <td>Best NDVI window is June–August (full leaf-on). NAIP is captured during growing season. Sentinel-2 cloud cover in New England can be challenging — need multi-date composites.</td>
+    <td><span class="badge badge-amber">Manageable</span></td>
+  </tr>
+  <tr>
+    <td><strong>Property data availability</strong></td>
+    <td>Massachusetts GIS (MassGIS) provides free parcel boundaries and property owner data for all towns.</td>
+    <td><span class="badge badge-green">Go</span></td>
+  </tr>
+</table>
+
+<!-- ========== MVP ARCHITECTURE ========== -->
+<h2>MVP Pipeline — Proposed Architecture</h2>
+
+<div class="pipeline-step">
+  <div class="step-num">1</div>
+  <div class="step-body">
+    <h4>Define Target Areas</h4>
+    <p>Draw boundaries around the 6 towns using MassGIS parcel data. Filter to residential properties with lot sizes > 0.15 acres (likely to have significant tree coverage).</p>
+  </div>
+</div>
+
+<div class="pipeline-step">
+  <div class="step-num">2</div>
+  <div class="step-body">
+    <h4>Build NDVI Baseline (Google Earth Engine)</h4>
+    <p>Pull Sentinel-2 summer composites for the past 3–5 years. Calculate mean NDVI per parcel for each year. Flag parcels where NDVI dropped > 15% year-over-year — that's canopy loss. This is free using Google Earth Engine's Python API.</p>
+  </div>
+</div>
+
+<div class="pipeline-step">
+  <div class="step-num">3</div>
+  <div class="step-body">
+    <h4>Visual Confirmation (NAIP)</h4>
+    <p>For flagged parcels, pull 0.6m NAIP imagery to visually confirm the decline isn't just a mowed lawn or pool installation. This step can be partially automated with a simple tree canopy classifier (green pixels above a certain NDVI threshold in the NIR band).</p>
+  </div>
+</div>
+
+<div class="pipeline-step">
+  <div class="step-num">4</div>
+  <div class="step-body">
+    <h4>Lead Scoring</h4>
+    <p>Score each flagged property: severity of NDVI decline × number of large trees on lot × lot value (from assessor data). High-value properties with significant canopy loss = highest priority leads.</p>
+  </div>
+</div>
+
+<div class="pipeline-step">
+  <div class="step-num">5</div>
+  <div class="step-body">
+    <h4>Property Owner Lookup</h4>
+    <p>Cross-reference parcel IDs with MassGIS / town assessor databases to get owner names and mailing addresses. Massachusetts property records are public.</p>
+  </div>
+</div>
+
+<div class="pipeline-step">
+  <div class="step-num">6</div>
+  <div class="step-body">
+    <h4>Outreach</h4>
+    <p>Generate personalized mailers or door-hanger flyers: "Our satellite analysis detected changes in your property's tree canopy. We'd like to offer a free arborist consultation." Include a before/after thumbnail image of their specific property.</p>
+  </div>
+</div>
+
+<!-- ========== WHAT'S NEEDED ========== -->
+<h2>What's Needed to Build the MVP</h2>
+
+<table>
+  <tr>
+    <th>Component</th>
+    <th>Tool / Service</th>
+    <th>Cost</th>
+    <th>Difficulty</th>
+  </tr>
+  <tr>
+    <td>NDVI time-series analysis</td>
+    <td>Google Earth Engine (Python API)</td>
+    <td>Free</td>
+    <td>Medium — needs Python scripting</td>
+  </tr>
+  <tr>
+    <td>High-res visual confirmation</td>
+    <td>NAIP via USGS EarthExplorer</td>
+    <td>Free</td>
+    <td>Low — download and view</td>
+  </tr>
+  <tr>
+    <td>Parcel boundaries</td>
+    <td>MassGIS (Massachusetts GIS)</td>
+    <td>Free</td>
+    <td>Low</td>
+  </tr>
+  <tr>
+    <td>Property owner data</td>
+    <td>Town assessor databases / MassGIS</td>
+    <td>Free</td>
+    <td>Low–Medium</td>
+  </tr>
+  <tr>
+    <td>Lead scoring logic</td>
+    <td>Python script or spreadsheet</td>
+    <td>Free</td>
+    <td>Low</td>
+  </tr>
+  <tr>
+    <td>Outreach materials</td>
+    <td>Canva / direct mail service</td>
+    <td>$50–200/batch</td>
+    <td>Low</td>
+  </tr>
+</table>
+
+<!-- ========== RISKS & LIMITATIONS ========== -->
+<h2>Risks &amp; Limitations</h2>
+
+<ul>
+  <li><strong>Mixed pixel problem:</strong> At 10m resolution, a Sentinel-2 pixel on a residential lot mixes trees + house + lawn + driveway. NDVI decline could be a new roof, not a dead tree. NAIP confirmation step mitigates this.</li>
+  <li><strong>NAIP update lag:</strong> NAIP is only updated every ~3 years. Recent canopy loss (last 12 months) may not appear. Sentinel-2 fills the gap for temporal detection, NAIP for spatial confirmation.</li>
+  <li><strong>Cloud cover in New England:</strong> Sentinel-2 images are frequently cloudy. Must use cloud-masked composites across multiple dates per season.</li>
+  <li><strong>False positives:</strong> Construction, landscaping changes, seasonal deciduous variation can trigger NDVI decline. Manual review of high-priority leads is essential before outreach.</li>
+  <li><strong>Privacy and reception:</strong> "We analyzed your property from space" could feel invasive to some homeowners. Messaging should emphasize community tree health, not surveillance. Frame it as a neighborhood assessment program.</li>
+</ul>
+
+<!-- ========== RECOMMENDED NEXT STEPS ========== -->
+<h2>Recommended Next Steps</h2>
+
+<div class="pipeline-step">
+  <div class="step-num">A</div>
+  <div class="step-body">
+    <h4>Proof of Concept — Pick One Town</h4>
+    <p>Start with Wakefield or Reading (dense residential canopy). Pull 3 years of Sentinel-2 NDVI data via Google Earth Engine. Identify the top 20 parcels with largest NDVI decline. Manually verify with NAIP/Google Earth. If 10+ are legitimate tree health issues → the method works.</p>
+  </div>
+</div>
+
+<div class="pipeline-step">
+  <div class="step-num">B</div>
+  <div class="step-body">
+    <h4>Build the Script</h4>
+    <p>We can write a Python script that automates steps 1–5 for any town boundary. Output: a CSV of flagged addresses with decline scores, owner names, and thumbnail images.</p>
+  </div>
+</div>
+
+<div class="pipeline-step">
+  <div class="step-num">C</div>
+  <div class="step-body">
+    <h4>Test the Outreach</h4>
+    <p>Jackson sends 20–50 personalized mailers to flagged properties. Track response rate. If > 5% convert to consultations → scale to all 6 towns.</p>
+  </div>
+</div>
+
+<div class="pipeline-step">
+  <div class="step-num">D</div>
+  <div class="step-body">
+    <h4>Scale with PlanetScope (if ROI justifies)</h4>
+    <p>If the free-tier MVP generates real leads, upgrade to PlanetScope (3m, daily updates) for near-real-time detection. Could catch storm damage within days and trigger immediate outreach.</p>
+  </div>
+</div>
+
+<!-- ========== EXISTING PLAYERS ========== -->
+<h2>Interesting: Who Else Is Doing This?</h2>
+
+<p><strong>ForSens / Karuna Technology</strong> (Germany, ESA spin-off) is the closest analog — they provide AI-powered satellite tree monitoring for cities like NYC, Zurich, and Rome. They detect vitality decline 16–18 months before visible symptoms. However, they sell to municipalities, not individual arborists. Jackson could potentially partner with or learn from their approach.</p>
+
+<p><strong>Purdue University's uTREE Project</strong> (funded $5M by NSF, Feb 2026) uses PlanetScope data + AI to map 278 million trees across 330 US cities. Their dataset could become a free resource as the project matures. Worth watching.</p>
+
+<p><strong>EarthDefine TreeMap</strong> provides high-resolution tree cover data commercially. Could be a shortcut if the DIY approach proves too labor-intensive.</p>
+
+<!-- ========== SOURCES ========== -->
+<div class="sources">
+  <h3 style="color: var(--gray); font-size: 0.9rem;">Sources</h3>
+  <ul style="list-style: none; margin-left: 0; padding-left: 0;">
+    <li><a href="https://www.earthdata.nasa.gov/data/alerts-outages/harmonized-landsat-sentinel-2-vegetation-indices-data-products-released">NASA HLS-VI Vegetation Indices Products (Feb 2025)</a></li>
+    <li><a href="https://www.mdpi.com/2072-4292/17/6/979">Sentinel-2 Vegetation Loss Detection (2025)</a></li>
+    <li><a href="https://www.isa-arbor.com/Credentials/ISA-Tree-Risk-Assessment-Qualification">ISA Tree Risk Assessment Qualification</a></li>
+    <li><a href="https://wwv.isa-arbor.com/education/resources/BasicTreeRiskAssessmentForm_Print_2017.pdf">ISA Basic Tree Risk Assessment Form</a></li>
+    <li><a href="https://for-sens.com/">ForSens — AI Urban Tree Monitoring</a></li>
+    <li><a href="https://ag.purdue.edu/news/2026/02/digital-forestry-team-combines-ai-with-satellite-data-to-monitor-urban-trees.html">Purdue uTREE AI Urban Tree Monitoring (2026)</a></li>
+    <li><a href="https://earthengine.google.com/">Google Earth Engine</a></li>
+    <li><a href="https://www.usgs.gov/centers/eros/science/usgs-eros-archive-aerial-photography-national-agriculture-imagery-program-naip">USGS NAIP Aerial Imagery Archive</a></li>
+    <li><a href="https://www.planet.com/pricing/">Planet (PlanetScope) Pricing</a></li>
+    <li><a href="https://link.springer.com/article/10.1007/s44288-025-00201-x">Comprehensive Review: Tree Cover Mapping via Satellite (2025)</a></li>
+    <li><a href="https://www.nature.com/articles/s41597-025-04655-z">Canopy Height Model + NAIP Imagery Pairs (2025)</a></li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>
