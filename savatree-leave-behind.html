@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SavATree — Leave-Behind One-Pager</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     SAVATREE BRAND SYSTEM
+     Dark Forest Green:  #1B5C34
+     Vivid Green:        #17AB2D
+     Medium Green:       #337835
+     Sage Green:         #B3CDA6
+     Warm Cream:         #F3F0E7
+     Orange Accent:      #BD5915
+     Near-Black Text:    #1F1C1D
+  ============================================ */
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: #ffffff;
+    color: #1F1C1D;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* PRINT */
+  @media print {
+    body { margin: 0; }
+    .page { page-break-after: avoid; }
+    .no-print { display: none; }
+  }
+
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ---- HEADER ---- */
+  .header {
+    background: #1B5C34;
+    padding: 28px 48px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #17AB2D 0%, #1B5C34 100%);
+  }
+
+  .logo-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-svg {
+    width: 52px;
+    height: 52px;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo-wordmark {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  .logo-wordmark span {
+    color: #17AB2D;
+  }
+
+  .logo-tagline {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: #B3CDA6;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .header-contact {
+    text-align: right;
+    color: #ffffff;
+  }
+
+  .header-contact .arborist-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .header-contact .arborist-title {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #17AB2D;
+    margin: 3px 0 8px;
+  }
+
+  .header-contact .contact-line {
+    font-size: 11px;
+    color: #B3CDA6;
+    line-height: 1.7;
+  }
+
+  /* ---- HERO BAND ---- */
+  .hero-band {
+    background: linear-gradient(135deg, #1B5C34 0%, #245c38 60%, #1a4a2a 100%);
+    padding: 36px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-band::before {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 280px; height: 280px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='95' fill='none' stroke='%2317AB2D' stroke-width='0.5' opacity='0.15'/%3E%3Ccircle cx='100' cy='100' r='70' fill='none' stroke='%2317AB2D' stroke-width='0.5' opacity='0.12'/%3E%3Ccircle cx='100' cy='100' r='48' fill='none' stroke='%2317AB2D' stroke-width='0.5' opacity='0.1'/%3E%3Ccircle cx='100' cy='100' r='28' fill='none' stroke='%2317AB2D' stroke-width='0.5' opacity='0.08'/%3E%3Cline x1='5' y1='100' x2='195' y2='100' stroke='%2317AB2D' stroke-width='0.3' opacity='0.08'/%3E%3Cline x1='100' y1='5' x2='100' y2='195' stroke='%2317AB2D' stroke-width='0.3' opacity='0.08'/%3E%3Cline x1='33' y1='33' x2='167' y2='167' stroke='%2317AB2D' stroke-width='0.3' opacity='0.06'/%3E%3Cline x1='167' y1='33' x2='33' y2='167' stroke='%2317AB2D' stroke-width='0.3' opacity='0.06'/%3E%3C/svg%3E") no-repeat center;
+    background-size: 280px;
+    opacity: 0.6;
+  }
+
+  .hero-band .property-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #17AB2D;
+    margin-bottom: 6px;
+  }
+
+  .hero-band h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+    max-width: 500px;
+    margin-bottom: 10px;
+  }
+
+  .hero-band .hero-sub {
+    font-size: 13px;
+    color: #B3CDA6;
+    font-weight: 300;
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  /* editable fields */
+  .editable {
+    background: rgba(255,255,255,0.08);
+    border: 1px dashed rgba(255,255,255,0.3);
+    border-radius: 3px;
+    padding: 2px 6px;
+    cursor: text;
+    min-width: 80px;
+    display: inline-block;
+  }
+
+  .editable-dark {
+    background: rgba(27,92,52,0.06);
+    border: 1px dashed #B3CDA6;
+    border-radius: 3px;
+    padding: 2px 6px;
+    cursor: text;
+    min-width: 80px;
+    display: inline-block;
+  }
+
+  /* ---- SATELLITE FINDING BAND ---- */
+  .satellite-band {
+    background: #F3F0E7;
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 2px solid #B3CDA6;
+  }
+
+  .sat-icon {
+    width: 36px; height: 36px;
+    flex-shrink: 0;
+  }
+
+  .sat-text {
+    flex: 1;
+  }
+
+  .sat-label {
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #BD5915;
+    font-weight: 700;
+  }
+
+  .sat-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1B5C34;
+    margin: 2px 0;
+    line-height: 1.3;
+  }
+
+  .sat-detail {
+    font-size: 11px;
+    color: #555;
+  }
+
+  .sat-stats {
+    display: flex;
+    gap: 24px;
+  }
+
+  .stat-box {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1B5C34;
+    line-height: 1;
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #666;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ---- MAIN CONTENT ---- */
+  .main-content {
+    padding: 32px 48px;
+  }
+
+  /* ---- 3-COLUMN SERVICES ---- */
+  .services-heading {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #337835;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .service-card {
+    border: 1px solid #e0ddd6;
+    border-radius: 6px;
+    padding: 18px 16px;
+    position: relative;
+    background: #fff;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: #17AB2D;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .service-icon {
+    width: 32px; height: 32px;
+    margin-bottom: 10px;
+  }
+
+  .service-name {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #1B5C34;
+    margin-bottom: 6px;
+  }
+
+  .service-desc {
+    font-size: 10.5px;
+    color: #444;
+    line-height: 1.55;
+  }
+
+  /* ---- CREDENTIALS STRIP ---- */
+  .credentials-strip {
+    background: #1B5C34;
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 0 -48px;
+    width: calc(100% + 96px);
+  }
+
+  .cred-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cred-icon {
+    width: 28px; height: 28px;
+    flex-shrink: 0;
+  }
+
+  .cred-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+  }
+
+  .cred-sub {
+    font-size: 9px;
+    color: #B3CDA6;
+    font-weight: 300;
+  }
+
+  .cred-divider {
+    width: 1px;
+    height: 30px;
+    background: rgba(255,255,255,0.2);
+  }
+
+  /* ---- WHAT HAPPENS NEXT ---- */
+  .next-steps {
+    padding-top: 28px;
+  }
+
+  .next-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1B5C34;
+    margin-bottom: 4px;
+  }
+
+  .next-sub {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .steps-row {
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+
+  .steps-row::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+    background: #B3CDA6;
+    z-index: 0;
+  }
+
+  .step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding: 0 8px;
+  }
+
+  .step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #17AB2D;
+    color: #fff;
+    font-weight: 900;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+  }
+
+  .step-title {
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #1B5C34;
+    margin-bottom: 4px;
+  }
+
+  .step-desc {
+    font-size: 9.5px;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  /* ---- FOOTER ---- */
+  .footer {
+    background: #1F1C1D;
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .footer-left {
+    font-size: 9px;
+    color: #888;
+    line-height: 1.7;
+  }
+
+  .footer-left strong {
+    color: #B3CDA6;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-cta {
+    background: #17AB2D;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .footer-cta-label {
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    display: block;
+  }
+
+  .footer-cta-action {
+    font-size: 14px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ---- PRINT BUTTON (no-print) ---- */
+  .toolbar {
+    background: #1B5C34;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .toolbar-title {
+    color: #B3CDA6;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .toolbar-btns {
+    display: flex;
+    gap: 10px;
+  }
+
+  .toolbar-btn {
+    background: #17AB2D;
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+
+  .toolbar-btn.outline {
+    background: transparent;
+    border: 1px solid #B3CDA6;
+    color: #B3CDA6;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR (no-print) -->
+<div class="toolbar no-print">
+  <span class="toolbar-title">🌳 SavATree Leave-Behind — Edit fields then Print</span>
+  <div class="toolbar-btns">
+    <button class="toolbar-btn outline" onclick="document.querySelectorAll('.editable,.editable-dark').forEach(e=>e.setAttribute('contenteditable','true'))">✏️ Enable Editing</button>
+    <button class="toolbar-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-block">
+      <!-- SavATree Tree Logo SVG Recreation -->
+      <svg class="logo-svg" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="52" r="3" fill="#17AB2D"/>
+        <rect x="24" y="28" width="4" height="24" fill="#17AB2D"/>
+        <ellipse cx="26" cy="22" rx="14" ry="12" fill="#17AB2D"/>
+        <ellipse cx="18" cy="26" rx="9" ry="8" fill="#17AB2D"/>
+        <ellipse cx="34" cy="26" rx="9" ry="8" fill="#17AB2D"/>
+        <ellipse cx="26" cy="14" rx="10" ry="9" fill="#1B5C34"/>
+        <ellipse cx="26" cy="20" rx="13" ry="11" fill="#17AB2D"/>
+      </svg>
+      <div class="logo-text">
+        <span class="logo-wordmark">SAV<span>A</span>TREE<sup style="font-size:10px">®</sup></span>
+        <span class="logo-tagline">Certified Arborists · Since 1985</span>
+      </div>
+    </div>
+    <div class="header-contact">
+      <div class="arborist-name"><span class="editable" style="color:#fff" contenteditable="false">Jackson R. Farley</span></div>
+      <div class="arborist-title">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+      <div class="contact-line"><span class="editable" contenteditable="false" style="color:#B3CDA6">jackson.farley@savatree.com</span></div>
+      <div class="contact-line"><span class="editable" contenteditable="false" style="color:#B3CDA6">(351) 230-4288</span> &nbsp;·&nbsp; Middleton, MA</div>
+      <div class="contact-line">savatree.com</div>
+    </div>
+  </div>
+
+  <!-- HERO BAND -->
+  <div class="hero-band">
+    <div class="property-label">Prepared for</div>
+    <h1>Canopy Health Assessment<br><span class="editable" contenteditable="false">Your Property Name</span></h1>
+    <div class="hero-sub">
+      Based on satellite NDVI analysis and an on-site walkthrough of your property,
+      we've identified opportunities to protect and strengthen your tree canopy — and reduce your liability exposure.
+    </div>
+  </div>
+
+  <!-- SATELLITE FINDING BAND -->
+  <div class="satellite-band">
+    <svg class="sat-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="6" fill="#1B5C34"/>
+      <path d="M8 26 L28 10" stroke="#17AB2D" stroke-width="1.5" stroke-dasharray="2,2"/>
+      <circle cx="9" cy="26" r="3" fill="#17AB2D"/>
+      <circle cx="27" cy="10" r="3" fill="#B3CDA6"/>
+      <path d="M14 18 C14 18 18 14 22 18 C26 22 30 18 30 18" stroke="#B3CDA6" stroke-width="1" fill="none"/>
+      <rect x="10" y="8" width="4" height="4" rx="1" fill="#BD5915"/>
+      <line x1="12" y1="8" x2="12" y2="5" stroke="#BD5915" stroke-width="1"/>
+      <line x1="10" y1="10" x2="7" y2="10" stroke="#BD5915" stroke-width="1"/>
+    </svg>
+    <div class="sat-text">
+      <div class="sat-label">🛰 Sentinel-2 Satellite Analysis · Summer 2023 → 2025</div>
+      <div class="sat-headline">Canopy stress detected at <span class="editable-dark" contenteditable="false">this property</span> — confirmed by ground inspection</div>
+      <div class="sat-detail">NDVI change: <strong style="color:#BD5915"><span class="editable-dark" contenteditable="false">−3.97%</span></strong> &nbsp;·&nbsp; Hotspot rank: <span class="editable-dark" contenteditable="false">#1 of 3,666 clusters analyzed</span> in your area</div>
+    </div>
+    <div class="sat-stats">
+      <div class="stat-box">
+        <span class="stat-num" style="color:#BD5915"><span class="editable-dark" contenteditable="false">22</span></span>
+        <span class="stat-label">Acres<br>Affected</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num"><span class="editable-dark" contenteditable="false">3</span></span>
+        <span class="stat-label">Trees<br>at Risk</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- SERVICES -->
+    <div class="services-heading">Recommended Services For This Property</div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <svg class="service-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="32" r="2" fill="#17AB2D"/>
+          <rect x="14.5" y="18" width="3" height="14" fill="#17AB2D"/>
+          <ellipse cx="16" cy="14" rx="9" ry="8" fill="#17AB2D"/>
+          <ellipse cx="10" cy="17" rx="6" ry="5" fill="#1B5C34" opacity="0.5"/>
+          <ellipse cx="22" cy="17" rx="6" ry="5" fill="#1B5C34" opacity="0.5"/>
+        </svg>
+        <div class="service-name">Tree Risk Assessment</div>
+        <div class="service-desc">ISA TRAQ-certified evaluation of every tree on your property. Produces ANSI A300-compliant documentation — legally defensible for your board and insurance carrier.</div>
+      </div>
+
+      <div class="service-card">
+        <svg class="service-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4 C12 4 6 8 6 15 C6 20 10 24 16 26 C22 24 26 20 26 15 C26 8 20 4 16 4Z" fill="#17AB2D"/>
+          <path d="M16 10 C14 10 11 13 11 16 C11 19 13 21 16 22 C19 21 21 19 21 16 C21 13 18 10 16 10Z" fill="#1B5C34"/>
+          <circle cx="16" cy="16" r="3" fill="#B3CDA6"/>
+        </svg>
+        <div class="service-name">Plant Health Care</div>
+        <div class="service-desc">Science-based diagnosis of disease, pest pressure, and nutrient deficiencies. Proprietary ArborHealth® treatments not available from any other company.</div>
+      </div>
+
+      <div class="service-card">
+        <svg class="service-icon" viewBox="0 0 32 32" fill="none">
+          <rect x="4" y="22" width="24" height="3" rx="1.5" fill="#1B5C34"/>
+          <path d="M10 22 C10 22 8 12 16 8 C24 12 22 22 22 22" fill="#17AB2D"/>
+          <path d="M7 22 C7 22 5 16 10 12" stroke="#1B5C34" stroke-width="1" fill="none"/>
+          <path d="M25 22 C25 22 27 16 22 12" stroke="#1B5C34" stroke-width="1" fill="none"/>
+        </svg>
+        <div class="service-name">Pruning & Crown Care</div>
+        <div class="service-desc">ANSI A300 structural pruning to improve canopy architecture, clearance, and long-term vitality. Every cut by an ISA Certified Arborist.</div>
+      </div>
+
+    </div>
+
+    <!-- CREDENTIALS STRIP -->
+    <div class="credentials-strip">
+      <div class="cred-item">
+        <svg class="cred-icon" viewBox="0 0 28 28" fill="none">
+          <path d="M14 3 L17 10 L25 10 L19 15 L21 23 L14 18 L7 23 L9 15 L3 10 L11 10Z" fill="#17AB2D"/>
+        </svg>
+        <div>
+          <div class="cred-label">ISA Certified</div>
+          <div class="cred-sub">Every Arborist on Every Job</div>
+        </div>
+      </div>
+      <div class="cred-divider"></div>
+      <div class="cred-item">
+        <svg class="cred-icon" viewBox="0 0 28 28" fill="none">
+          <rect x="4" y="4" width="20" height="20" rx="3" stroke="#17AB2D" stroke-width="2"/>
+          <path d="M9 14 L12 17 L19 10" stroke="#17AB2D" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="cred-label">ANSI A300</div>
+          <div class="cred-sub">Legally Defensible Documentation</div>
+        </div>
+      </div>
+      <div class="cred-divider"></div>
+      <div class="cred-item">
+        <svg class="cred-icon" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="10" stroke="#17AB2D" stroke-width="2"/>
+          <path d="M14 8 L14 14 L18 14" stroke="#17AB2D" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="cred-label">40+ Years</div>
+          <div class="cred-sub">Founded 1985 · 58 Locations</div>
+        </div>
+      </div>
+      <div class="cred-divider"></div>
+      <div class="cred-item">
+        <svg class="cred-icon" viewBox="0 0 28 28" fill="none">
+          <path d="M14 4 C9 4 4 9 4 14 C4 20 9 24 14 24 C19 24 24 20 24 14 C24 9 19 4 14 4Z" fill="none" stroke="#17AB2D" stroke-width="2"/>
+          <path d="M10 14 C10 12 12 10 14 10 C16 10 18 12 18 14" stroke="#17AB2D" stroke-width="1.5" fill="none"/>
+          <ellipse cx="14" cy="18" rx="5" ry="3" fill="#17AB2D" opacity="0.3"/>
+        </svg>
+        <div>
+          <div class="cred-label">TCIA Accredited</div>
+          <div class="cred-sub">1st Multi-State Company</div>
+        </div>
+      </div>
+      <div class="cred-divider"></div>
+      <div class="cred-item">
+        <svg class="cred-icon" viewBox="0 0 28 28" fill="none">
+          <path d="M8 24 L14 6 L20 24" stroke="#17AB2D" stroke-width="2" stroke-linecap="round"/>
+          <line x1="10" y1="18" x2="18" y2="18" stroke="#17AB2D" stroke-width="2"/>
+        </svg>
+        <div>
+          <div class="cred-label">ISA TRAQ</div>
+          <div class="cred-sub">Tree Risk Assessment Qualified</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEXT STEPS -->
+    <div class="next-steps">
+      <div class="next-heading">What Happens Next</div>
+      <div class="next-sub">A simple three-step process — no obligation at any stage</div>
+      <div class="steps-row">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-title">Canopy Walkthrough</div>
+          <div class="step-desc">Jackson walks the property with you, noting every tree of concern. Takes 30–60 minutes. No cost.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-title">Written Assessment</div>
+          <div class="step-desc">You receive a full ANSI A300 / TRAQ risk report within 5 business days, prioritized by urgency.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-title">Proposal & Program</div>
+          <div class="step-desc">A custom Plant Health Care program scoped to your budget and canopy goals. No hidden fees.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-title">Ongoing Stewardship</div>
+          <div class="step-desc">We become your preferred vendor — seasonal treatments, documented record, one point of contact.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <strong>SavATree — Middleton, MA Branch</strong><br>
+      Serving Middlesex & Essex County · ISA Certified · TCIA Accredited · ANSI A300<br>
+      (978) 739-2300 &nbsp;·&nbsp; savatree.com &nbsp;·&nbsp; Serving your area since 1985
+    </div>
+    <div class="footer-cta">
+      <span class="footer-cta-label">Ready to get started?</span>
+      <span class="footer-cta-action">Request a Free Consultation</span>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+</body>
+</html>

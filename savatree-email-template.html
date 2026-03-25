@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SavATree — Email Outreach Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: #F3F0E7;
+    color: #1F1C1D;
+    padding: 24px;
+  }
+
+  /* ---- TOOLBAR ---- */
+  .toolbar {
+    background: #1B5C34;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+  }
+
+  .toolbar-title {
+    color: #B3CDA6;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .toolbar-sub {
+    color: #5a8a6a;
+    font-size: 10px;
+    margin-top: 2px;
+  }
+
+  .toolbar-btns {
+    display: flex;
+    gap: 8px;
+  }
+
+  .tb-btn {
+    background: #17AB2D;
+    color: #fff;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+
+  .tb-btn.outline {
+    background: transparent;
+    border: 1px solid rgba(179,205,166,0.4);
+    color: #B3CDA6;
+  }
+
+  /* ---- TABS ---- */
+  .tabs {
+    display: flex;
+    background: #1a5030;
+    border-bottom: 3px solid #17AB2D;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #5a8a6a;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.2s;
+  }
+
+  .tab:hover { background: rgba(255,255,255,0.05); color: #B3CDA6; }
+  .tab.active { background: #17AB2D; color: #fff; }
+
+  /* ---- MAIN LAYOUT ---- */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    background: #fff;
+    border: 1px solid #d0cdc6;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    min-height: 720px;
+  }
+
+  /* ---- SIDEBAR ---- */
+  .sidebar {
+    background: #f9f7f2;
+    border-right: 1px solid #e4e0d8;
+    padding: 20px 0;
+  }
+
+  .sidebar-section {
+    margin-bottom: 8px;
+  }
+
+  .sidebar-label {
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 700;
+    padding: 0 16px;
+    margin-bottom: 6px;
+  }
+
+  .email-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .email-item:hover {
+    background: rgba(27,92,52,0.05);
+    border-left-color: #B3CDA6;
+  }
+
+  .email-item.active {
+    background: rgba(23,171,45,0.08);
+    border-left-color: #17AB2D;
+  }
+
+  .email-item-num {
+    font-size: 8px;
+    font-weight: 700;
+    color: #17AB2D;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .email-item-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #1B5C34;
+    line-height: 1.3;
+    margin: 2px 0;
+  }
+
+  .email-item-timing {
+    font-size: 9px;
+    color: #888;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: #e4e0d8;
+    margin: 12px 16px;
+  }
+
+  /* ---- EMAIL PREVIEW PANEL ---- */
+  .email-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .email-meta {
+    background: #f9f7f2;
+    padding: 16px 24px;
+    border-bottom: 1px solid #e4e0d8;
+  }
+
+  .email-meta-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .email-meta-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 55px;
+    flex-shrink: 0;
+  }
+
+  .email-meta-val {
+    font-size: 12px;
+    color: #333;
+  }
+
+  .email-meta-val.subject {
+    font-weight: 700;
+    color: #1B5C34;
+    font-size: 13px;
+  }
+
+  .email-meta-timing {
+    display: inline-block;
+    background: #17AB2D;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* ---- EMAIL BODY ---- */
+  .email-body-wrapper {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  /* The actual rendered email */
+  .email-render {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #e0ddd6;
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .er-header {
+    background: #1B5C34;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .er-logo-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+
+  .er-logo-dot {
+    color: #17AB2D;
+  }
+
+  .er-logo-sub {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #B3CDA6;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .er-body {
+    padding: 28px 32px;
+  }
+
+  .er-greeting {
+    font-size: 15px;
+    color: #1F1C1D;
+    margin-bottom: 16px;
+  }
+
+  .er-para {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+
+  .er-highlight {
+    background: #F3F0E7;
+    border-left: 3px solid #17AB2D;
+    padding: 12px 16px;
+    margin: 18px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .er-highlight-label {
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #BD5915;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .er-highlight-text {
+    font-size: 13px;
+    color: #1B5C34;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .er-cta {
+    display: inline-block;
+    background: #17AB2D;
+    color: #fff;
+    padding: 11px 24px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 8px 0;
+  }
+
+  .er-sig {
+    border-top: 1px solid #e0ddd6;
+    padding-top: 18px;
+    margin-top: 24px;
+  }
+
+  .er-sig-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1B5C34;
+  }
+
+  .er-sig-creds {
+    font-size: 10px;
+    color: #17AB2D;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 2px 0;
+  }
+
+  .er-sig-contact {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.7;
+    margin-top: 4px;
+  }
+
+  .er-sig-logo {
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 900;
+    color: #1B5C34;
+    letter-spacing: 1px;
+  }
+
+  .er-footer {
+    background: #f0ede6;
+    padding: 12px 28px;
+    font-size: 9px;
+    color: #999;
+    line-height: 1.6;
+    border-top: 1px solid #e0ddd6;
+  }
+
+  /* ---- EMAIL PANEL BLOCKS ---- */
+  .email-content-block {
+    display: none;
+  }
+
+  .email-content-block.active {
+    display: block;
+  }
+
+  /* ---- COPY / TIPS ---- */
+  .pro-tip {
+    background: #F3F0E7;
+    border: 1px solid #d0cdc5;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-top: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pt-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #BD5915;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .pt-text {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .copy-btn {
+    background: #1B5C34;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .copy-btn:hover { background: #17AB2D; }
+
+  .editable {
+    background: rgba(23,171,45,0.08);
+    border: 1px dashed #17AB2D;
+    border-radius: 2px;
+    padding: 0 3px;
+    cursor: text;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div>
+    <div class="toolbar-title">🌳 SavATree Outreach Email Templates — Jackson Farley</div>
+    <div class="toolbar-sub">6 email sequences ready to customize · Click any email to preview · Copy to clipboard for Gmail/Outlook</div>
+  </div>
+  <div class="toolbar-btns">
+    <button class="tb-btn outline" id="editBtn" onclick="toggleEditing()">✏️ Enable Editing</button>
+    <button class="tb-btn" onclick="copyCurrentEmail()">📋 Copy Email</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0, this)">HOA / Multifamily</div>
+  <div class="tab" onclick="switchTab(1, this)">Commercial</div>
+  <div class="tab" onclick="switchTab(2, this)">Municipal</div>
+  <div class="tab" onclick="switchTab(3, this)">Follow-Up</div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+
+    <!-- TAB 0: HOA/Multifamily -->
+    <div id="sidebar-0">
+      <div class="sidebar-section">
+        <div class="sidebar-label">HOA · Condo · Multifamily</div>
+        <div class="email-item active" onclick="showEmail('hoa-1', this)">
+          <div class="email-item-num">Touch 1</div>
+          <div class="email-item-title">Satellite Signal + Liability Hook</div>
+          <div class="email-item-timing">Day 1 · Cold open</div>
+        </div>
+        <div class="email-item" onclick="showEmail('hoa-2', this)">
+          <div class="email-item-num">Touch 2</div>
+          <div class="email-item-title">ANSI A300 Board Protection</div>
+          <div class="email-item-timing">Day 7 · Credentialing</div>
+        </div>
+        <div class="email-item" onclick="showEmail('hoa-3', this)">
+          <div class="email-item-num">Touch 3</div>
+          <div class="email-item-title">Social Proof + Close</div>
+          <div class="email-item-timing">Day 14 · Offer walkthrough</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 1: Commercial -->
+    <div id="sidebar-1" style="display:none;">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Commercial · Facilities</div>
+        <div class="email-item active" onclick="showEmail('comm-1', this)">
+          <div class="email-item-num">Touch 1</div>
+          <div class="email-item-title">Risk Reduction + Insurance Angle</div>
+          <div class="email-item-timing">Day 1 · Cold open</div>
+        </div>
+        <div class="email-item" onclick="showEmail('comm-2', this)">
+          <div class="email-item-num">Touch 2</div>
+          <div class="email-item-title">Documentation + Budget Justification</div>
+          <div class="email-item-timing">Day 8 · Value build</div>
+        </div>
+        <div class="email-item" onclick="showEmail('comm-3', this)">
+          <div class="email-item-num">Touch 3</div>
+          <div class="email-item-title">Close Loop</div>
+          <div class="email-item-timing">Day 16 · Last touch</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Municipal -->
+    <div id="sidebar-2" style="display:none;">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Municipal · Town DPW</div>
+        <div class="email-item active" onclick="showEmail('mun-1', this)">
+          <div class="email-item-num">Touch 1</div>
+          <div class="email-item-title">Public Safety + TRAQ Credentials</div>
+          <div class="email-item-timing">Day 1 · Cold open</div>
+        </div>
+        <div class="email-item" onclick="showEmail('mun-2', this)">
+          <div class="email-item-num">Touch 2</div>
+          <div class="email-item-title">Canopy Inventory Offer</div>
+          <div class="email-item-timing">Day 10 · Program framing</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Follow-Up -->
+    <div id="sidebar-3" style="display:none;">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Post-Meeting Follow-Up</div>
+        <div class="email-item active" onclick="showEmail('fu-1', this)">
+          <div class="email-item-num">Post-Walk</div>
+          <div class="email-item-title">Site Walk Thank You + Next Steps</div>
+          <div class="email-item-timing">Same day as visit</div>
+        </div>
+        <div class="email-item" onclick="showEmail('fu-2', this)">
+          <div class="email-item-num">Post-Proposal</div>
+          <div class="email-item-title">Proposal Follow-Up</div>
+          <div class="email-item-timing">5–7 days after proposal</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EMAIL PANEL -->
+  <div class="email-panel">
+    <div class="email-meta" id="emailMeta">
+      <div class="email-meta-row">
+        <span class="email-meta-label">From:</span>
+        <span class="email-meta-val">Jackson Farley &lt;jackson.farley@savatree.com&gt;</span>
+      </div>
+      <div class="email-meta-row">
+        <span class="email-meta-label">To:</span>
+        <span class="email-meta-val" id="meta-to">[Property Manager / Board President Name]</span>
+      </div>
+      <div class="email-meta-row">
+        <span class="email-meta-label">Subject:</span>
+        <span class="email-meta-val subject" id="meta-subject">Canopy stress flagged at [Property Name] — quick note from your local arborist</span>
+        <span class="email-meta-timing" id="meta-timing">Day 1</span>
+      </div>
+    </div>
+
+    <div class="email-body-wrapper">
+
+      <!-- HOA TOUCH 1 -->
+      <div class="email-content-block active" id="email-hoa-1">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <ellipse cx="12" cy="19" rx="7" ry="6" fill="#17AB2D"/>
+              <ellipse cx="26" cy="19" rx="7" ry="6" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-hoa-1">
+            <div class="er-greeting">Hi <span class="editable">[First Name]</span>,</div>
+            <div class="er-para">
+              My name is Jackson Farley — I'm a Sales Arborist and ISA Certified Arborist with SavATree's Middleton branch. I'm reaching out because satellite canopy analysis flagged <strong><span class="editable">[Property Name]</span></strong> as one of the highest-stress properties in <span class="editable">[Town]</span> this year.
+            </div>
+            <div class="er-highlight">
+              <div class="er-highlight-label">🛰 Sentinel-2 NDVI Analysis · Summer 2023 → 2025</div>
+              <div class="er-highlight-text">Your property ranked <span class="editable">#__ of 3,666</span> hotspot clusters analyzed in your area. NDVI decline: <span class="editable" style="color:#BD5915">−__% canopy health loss</span>.</div>
+            </div>
+            <div class="er-para">
+              This kind of stress pattern often precedes branch failure and tree loss — and for an HOA, that means liability exposure and expensive emergency removals. The good news: caught early, most of this canopy is recoverable.
+            </div>
+            <div class="er-para">
+              I'd love to do a no-cost site walkthrough with you or your board — 30 minutes, no commitment. I can show you exactly which trees are flagging, what's causing it, and what a science-based care program looks like.
+            </div>
+            <div class="er-para">Are you available for a quick call this week to set that up?</div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com<br>
+                savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup> &nbsp;·&nbsp; <span style="font-weight:300; font-size:10px; color:#888;">ISA Certified · TCIA Accredited · 40+ Years</span></div>
+            </div>
+          </div>
+          <div class="er-footer">This email was sent to you because your property was identified in our satellite canopy health analysis. To opt out of future outreach, reply "unsubscribe." SavATree, LLC · 500 Campus Drive, Suite 100 · Florham Park, NJ 07932</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Touch 1</div>
+          <div class="pt-text">Lead with the satellite data point — it's a pattern interrupt. Don't mention pricing. Keep it to one specific ask: "a quick call." For AvalonBay or Dolben properties, personalize the property name and hotspot rank. Add Jackson's direct cell number before sending.</div>
+          <button class="copy-btn" onclick="copyEmail('body-hoa-1')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- HOA TOUCH 2 -->
+      <div class="email-content-block" id="email-hoa-2">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-hoa-2">
+            <div class="er-greeting">Hi <span class="editable">[First Name]</span>,</div>
+            <div class="er-para">
+              Following up on my note last week about canopy stress at <strong><span class="editable">[Property Name]</span></strong>. I wanted to share something your board may not know: documented tree risk assessments following ANSI A300 standards can significantly reduce your liability exposure — and in some cases, support lower insurance premiums.
+            </div>
+            <div class="er-highlight">
+              <div class="er-highlight-label">📋 Board Protection</div>
+              <div class="er-highlight-text">An ANSI A300 / ISA TRAQ assessment creates a legally defensible record showing your board exercised due diligence. Without it, you may be exposed in the event of a tree failure incident.</div>
+            </div>
+            <div class="er-para">
+              As an ISA Certified Arborist with TRAQ certification (Tree Risk Assessment Qualified), I produce documentation that meets the highest industry standards — the same standard used in litigation and insurance claims.
+            </div>
+            <div class="er-para">
+              We're the first multi-state tree care company accredited by TCIA — and our arborists are certified, not just licensed. That difference matters when your board needs to defend a decision.
+            </div>
+            <div class="er-para">Happy to put together a complimentary canopy summary for your next board meeting. Would that be useful?</div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · 500 Campus Drive, Suite 100 · Florham Park, NJ 07932 · To unsubscribe, reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Touch 2</div>
+          <div class="pt-text">Shift from tree health to board liability. HOA boards are fiduciaries — the word "defensible" resonates. Offer the free canopy summary as a give; it gets you in the door without being salesy. Time this 7 days after Touch 1.</div>
+          <button class="copy-btn" onclick="copyEmail('body-hoa-2')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- HOA TOUCH 3 -->
+      <div class="email-content-block" id="email-hoa-3">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-hoa-3">
+            <div class="er-greeting">Hi <span class="editable">[First Name]</span>,</div>
+            <div class="er-para">
+              Last message on <strong><span class="editable">[Property Name]</span></strong> — I promise I'll leave you alone after this one.
+            </div>
+            <div class="er-para">
+              We're currently working with several <span class="editable">[Town]</span>-area HOAs and multifamily communities on seasonal plant health care programs — and I've had a slot open up for a complimentary site walkthrough this month.
+            </div>
+            <div class="er-highlight">
+              <div class="er-highlight-label">✅ No cost, no commitment</div>
+              <div class="er-highlight-text">30-minute walkthrough → written canopy summary → optional proposal. You decide at every step whether to proceed.</div>
+            </div>
+            <div class="er-para">
+              If the timing isn't right, totally understood. But if you'd like a second set of expert eyes on your trees before spring, I'd love to be that resource for you.
+            </div>
+            <div class="er-para">Either way — take care, and feel free to reach out whenever you're ready.</div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com · savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · 500 Campus Drive, Suite 100 · Florham Park, NJ 07932 · To unsubscribe, reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Touch 3</div>
+          <div class="pt-text">Low pressure close — "last message" language shows respect for their inbox and often triggers a response from polite people who just got busy. The seasonal angle ("before spring") creates urgency without being pushy. Don't pitch price yet.</div>
+          <button class="copy-btn" onclick="copyEmail('body-hoa-3')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- COMMERCIAL TOUCH 1 -->
+      <div class="email-content-block" id="email-comm-1">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-comm-1">
+            <div class="er-greeting">Hi <span class="editable">[First Name]</span>,</div>
+            <div class="er-para">
+              I'm Jackson Farley, Sales Arborist with SavATree's Middleton branch. I'm reaching out because our satellite canopy analysis flagged significant tree stress at <strong><span class="editable">[Property / Campus Name]</span></strong> — and for a commercial property, that's a liability conversation worth having sooner than later.
+            </div>
+            <div class="er-highlight">
+              <div class="er-highlight-label">📊 Risk Exposure</div>
+              <div class="er-highlight-text">Declining trees on commercial properties represent measurable liability. Our commercial clients with documented ANSI A300 / TRAQ assessments have reported insurance savings of ~12% by demonstrating proactive risk management.</div>
+            </div>
+            <div class="er-para">
+              We're TCIA accredited, ISA certified, and produce legally defensible documentation that your facilities team and legal department can rely on — not just a spray-and-pray service.
+            </div>
+            <div class="er-para">
+              Would a 20-minute call make sense to look at what your current tree program covers — and what it might be missing?
+            </div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · 500 Campus Drive, Suite 100 · Florham Park, NJ 07932 · To unsubscribe, reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Commercial Touch 1</div>
+          <div class="pt-text">Facilities managers are ROI-driven. Lead with the 12% insurance savings stat — it's specific and credible. Ask for a "20-minute call" not a "walkthrough" — commercial contacts think in meetings, not site visits. Get the call first, then schedule the walk.</div>
+          <button class="copy-btn" onclick="copyEmail('body-comm-1')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- COMMERCIAL TOUCH 2 -->
+      <div class="email-content-block" id="email-comm-2">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-comm-2">
+            <div class="er-greeting">Hi <span class="editable">[First Name]</span>,</div>
+            <div class="er-para">
+              Wanted to follow up on my note about tree risk at <span class="editable">[Property Name]</span>. I know facilities budgets are tight — one thing that helps our commercial clients justify a tree care program internally is having the right documentation.
+            </div>
+            <div class="er-highlight">
+              <div class="er-highlight-label">📋 Budget Justification Tool</div>
+              <div class="er-highlight-text">An ANSI A300 risk report gives your team a prioritized, cost-tiered action list — so you can address the highest-risk trees first and phase the rest. It turns an open-ended "tree problem" into a manageable, defensible line item.</div>
+            </div>
+            <div class="er-para">
+              I can produce that report after a single site walkthrough — typically 2–3 hours for a campus-sized property. The report is yours to keep regardless of whether you move forward with SavATree.
+            </div>
+            <div class="er-para">Worth a quick call to see if this fits your current budget cycle?</div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · To unsubscribe reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Commercial Touch 2</div>
+          <div class="pt-text">The "report is yours to keep" language is a powerful trust signal — it shows confidence in the value you provide. Mention budget cycle timing — facilities managers operate on fiscal calendars. Ask if they're planning for Q3/Q4 or the next fiscal year.</div>
+          <button class="copy-btn" onclick="copyEmail('body-comm-2')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- COMMERCIAL TOUCH 3 -->
+      <div class="email-content-block" id="email-comm-3">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-comm-3">
+            <div class="er-greeting">Hi <span class="editable">[First Name]</span>,</div>
+            <div class="er-para">
+              Last note on this from me — just wanted to close the loop on <span class="editable">[Property Name]</span>.
+            </div>
+            <div class="er-para">
+              If the timing isn't right or you have coverage in place, no problem at all. If you ever want a second opinion on your current tree program — or if something changes — I'm easy to find.
+            </div>
+            <div class="er-para">Take care, and feel free to reach out whenever it makes sense.</div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com · savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · To unsubscribe reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Commercial Touch 3</div>
+          <div class="pt-text">Short close. Don't repeat the pitch — they've seen it. The goal is to leave on a warm note so they think of Jackson when they do need a tree assessment. "Second opinion" language invites them back in without pressure.</div>
+          <button class="copy-btn" onclick="copyEmail('body-comm-3')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- MUNICIPAL TOUCH 1 -->
+      <div class="email-content-block" id="email-mun-1">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-mun-1">
+            <div class="er-greeting">Hi <span class="editable">[Director / DPW Superintendent Name]</span>,</div>
+            <div class="er-para">
+              My name is Jackson Farley — I'm an ISA Certified Arborist and TRAQ-qualified (Tree Risk Assessment Qualified) with SavATree's Middleton branch. I'm reaching out because our satellite NDVI analysis identified elevated canopy stress across several public areas in <span class="editable">[Town]</span> this year.
+            </div>
+            <div class="er-highlight">
+              <div class="er-highlight-label">🏛 Public Safety Risk</div>
+              <div class="er-highlight-text">Satellite data flagged <span class="editable">__+ acres</span> of canopy decline near public ROW, parks, and municipal properties. Documented TRAQ assessments give your department a defensible, prioritized action plan — and protect elected officials in the event of a tree failure incident.</div>
+            </div>
+            <div class="er-para">
+              SavATree has experience with municipal contracts and understands DPW budget cycles, documentation requirements, and public reporting standards. We can structure an assessment to align with your FY planning.
+            </div>
+            <div class="er-para">Would a brief call or meeting make sense this month to review the satellite data together?</div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · To unsubscribe reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Municipal Touch 1</div>
+          <div class="pt-text">Municipal contacts need to protect their DPW director and elected officials — lead with "defensible" and "prioritized action plan." Mention FY budget alignment — municipalities plan 6–12 months out. Offer to share the satellite data map directly; it's a compelling visual hook.</div>
+          <button class="copy-btn" onclick="copyEmail('body-mun-1')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- MUNICIPAL TOUCH 2 -->
+      <div class="email-content-block" id="email-mun-2">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-mun-2">
+            <div class="er-greeting">Hi <span class="editable">[Name]</span>,</div>
+            <div class="er-para">
+              Following up on my note about canopy stress in <span class="editable">[Town]</span>. One thing we offer for municipalities is a <strong>canopy inventory program</strong> — a full tree-by-tree assessment of your public ROW and parks, mapped to a GIS-compatible format for your records.
+            </div>
+            <div class="er-highlight">
+              <div class="er-highlight-label">🗺 Canopy Inventory Program</div>
+              <div class="er-highlight-text">Tagged tree database → TRAQ risk ratings → priority action queue → annual stewardship plan. Gives your department a living document that supports RFPs, budget requests, and public safety reporting.</div>
+            </div>
+            <div class="er-para">
+              We can phase this over one or two seasons to match your budget. Happy to share examples from similar towns we've worked with.
+            </div>
+            <div class="er-para">Let me know if a 30-minute call would be worth your time.</div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · To unsubscribe reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Municipal Touch 2</div>
+          <div class="pt-text">The canopy inventory is a long-term program sell — municipalities love structured deliverables they can put in an annual report. GIS compatibility is a technical signal that resonates with DPW staff. "Phase over one or two seasons" makes the budget conversation easier.</div>
+          <button class="copy-btn" onclick="copyEmail('body-mun-2')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- FOLLOW-UP TOUCH 1 -->
+      <div class="email-content-block" id="email-fu-1">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-fu-1">
+            <div class="er-greeting">Hi <span class="editable">[First Name]</span>,</div>
+            <div class="er-para">
+              Thank you for walking the property with me today — I really enjoyed seeing <span class="editable">[Property Name]</span> and learning more about what you're managing there.
+            </div>
+            <div class="er-highlight">
+              <div class="er-highlight-label">📋 What I Observed Today</div>
+              <div class="er-highlight-text"><span class="editable">Key observations from the walkthrough — tree locations, species, visible symptoms, urgency levels. Customize this section after each visit.</span></div>
+            </div>
+            <div class="er-para">
+              Based on what I saw, here's what I'd recommend as a starting point:
+            </div>
+            <div class="er-para">
+              <strong>Immediate priority:</strong> <span class="editable">[Describe 1–2 urgent items]</span><br>
+              <strong>Season program:</strong> <span class="editable">[PHC program recommendation]</span><br>
+              <strong>Long-term:</strong> <span class="editable">[Structural pruning, canopy plan, etc.]</span>
+            </div>
+            <div class="er-para">
+              I'll have a formal written assessment and proposal over to you within 5 business days. In the meantime, please reach out with any questions — I'm always happy to talk trees.
+            </div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com · savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · To unsubscribe reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Post-Site-Walk</div>
+          <div class="pt-text">Send this within 2 hours of the site walk while you're still fresh in their mind. Personalize the observations section — specificity shows you were paying attention. Leave the "Immediate priority" line as a hook that creates urgency without a hard sell. Proposal follows within 5 days.</div>
+          <button class="copy-btn" onclick="copyEmail('body-fu-1')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+      <!-- FOLLOW-UP TOUCH 2 -->
+      <div class="email-content-block" id="email-fu-2">
+        <div class="email-render">
+          <div class="er-header">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <ellipse cx="19" cy="15" rx="12" ry="10" fill="#17AB2D"/>
+              <rect x="17" y="23" width="4" height="12" fill="#17AB2D"/>
+              <ellipse cx="19" cy="36" r="2.5" fill="#17AB2D"/>
+            </svg>
+            <div>
+              <div class="er-logo-text">SAV<span class="er-logo-dot">A</span>TREE<sup style="font-size:9px">®</sup></div>
+              <div class="er-logo-sub">Certified Arborists · Middleton, MA</div>
+            </div>
+          </div>
+          <div class="er-body" id="body-fu-2">
+            <div class="er-greeting">Hi <span class="editable">[First Name]</span>,</div>
+            <div class="er-para">
+              Just checking in on the proposal I sent over for <span class="editable">[Property Name]</span>. Wanted to make sure it landed okay and that you had everything you needed to review it.
+            </div>
+            <div class="er-para">
+              Happy to jump on a quick call if you have questions, want to walk through any of the line items, or if there's anything I can adjust to better fit your budget or timeline.
+            </div>
+            <div class="er-para">No pressure at all — just want to make sure you have what you need to make the right call for your property.</div>
+            <div class="er-sig">
+              <div class="er-sig-name">Jackson R. Farley</div>
+              <div class="er-sig-creds">ISA Certified Arborist · TRAQ · Sales Arborist</div>
+              <div class="er-sig-contact">
+                SavATree — Middleton, MA<br>
+                M: <span class="editable">(351) 230-4288</span><br>
+                jackson.farley@savatree.com · savatree.com
+              </div>
+              <div class="er-sig-logo" style="margin-top:10px; font-size:12px; color:#1B5C34; font-weight:900; letter-spacing:1px;">SAVATREE<sup style="font-size:8px">®</sup></div>
+            </div>
+          </div>
+          <div class="er-footer">SavATree, LLC · To unsubscribe reply "remove."</div>
+        </div>
+        <div class="pro-tip">
+          <div class="pt-label">💡 Pro Tip — Post-Proposal Follow-Up</div>
+          <div class="pt-text">Keep it short and conversational. The offer to "walk through line items" opens a door without sounding pushy. "No pressure" language at this stage builds trust and often prompts a decision. If no reply in 7 more days, one final short check-in is appropriate.</div>
+          <button class="copy-btn" onclick="copyEmail('body-fu-2')">📋 Copy Email Body</button>
+        </div>
+      </div>
+
+    </div><!-- /email-body-wrapper -->
+  </div><!-- /email-panel -->
+</div><!-- /layout -->
+
+<script>
+const emailMeta = {
+  'hoa-1': { to: '[Property Manager / Board President]', subject: 'Canopy stress flagged at [Property Name] — quick note from your local arborist', timing: 'Day 1' },
+  'hoa-2': { to: '[Property Manager / Board President]', subject: 'Re: [Property Name] trees — one thing your board may not know', timing: 'Day 7' },
+  'hoa-3': { to: '[Property Manager / Board President]', subject: 'Closing the loop on [Property Name]', timing: 'Day 14' },
+  'comm-1': { to: '[Facilities Manager / Director of Operations]', subject: 'Tree risk at [Property Name] — documentation that supports insurance savings', timing: 'Day 1' },
+  'comm-2': { to: '[Facilities Manager / Director of Operations]', subject: 'Re: [Property Name] — budget tool for your tree program', timing: 'Day 8' },
+  'comm-3': { to: '[Facilities Manager / Director of Operations]', subject: 'Closing the loop — [Property Name]', timing: 'Day 16' },
+  'mun-1': { to: '[DPW Director / Town Arborist / Tree Warden]', subject: 'Canopy health data for [Town] — TRAQ assessment opportunity', timing: 'Day 1' },
+  'mun-2': { to: '[DPW Director / Town Arborist]', subject: 'Re: [Town] canopy inventory program — phased approach', timing: 'Day 10' },
+  'fu-1': { to: '[Contact Name — Post Site Walk]', subject: 'Great meeting today — site notes for [Property Name]', timing: 'Same Day' },
+  'fu-2': { to: '[Contact Name — Post Proposal]', subject: 'Checking in on the [Property Name] proposal', timing: 'Day 5-7' },
+};
+
+let currentEmailId = 'hoa-1';
+
+function showEmail(id, el) {
+  // Hide all email blocks
+  document.querySelectorAll('.email-content-block').forEach(b => b.classList.remove('active'));
+  document.getElementById('email-' + id)?.classList.add('active');
+
+  // Update sidebar active
+  document.querySelectorAll('.email-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  // Update meta
+  const m = emailMeta[id];
+  if (m) {
+    document.getElementById('meta-to').textContent = m.to;
+    document.getElementById('meta-subject').textContent = m.subject;
+    document.getElementById('meta-timing').textContent = m.timing;
+  }
+  currentEmailId = id;
+}
+
+function switchTab(tabIdx, el) {
+  // Update tab active states
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  // Show/hide sidebars
+  for (let i = 0; i < 4; i++) {
+    const sb = document.getElementById('sidebar-' + i);
+    if (sb) sb.style.display = i === tabIdx ? 'block' : 'none';
+  }
+
+  // Auto-show first email of this tab
+  const firstItems = ['hoa-1', 'comm-1', 'mun-1', 'fu-1'];
+  showEmail(firstItems[tabIdx], null);
+
+  // Reset sidebar active states within the new tab
+  setTimeout(() => {
+    const newSidebar = document.getElementById('sidebar-' + tabIdx);
+    if (newSidebar) {
+      newSidebar.querySelectorAll('.email-item').forEach((item, i) => {
+        item.classList.toggle('active', i === 0);
+      });
+    }
+  }, 10);
+}
+
+let editingEnabled = false;
+function toggleEditing() {
+  editingEnabled = !editingEnabled;
+  document.querySelectorAll('.editable').forEach(e => e.setAttribute('contenteditable', editingEnabled ? 'true' : 'false'));
+  document.getElementById('editBtn').textContent = editingEnabled ? '🔒 Lock Editing' : '✏️ Enable Editing';
+}
+
+function copyEmail(bodyId) {
+  const el = document.getElementById(bodyId);
+  if (!el) return;
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Email body copied to clipboard! Paste into Gmail or Outlook.');
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('Email body copied to clipboard!');
+  });
+}
+
+function copyCurrentEmail() {
+  const activeBlock = document.querySelector('.email-content-block.active');
+  if (!activeBlock) return;
+  const bodyDiv = activeBlock.querySelector('[id^="body-"]');
+  if (bodyDiv) copyEmail(bodyDiv.id);
+}
+</script>
+
+</body>
+</html>

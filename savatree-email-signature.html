@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SavATree Email Signature — Jackson Farley</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; background: #F3F0E7; padding: 30px; }
+
+  .toolbar {
+    background: #1B5C34; padding: 12px 20px; border-radius: 6px 6px 0 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  .tb-title { color: #B3CDA6; font-size: 13px; font-weight: bold; }
+  .tb-sub { color: #5a8a6a; font-size: 10px; margin-top: 2px; }
+  .tb-btn { background: #17AB2D; color: #fff; border: none; padding: 7px 14px;
+    border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+  .tb-btn.outline { background: transparent; border: 1px solid rgba(179,205,166,0.5); color: #B3CDA6; }
+
+  .sig-wrapper {
+    background: #fff;
+    border: 1px solid #d0cdc6;
+    border-top: none;
+    padding: 24px;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .sig-preview-label {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: #999; font-weight: bold; margin-bottom: 16px;
+    font-family: Arial, sans-serif;
+  }
+
+  /* THE ACTUAL SIGNATURE — using only inline-safe styles for email clients */
+  .sig-block {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1;
+    color: #1F1C1D;
+    max-width: 500px;
+    border-left: 3px solid #17AB2D;
+    padding-left: 14px;
+    margin: 0;
+  }
+
+  .sig-name {
+    font-size: 15px;
+    font-weight: bold;
+    color: #1B5C34;
+    margin: 0 0 3px 0;
+    line-height: 1.2;
+  }
+
+  .sig-creds {
+    font-size: 10px;
+    color: #17AB2D;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+  }
+
+  .sig-divider {
+    border: none;
+    border-top: 1px solid #e0ddd6;
+    margin: 8px 0;
+  }
+
+  .sig-company-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .sig-logo-mark {
+    font-size: 14px;
+    font-weight: 900;
+    color: #1B5C34;
+    letter-spacing: 1.5px;
+    line-height: 1;
+  }
+
+  .sig-logo-mark span {
+    color: #17AB2D;
+  }
+
+  .sig-logo-dot {
+    width: 1px; height: 20px;
+    background: #e0ddd6;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 6px;
+  }
+
+  .sig-info-line {
+    font-size: 12px;
+    color: #555;
+    margin: 0 0 3px 0;
+    line-height: 1.5;
+  }
+
+  .sig-info-line a {
+    color: #337835;
+    text-decoration: none;
+  }
+
+  .sig-badge-row {
+    margin-top: 8px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .sig-badge {
+    background: #F3F0E7;
+    border: 1px solid #B3CDA6;
+    color: #1B5C34;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+
+  .sig-disclaimer {
+    font-size: 9px;
+    color: #aaa;
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  /* INSTRUCTIONS PANEL */
+  .instructions {
+    background: #f9f7f2;
+    border: 1px solid #e0ddd6;
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  .inst-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1B5C34;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .inst-step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+
+  .inst-num {
+    width: 22px; height: 22px;
+    background: #17AB2D;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .inst-text {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .inst-text strong { color: #1B5C34; }
+
+  .copy-btn {
+    background: #1B5C34;
+    color: #fff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+  }
+
+  .copy-btn:hover { background: #17AB2D; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div>
+    <div class="tb-title">📧 SavATree Email Signature — Jackson Farley</div>
+    <div class="tb-sub">Copy the signature block below into Gmail Settings → Signature, or Outlook → Signature</div>
+  </div>
+  <div style="display:flex; gap:8px;">
+    <button class="tb-btn outline" onclick="enableEdit()">✏️ Edit Fields</button>
+    <button class="tb-btn" onclick="copySig()">📋 Copy Signature</button>
+  </div>
+</div>
+
+<div class="sig-wrapper">
+  <div class="sig-preview-label">Live Preview — This is exactly what recipients will see</div>
+
+  <!-- THE SIGNATURE BLOCK (id="sig" for copy) -->
+  <div id="sig">
+    <table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #1F1C1D;">
+      <tr>
+        <td style="border-left: 3px solid #17AB2D; padding-left: 14px;">
+
+          <!-- Name -->
+          <div style="font-size: 15px; font-weight: bold; color: #1B5C34; margin: 0 0 2px 0; line-height: 1.2;">
+            <span id="sig-name" contenteditable="false">Jackson R. Farley</span>
+          </div>
+
+          <!-- Credentials -->
+          <div style="font-size: 10px; color: #17AB2D; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 8px 0;">
+            ISA Certified Arborist &nbsp;·&nbsp; TRAQ &nbsp;·&nbsp; Sales Arborist
+          </div>
+
+          <!-- Divider -->
+          <div style="border-top: 1px solid #e0ddd6; margin: 6px 0;"></div>
+
+          <!-- Company logo text -->
+          <div style="font-size: 15px; font-weight: 900; color: #1B5C34; letter-spacing: 1.5px; margin: 4px 0 6px 0;">
+            SAV<span style="color:#17AB2D;">A</span>TREE<sup style="font-size:8px; vertical-align:super;">®</sup>
+            <span style="color: #ccc; font-weight: 300; font-size: 12px; letter-spacing: 0;">&nbsp;|&nbsp;</span>
+            <span style="font-size: 10px; font-weight: 300; color: #888; letter-spacing: 0.5px;">Certified Arborists · Middleton, MA</span>
+          </div>
+
+          <!-- Contact info -->
+          <div style="font-size: 12px; color: #555; line-height: 1.7; margin-bottom: 4px;">
+            📞 <span id="sig-phone" contenteditable="false">(351) 230-4288</span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            ✉️ <a href="mailto:jackson.farley@savatree.com" style="color: #337835; text-decoration: none;">
+              <span id="sig-email" contenteditable="false">jackson.farley@savatree.com</span>
+            </a>
+          </div>
+          <div style="font-size: 12px; color: #555; line-height: 1.7;">
+            🌐 <a href="https://www.savatree.com" style="color: #337835; text-decoration: none;">savatree.com</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            📍 Middleton, MA &nbsp;·&nbsp; Serving Middlesex &amp; Essex County
+          </div>
+
+          <!-- Divider -->
+          <div style="border-top: 1px solid #e0ddd6; margin: 8px 0 6px 0;"></div>
+
+          <!-- Credential badges -->
+          <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+            <span style="background: #F3F0E7; border: 1px solid #B3CDA6; color: #1B5C34; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px;">ISA Certified</span>
+            <span style="background: #F3F0E7; border: 1px solid #B3CDA6; color: #1B5C34; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px;">ANSI A300</span>
+            <span style="background: #F3F0E7; border: 1px solid #B3CDA6; color: #1B5C34; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px;">TCIA Accredited</span>
+            <span style="background: #F3F0E7; border: 1px solid #B3CDA6; color: #1B5C34; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px;">TRAQ Qualified</span>
+            <span style="background: #F3F0E7; border: 1px solid #B3CDA6; color: #1B5C34; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px;">Est. 1985</span>
+          </div>
+
+        </td>
+      </tr>
+    </table>
+  </div><!-- /sig -->
+
+</div><!-- /sig-wrapper -->
+
+<!-- INSTRUCTIONS -->
+<div class="instructions">
+  <div class="inst-title">📋 How to Install in Gmail or Outlook</div>
+
+  <div class="inst-step">
+    <div class="inst-num">1</div>
+    <div class="inst-text">Click <strong>"Copy Signature"</strong> button above — this copies the full HTML signature to your clipboard.</div>
+  </div>
+
+  <div class="inst-step">
+    <div class="inst-num">2</div>
+    <div class="inst-text">
+      <strong>Gmail:</strong> Go to Settings (⚙️) → See all settings → Signature tab → Create new signature → Paste (Ctrl+V / Cmd+V) into the signature box.
+    </div>
+  </div>
+
+  <div class="inst-step">
+    <div class="inst-num">3</div>
+    <div class="inst-text">
+      <strong>Outlook:</strong> File → Options → Mail → Signatures → New → Paste into the signature editor. Switch editor to HTML mode if needed.
+    </div>
+  </div>
+
+  <div class="inst-step">
+    <div class="inst-num">4</div>
+    <div class="inst-text">
+      Update your <strong>direct cell number</strong> in the signature before installing — click "Edit Fields" to make it editable.
+    </div>
+  </div>
+
+  <button class="copy-btn" onclick="copySig()">📋 Copy Signature HTML</button>
+</div>
+
+<script>
+function enableEdit() {
+  ['sig-name','sig-phone','sig-email'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute('contenteditable', 'true');
+  });
+  alert('Fields are now editable. Click on your name, phone, or email to update them, then click Copy Signature.');
+}
+
+function copySig() {
+  const el = document.getElementById('sig');
+  // Try clipboard API with HTML
+  if (navigator.clipboard && window.ClipboardItem) {
+    const blob = new Blob([el.innerHTML], { type: 'text/html' });
+    const item = new ClipboardItem({ 'text/html': blob });
+    navigator.clipboard.write([item]).then(() => {
+      alert('Signature copied as rich HTML! Paste directly into Gmail or Outlook signature editor.');
+    }).catch(() => fallbackCopy(el));
+  } else {
+    fallbackCopy(el);
+  }
+}
+
+function fallbackCopy(el) {
+  // Select the element content
+  const range = document.createRange();
+  range.selectNode(el);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  document.execCommand('copy');
+  window.getSelection().removeAllRanges();
+  alert('Signature selected and copied! Paste (Ctrl+V) directly into your email signature editor.');
+}
+</script>
+
+</body>
+</html>
