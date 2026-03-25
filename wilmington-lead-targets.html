@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wilmington MA — Satellite Lead Targets | SavATree</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
+
+  .header { background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%); border-bottom: 1px solid #2d3748; padding: 24px 32px; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .header-title { font-size: 22px; font-weight: 700; color: #fff; }
+  .header-title span { color: #48bb78; }
+  .header-subtitle { font-size: 13px; color: #718096; margin-top: 2px; }
+  .badge-satellite { background: #1a365d; border: 1px solid #2b6cb0; color: #63b3ed; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+
+  .stats-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 16px; }
+  .stat-card { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 8px; padding: 12px 14px; text-align: center; }
+  .stat-card.alert { border-color: #e53e3e; background: #1a0a0a; }
+  .stat-card.warn { border-color: #ed8936; background: #1a120a; }
+  .stat-card.ok { border-color: #48bb78; background: #0a1a10; }
+  .stat-value { font-size: 22px; font-weight: 700; color: #fff; }
+  .stat-card.alert .stat-value { color: #fc8181; }
+  .stat-card.warn .stat-value { color: #fbd38d; }
+  .stat-card.ok .stat-value { color: #68d391; }
+  .stat-label { font-size: 10px; color: #718096; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .pipeline-bar { display: flex; gap: 12px; padding: 14px 32px; background: #12161f; border-bottom: 1px solid #2d3748; overflow-x: auto; }
+  .pipeline-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #718096; white-space: nowrap; }
+  .pipeline-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .pipeline-count { font-weight: 700; color: #e2e8f0; }
+  .pipeline-divider { color: #2d3748; }
+
+  .main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; margin-top: 8px; }
+  .section-title { font-size: 13px; font-weight: 600; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; }
+  .lead-count { font-size: 12px; color: #718096; }
+
+  .lead-card { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 12px; margin-bottom: 16px; overflow: hidden; transition: border-color 0.2s; }
+  .lead-card:hover { border-color: #4a5568; }
+  .lead-card.tier-s { border-left: 4px solid #48bb78; }
+  .lead-card.tier-a { border-left: 4px solid #63b3ed; }
+  .lead-card.tier-b { border-left: 4px solid #ed8936; }
+
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 18px 20px 14px; cursor: pointer; user-select: none; }
+  .card-header:hover { background: rgba(255,255,255,0.02); }
+  .card-left { flex: 1; }
+  .card-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .property-name { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .property-meta { font-size: 12px; color: #718096; }
+  .property-meta strong { color: #a0aec0; }
+
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 12px; }
+  .badge-tier-s { background: #1a3a2a; border: 1px solid #48bb78; color: #68d391; }
+  .badge-tier-a { background: #1a2a3a; border: 1px solid #63b3ed; color: #90cdf4; }
+  .badge-tier-b { background: #2d1f0a; border: 1px solid #ed8936; color: #fbd38d; }
+  .badge-hotspot { background: #2d1a3e; border: 1px solid #9f7aea; color: #d6bcfa; }
+  .badge-severe { background: #2d0a0a; border: 1px solid #e53e3e; color: #fc8181; }
+  .badge-moderate { background: #2d1a0a; border: 1px solid #ed8936; color: #fbd38d; }
+  .badge-verified { background: #0a2d1a; border: 1px solid #48bb78; color: #68d391; font-size: 10px; }
+  .badge-cross { background: #2d1a3e; border: 1px solid #9f7aea; color: #d6bcfa; }
+
+  .score-ring { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; position: relative; }
+  .score-ring.s { background: conic-gradient(#48bb78 var(--pct), #1a3a2a var(--pct)); box-shadow: 0 0 12px rgba(72,187,120,0.3); }
+  .score-ring.a { background: conic-gradient(#63b3ed var(--pct), #1a2a3a var(--pct)); box-shadow: 0 0 12px rgba(99,179,237,0.3); }
+  .score-ring.b { background: conic-gradient(#ed8936 var(--pct), #2d1f0a var(--pct)); box-shadow: 0 0 12px rgba(237,137,54,0.2); }
+  .score-inner { width: 40px; height: 40px; border-radius: 50%; background: #1a1f2e; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #e2e8f0; }
+
+  .status-select { background: #2d3748; border: 1px solid #4a5568; color: #e2e8f0; font-size: 12px; padding: 5px 8px; border-radius: 6px; cursor: pointer; }
+  .status-select.contacted { border-color: #63b3ed; color: #90cdf4; background: #1a2a3a; }
+  .status-select.replied { border-color: #9f7aea; color: #d6bcfa; background: #2d1a3e; }
+  .status-select.meeting { border-color: #ed8936; color: #fbd38d; background: #2d1f0a; }
+  .status-select.proposal { border-color: #f6e05e; color: #fefcbf; background: #2d2a0a; }
+  .status-select.closed { border-color: #48bb78; color: #68d391; background: #0a2d1a; }
+  .status-select.not-interested { border-color: #e53e3e; color: #fc8181; background: #2d0a0a; }
+
+  .chevron { color: #718096; font-size: 16px; transition: transform 0.2s; }
+  .chevron.open { transform: rotate(180deg); }
+
+  .card-body { display: none; padding: 0 20px 20px; border-top: 1px solid #2d3748; }
+  .card-body.open { display: block; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+
+  .data-section { background: #0f1117; border: 1px solid #2d3748; border-radius: 8px; padding: 14px; }
+  .data-section-title { font-size: 10px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+
+  .contact-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid #2d3748; }
+  .contact-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .contact-info { flex: 1; }
+  .contact-name { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+  .contact-title { font-size: 11px; color: #718096; margin-top: 1px; }
+  .contact-email { font-size: 11px; color: #63b3ed; margin-top: 3px; font-family: monospace; }
+  .contact-phone { font-size: 11px; color: #a0aec0; margin-top: 2px; }
+  .contact-actions { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+
+  .copy-btn { background: #2d3748; border: 1px solid #4a5568; color: #a0aec0; font-size: 10px; padding: 3px 8px; border-radius: 4px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+  .copy-btn:hover { background: #4a5568; color: #fff; }
+  .copy-btn.copied { background: #0a2d1a; border-color: #48bb78; color: #68d391; }
+
+  .ndvi-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #2d3748; font-size: 12px; }
+  .ndvi-row:last-child { border-bottom: none; }
+  .ndvi-label { color: #718096; }
+  .ndvi-value { font-weight: 600; color: #e2e8f0; }
+  .ndvi-value.red { color: #fc8181; }
+  .ndvi-value.orange { color: #fbd38d; }
+  .ndvi-value.green { color: #68d391; }
+
+  .hotspot-info { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #a0aec0; margin-top: 10px; line-height: 1.5; }
+  .hotspot-dot { width: 8px; height: 8px; border-radius: 50%; background: #e53e3e; flex-shrink: 0; margin-top: 3px; box-shadow: 0 0 6px rgba(229,62,62,0.8); }
+  .hotspot-dot.orange { background: #ed8936; box-shadow: 0 0 6px rgba(237,137,54,0.8); }
+
+  .pitch-box { background: #0f1117; border: 1px solid #2d3748; border-radius: 8px; padding: 14px; margin-top: 16px; position: relative; }
+  .pitch-box-title { font-size: 10px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .pitch-text { font-size: 12px; color: #a0aec0; line-height: 1.7; white-space: pre-wrap; }
+  .pitch-copy-btn { position: absolute; top: 12px; right: 12px; background: #2d3748; border: 1px solid #4a5568; color: #a0aec0; font-size: 10px; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
+  .pitch-copy-btn:hover { background: #4a5568; color: #fff; }
+  .pitch-copy-btn.copied { background: #0a2d1a; border-color: #48bb78; color: #68d391; }
+
+  .strategic-note { background: #1a2d1a; border: 1px solid #48bb78; border-radius: 8px; padding: 12px 14px; margin-top: 12px; }
+  .strategic-note-title { font-size: 10px; font-weight: 700; color: #68d391; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .strategic-note-text { font-size: 12px; color: #a0aec0; line-height: 1.6; }
+
+  .notes-area { width: 100%; background: #0f1117; border: 1px solid #2d3748; border-radius: 6px; color: #e2e8f0; font-size: 12px; padding: 10px; margin-top: 12px; resize: vertical; min-height: 60px; font-family: inherit; }
+  .notes-area:focus { outline: none; border-color: #4a5568; }
+
+  .footer { padding: 20px 32px; border-top: 1px solid #2d3748; margin-top: 8px; }
+  .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .footer-card { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 8px; padding: 14px; }
+  .footer-card-title { font-size: 10px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .footer-item { font-size: 12px; color: #a0aec0; padding: 3px 0; }
+  .footer-item strong { color: #e2e8f0; }
+
+  @media (max-width: 768px) {
+    .stats-bar { grid-template-columns: repeat(3, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .main { padding: 16px; }
+    .header { padding: 16px; }
+    .pipeline-bar { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-title">Wilmington MA — <span>Satellite Lead Targets</span></div>
+      <div class="header-subtitle">SavATree Middleton Branch · Jackson R. Farley, ISA Certified Arborist · Fructify LLC Analysis · March 2026</div>
+    </div>
+    <div class="badge-satellite">🛰 Sentinel-2 NDVI · Summer 2023 vs 2025</div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-card alert">
+      <div class="stat-value">315</div>
+      <div class="stat-label">Acres Severe Decline</div>
+    </div>
+    <div class="stat-card warn">
+      <div class="stat-value">1,006</div>
+      <div class="stat-label">Acres Moderate Decline</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">3,666</div>
+      <div class="stat-label">Hotspot Clusters</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">−3.97%</div>
+      <div class="stat-label">Mean NDVI Change</div>
+    </div>
+    <div class="stat-card ok">
+      <div class="stat-value">6</div>
+      <div class="stat-label">Verified Leads</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PIPELINE BAR ── -->
+<div class="pipeline-bar">
+  <div class="pipeline-item"><div class="pipeline-dot" style="background:#718096"></div> New: <span class="pipeline-count" id="cnt-new">–</span></div>
+  <div class="pipeline-divider">|</div>
+  <div class="pipeline-item"><div class="pipeline-dot" style="background:#63b3ed"></div> Contacted: <span class="pipeline-count" id="cnt-contacted">–</span></div>
+  <div class="pipeline-divider">|</div>
+  <div class="pipeline-item"><div class="pipeline-dot" style="background:#9f7aea"></div> Replied: <span class="pipeline-count" id="cnt-replied">–</span></div>
+  <div class="pipeline-divider">|</div>
+  <div class="pipeline-item"><div class="pipeline-dot" style="background:#ed8936"></div> Meeting: <span class="pipeline-count" id="cnt-meeting">–</span></div>
+  <div class="pipeline-divider">|</div>
+  <div class="pipeline-item"><div class="pipeline-dot" style="background:#f6e05e"></div> Proposal: <span class="pipeline-count" id="cnt-proposal">–</span></div>
+  <div class="pipeline-divider">|</div>
+  <div class="pipeline-item"><div class="pipeline-dot" style="background:#48bb78"></div> Closed: <span class="pipeline-count" id="cnt-closed">–</span></div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <div class="section-header">
+    <div class="section-title">🎯 Priority Leads — Ranked by Satellite Signal + ICP Score</div>
+    <div class="lead-count">6 leads · Wilmington MA 01887</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       LEAD 1 — eaves Wilmington (AvalonBay)
+  ══════════════════════════════════════════════════ -->
+  <div class="lead-card tier-s">
+    <div class="card-header" onclick="toggleCard('eaves')">
+      <div class="card-left">
+        <div class="property-name">eaves Wilmington (AvalonBay Communities)</div>
+        <div class="property-meta"><strong>1 Avalon Dr, Wilmington MA 01887</strong> · Luxury Multifamily · ~400 units · NYSE: AVB</div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="badge badge-tier-s">S-TIER</span>
+          <span class="badge badge-hotspot">🛰 Hotspots #1 &amp; #4</span>
+          <span class="badge badge-severe">🔴 22+ Acres Severe</span>
+        </div>
+      </div>
+      <div class="card-right">
+        <select class="status-select" id="status-eaves" onchange="updateStatus('eaves', this)">
+          <option value="new">🔵 New</option>
+          <option value="contacted">📤 Contacted</option>
+          <option value="replied">💬 Replied</option>
+          <option value="meeting">📅 Meeting Set</option>
+          <option value="proposal">📋 Proposal Sent</option>
+          <option value="closed">✅ Closed</option>
+          <option value="not-interested">❌ Not Interested</option>
+        </select>
+        <div class="score-ring s" style="--pct:306deg">
+          <div class="score-inner">85</div>
+        </div>
+        <div class="chevron" id="chevron-eaves">▼</div>
+      </div>
+    </div>
+    <div class="card-body" id="body-eaves">
+      <div class="two-col">
+        <div class="data-section">
+          <div class="data-section-title">📋 Contacts</div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">eaves Wilmington — On-Site</div>
+              <div class="contact-title">Leasing Office / Property Management</div>
+              <div class="contact-phone">📞 (978) 657-0988</div>
+              <div class="contact-email">avalonbay.com · NYSE: AVB (national REIT)</div>
+              <div style="margin-top:4px"><span class="badge badge-verified">✓ Active Number</span></div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('(978) 657-0988', this)">Copy Phone</button>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">AvalonBay Regional Contact</div>
+              <div class="contact-title">Regional VP / Facilities Director — Northeast Division</div>
+              <div class="contact-email">Apollo target: avalonbay.com + "Facilities" or "Operations"</div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('avalonbay.com', this)">Copy Domain</button>
+            </div>
+          </div>
+        </div>
+        <div class="data-section">
+          <div class="data-section-title">🛰 Satellite Signal</div>
+          <div class="ndvi-row"><span class="ndvi-label">Hotspot #1 location</span><span class="ndvi-value">42.558°N, 71.160°W</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Hotspot #4 location</span><span class="ndvi-value">42.556°N, 71.166°W</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Hotspot #1 severe</span><span class="ndvi-value red">16.1 acres</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Hotspot #4 severe</span><span class="ndvi-value red">6.1 acres</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Combined severe</span><span class="ndvi-value red">22+ acres total</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Cluster rank</span><span class="ndvi-value">#1 and #4 of 3,666</span></div>
+          <div class="hotspot-info"><div class="hotspot-dot"></div>Two separate decline clusters on one property — north lawn perimeter (#1) and west cluster near Evergreen Dr (#4)</div>
+        </div>
+      </div>
+      <div class="pitch-box">
+        <div class="pitch-box-title">✉ Recommended Opening Pitch</div>
+        <button class="pitch-copy-btn" onclick="copyPitch('pitch-eaves', this)">Copy</button>
+        <div class="pitch-text" id="pitch-eaves">Subject: Tree Health Alert — 1 Avalon Drive, Wilmington
+
+Hi [Name],
+
+I'm Jackson Farley, an ISA Certified Arborist with SavATree's Middleton branch. I'm reaching out because our satellite canopy analysis flagged two separate areas of significant tree canopy decline at eaves Wilmington — both appearing among the top clusters across our entire Wilmington analysis window.
+
+The affected zones span over 22 acres of mature tree canopy showing measurable NDVI decline between our 2023 and 2025 baseline imagery. For a community of this scale, declining canopy represents both a liability exposure and a tenant experience concern — and these patterns typically indicate stress that won't self-correct without intervention.
+
+I'd welcome the chance to do a complimentary on-site assessment and walk the property with you. I can provide a formal ISA Tree Risk Assessment report your property management team can use for maintenance planning and insurance documentation.
+
+Would 20–30 minutes work this week or next?
+
+Jackson R. Farley, ISA Certified Arborist
+SavATree · Middleton, MA · (978) [phone]</div>
+      </div>
+      <div class="strategic-note">
+        <div class="strategic-note-title">⚡ AvalonBay Portfolio Play</div>
+        <div class="strategic-note-text">AvalonBay owns 300+ multifamily communities nationwide. Establishing a preferred vendor relationship at eaves Wilmington opens the path to SavATree becoming AvalonBay's regional tree care vendor across their entire New England portfolio. Two separate satellite hotspots on one property is an unusually strong hook — lead with the data.</div>
+      </div>
+      <textarea class="notes-area" id="notes-eaves" placeholder="Jackson's notes (auto-saved)..." oninput="saveNotes('eaves', this)"></textarea>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       LEAD 2 — Metro at Wilmington Station (Dolben)
+  ══════════════════════════════════════════════════ -->
+  <div class="lead-card tier-s">
+    <div class="card-header" onclick="toggleCard('metro')">
+      <div class="card-left">
+        <div class="property-name">Metro at Wilmington Station (Dolben Company)</div>
+        <div class="property-meta"><strong>10 Burlington Ave, Wilmington MA 01887</strong> · Transit-Oriented Multifamily · MBTA Commuter Rail</div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="badge badge-tier-s">S-TIER</span>
+          <span class="badge badge-hotspot">🛰 Hotspot #2</span>
+          <span class="badge badge-severe">🔴 9.7 Acres Severe</span>
+          <span class="badge badge-verified">✓ Emails Verified</span>
+        </div>
+      </div>
+      <div class="card-right">
+        <select class="status-select" id="status-metro" onchange="updateStatus('metro', this)">
+          <option value="new">🔵 New</option>
+          <option value="contacted">📤 Contacted</option>
+          <option value="replied">💬 Replied</option>
+          <option value="meeting">📅 Meeting Set</option>
+          <option value="proposal">📋 Proposal Sent</option>
+          <option value="closed">✅ Closed</option>
+          <option value="not-interested">❌ Not Interested</option>
+        </select>
+        <div class="score-ring s" style="--pct:295deg">
+          <div class="score-inner">82</div>
+        </div>
+        <div class="chevron" id="chevron-metro">▼</div>
+      </div>
+    </div>
+    <div class="card-body" id="body-metro">
+      <div class="two-col">
+        <div class="data-section">
+          <div class="data-section-title">📋 Contacts</div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">Brendan O'Neill</div>
+              <div class="contact-title">Property Manager — Dolben Company</div>
+              <div class="contact-email">boneill@dolben.com</div>
+              <div style="margin-top:4px"><span class="badge badge-verified">✓ Apollo Verified</span></div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('boneill@dolben.com', this)">Copy Email</button>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">Metro Wilmington (On-Site Inbox)</div>
+              <div class="contact-title">Property Leasing / Management</div>
+              <div class="contact-email">metrowilmington@dolben.com</div>
+              <div class="contact-phone">📞 (978) 447-5491</div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('metrowilmington@dolben.com', this)">Copy Email</button>
+              <button class="copy-btn" onclick="copyText('(978) 447-5491', this)">Copy Phone</button>
+            </div>
+          </div>
+        </div>
+        <div class="data-section">
+          <div class="data-section-title">🛰 Satellite Signal</div>
+          <div class="ndvi-row"><span class="ndvi-label">Hotspot #2 location</span><span class="ndvi-value">42.540°N, 71.164°W</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Severity</span><span class="ndvi-value red">9.7 acres SEVERE</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Cluster rank</span><span class="ndvi-value">#2 of 3,666</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Transit proximity</span><span class="ndvi-value">Wilmington MBTA stop</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Property type</span><span class="ndvi-value">Transit-oriented development</span></div>
+          <div class="hotspot-info"><div class="hotspot-dot"></div>Strong signal — likely perimeter oaks along parking areas and community greenspace between building and station</div>
+        </div>
+      </div>
+      <div class="pitch-box">
+        <div class="pitch-box-title">✉ Recommended Opening Pitch — Brendan O'Neill</div>
+        <button class="pitch-copy-btn" onclick="copyPitch('pitch-metro', this)">Copy</button>
+        <div class="pitch-text" id="pitch-metro">Subject: Canopy Health Flag — Metro at Wilmington Station
+
+Hi Brendan,
+
+I'm Jackson Farley with SavATree's Middleton branch — our ISA Certified Arborist team covers Wilmington and surrounding towns.
+
+Our recent satellite canopy analysis ranked Metro at Wilmington Station as one of the highest-priority properties in Wilmington for tree health intervention. We identified approximately 9.7 acres of severe NDVI decline in the 2023–2025 window — that's measurable canopy stress across a significant portion of the property's tree cover.
+
+For a transit-oriented community, mature trees around common areas, parking, and pedestrian paths aren't just aesthetic — declining specimens create real liability exposure. A proactive ISA assessment helps Dolben document the health baseline, prioritize the work, and protect against future claims.
+
+I'd be glad to walk the property with you — no charge for the initial evaluation. It typically takes 45 minutes, and I can have a summary to you within a few days.
+
+Are you available this week?
+
+Jackson R. Farley, ISA Certified Arborist
+SavATree · Middleton, MA</div>
+      </div>
+      <div class="strategic-note">
+        <div class="strategic-note-title">💡 Dolben Portfolio Play</div>
+        <div class="strategic-note-text">Dolben manages multifamily properties across New England. Brendan O'Neill likely handles multiple properties. Winning his trust at Metro Wilmington Station opens access to Dolben's broader Massachusetts portfolio — ask him directly which other Dolben properties he manages in Middlesex/Essex County.</div>
+      </div>
+      <textarea class="notes-area" id="notes-metro" placeholder="Jackson's notes (auto-saved)..." oninput="saveNotes('metro', this)"></textarea>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       LEAD 3 — Ballardvale Portfolio (Berkeley Investments)
+  ══════════════════════════════════════════════════ -->
+  <div class="lead-card tier-s">
+    <div class="card-header" onclick="toggleCard('ballard')">
+      <div class="card-left">
+        <div class="property-name">Ballardvale Portfolio (Berkeley Investments)</div>
+        <div class="property-meta"><strong>299–301 Ballardvale St, Wilmington MA 01887</strong> · Commercial / Light Industrial Campus</div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="badge badge-tier-s">S-TIER</span>
+          <span class="badge badge-hotspot">🛰 Hotspot #3</span>
+          <span class="badge badge-severe">🔴 7.1 Acres Severe</span>
+          <span class="badge badge-verified">✓ 2 Emails Verified</span>
+        </div>
+      </div>
+      <div class="card-right">
+        <select class="status-select" id="status-ballard" onchange="updateStatus('ballard', this)">
+          <option value="new">🔵 New</option>
+          <option value="contacted">📤 Contacted</option>
+          <option value="replied">💬 Replied</option>
+          <option value="meeting">📅 Meeting Set</option>
+          <option value="proposal">📋 Proposal Sent</option>
+          <option value="closed">✅ Closed</option>
+          <option value="not-interested">❌ Not Interested</option>
+        </select>
+        <div class="score-ring s" style="--pct:288deg">
+          <div class="score-inner">80</div>
+        </div>
+        <div class="chevron" id="chevron-ballard">▼</div>
+      </div>
+    </div>
+    <div class="card-body" id="body-ballard">
+      <div class="two-col">
+        <div class="data-section">
+          <div class="data-section-title">📋 Contacts</div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">Dan McGrath</div>
+              <div class="contact-title">Principal / Asset Manager — Berkeley Investments</div>
+              <div class="contact-email">dmcgrath@berkinv.com</div>
+              <div class="contact-phone">📞 (617) 439-0088 (Boston HQ)</div>
+              <div style="margin-top:4px"><span class="badge badge-verified">✓ Pattern Confirmed</span></div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('dmcgrath@berkinv.com', this)">Copy Email</button>
+              <button class="copy-btn" onclick="copyText('(617) 439-0088', this)">Copy Phone</button>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">Kevin Longo</div>
+              <div class="contact-title">Principal / Asset Manager — Berkeley Investments</div>
+              <div class="contact-email">klongo@berkinv.com</div>
+              <div style="margin-top:4px"><span class="badge badge-verified">✓ Pattern Confirmed</span></div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('klongo@berkinv.com', this)">Copy Email</button>
+            </div>
+          </div>
+        </div>
+        <div class="data-section">
+          <div class="data-section-title">🛰 Satellite Signal</div>
+          <div class="ndvi-row"><span class="ndvi-label">Hotspot #3 location</span><span class="ndvi-value">42.528°N, 71.106°W</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Severity</span><span class="ndvi-value red">7.1 acres SEVERE</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Cluster rank</span><span class="ndvi-value">#3 of 3,666</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Corridor</span><span class="ndvi-value">Ballardvale / Route 129</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Zone</span><span class="ndvi-value">SE Wilmington — commercial edge</span></div>
+          <div class="hotspot-info"><div class="hotspot-dot"></div>Commercial/industrial canopy along Ballardvale corridor — likely mature buffer trees along parcel edges and parking screening</div>
+        </div>
+      </div>
+      <div class="pitch-box">
+        <div class="pitch-box-title">✉ Recommended Opening Pitch — Dan McGrath</div>
+        <button class="pitch-copy-btn" onclick="copyPitch('pitch-ballard', this)">Copy</button>
+        <div class="pitch-text" id="pitch-ballard">Subject: Tree Canopy Alert — Ballardvale St Properties, Wilmington
+
+Hi Dan,
+
+I'm Jackson Farley, an ISA Certified Arborist with SavATree in Middleton. I'm contacting you because our satellite canopy health analysis identified significant tree decline on the Ballardvale Street properties — 7+ acres of severe NDVI change between our 2023 and 2025 imagery windows.
+
+For commercial properties, declining buffer trees along parking areas and lot perimeters represent both liability exposure and deferred maintenance cost. Trees that look healthy from the road often show internal stress in the satellite data years before visible crown dieback — catching them at this stage is significantly more cost-effective than emergency removal later.
+
+I'd welcome the chance to walk the property with you for a complimentary assessment. I can produce an ISA-formatted report with prioritized recommendations your facilities team can use for budgeting.
+
+No pressure — happy to start with a quick call if that's easier.
+
+Jackson R. Farley, ISA Certified Arborist
+SavATree · Middleton, MA</div>
+      </div>
+      <textarea class="notes-area" id="notes-ballard" placeholder="Jackson's notes (auto-saved)..." oninput="saveNotes('ballard', this)"></textarea>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       LEAD 4 — Cummings Properties
+  ══════════════════════════════════════════════════ -->
+  <div class="lead-card tier-a">
+    <div class="card-header" onclick="toggleCard('cummings')">
+      <div class="card-left">
+        <div class="property-name">Cummings Properties — Wilmington Campus</div>
+        <div class="property-meta"><strong>50 Concord St / 340 Fordham Rd, Wilmington MA 01887</strong> · Class A Office/Flex/Lab · 10M+ sq ft portfolio</div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="badge badge-tier-a">A-TIER</span>
+          <span class="badge badge-moderate">🟡 Concord St Corridor</span>
+          <span class="badge badge-verified">✓ Email Verified</span>
+        </div>
+      </div>
+      <div class="card-right">
+        <select class="status-select" id="status-cummings" onchange="updateStatus('cummings', this)">
+          <option value="new">🔵 New</option>
+          <option value="contacted">📤 Contacted</option>
+          <option value="replied">💬 Replied</option>
+          <option value="meeting">📅 Meeting Set</option>
+          <option value="proposal">📋 Proposal Sent</option>
+          <option value="closed">✅ Closed</option>
+          <option value="not-interested">❌ Not Interested</option>
+        </select>
+        <div class="score-ring a" style="--pct:252deg">
+          <div class="score-inner">70</div>
+        </div>
+        <div class="chevron" id="chevron-cummings">▼</div>
+      </div>
+    </div>
+    <div class="card-body" id="body-cummings">
+      <div class="two-col">
+        <div class="data-section">
+          <div class="data-section-title">📋 Contacts</div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">Justin D'Aveta</div>
+              <div class="contact-title">Property Manager — Cummings Properties</div>
+              <div class="contact-email">jdd@cummings.com</div>
+              <div class="contact-phone">📞 (781) 935-8000 (Woburn HQ)</div>
+              <div style="margin-top:4px"><span class="badge badge-verified">✓ Apollo Verified</span></div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('jdd@cummings.com', this)">Copy Email</button>
+              <button class="copy-btn" onclick="copyText('(781) 935-8000', this)">Copy Phone</button>
+            </div>
+          </div>
+        </div>
+        <div class="data-section">
+          <div class="data-section-title">📊 Property Intel</div>
+          <div class="ndvi-row"><span class="ndvi-label">Portfolio</span><span class="ndvi-value">600+ properties, 10M+ sq ft in MA</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">HQ location</span><span class="ndvi-value">Woburn MA — our territory</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Wilmington sites</span><span class="ndvi-value">50 Concord St, 340 Fordham Rd</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Property type</span><span class="ndvi-value">Class A office / flex / lab</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Canopy concern</span><span class="ndvi-value orange">Concord St corridor decline</span></div>
+          <div class="hotspot-info"><div class="hotspot-dot orange"></div>Cummings HQ is in Woburn — squarely in Jackson's territory. A preferred vendor arrangement here could cover dozens of their MA properties.</div>
+        </div>
+      </div>
+      <div class="pitch-box">
+        <div class="pitch-box-title">✉ Recommended Opening Pitch — Justin D'Aveta</div>
+        <button class="pitch-copy-btn" onclick="copyPitch('pitch-cummings', this)">Copy</button>
+        <div class="pitch-text" id="pitch-cummings">Subject: Tree Health Assessment — Cummings Properties, Wilmington
+
+Hi Justin,
+
+I'm Jackson Farley, ISA Certified Arborist at SavATree's Middleton branch. Our team covers commercial properties across Essex and Middlesex Counties, and we recently completed a satellite canopy analysis of the Wilmington area.
+
+The Concord Street corridor showed up in our analysis, and given Cummings Properties' campus there, I wanted to reach out directly. For Class A commercial properties, proactive tree health management supports tenant experience and risk management — and keeps property managers ahead of deferred maintenance costs that tend to compound.
+
+I know Cummings has properties across the region. If SavATree can demonstrate value on the Wilmington locations, I'd be glad to discuss what a preferred vendor arrangement might look like across the broader portfolio — including your Woburn properties.
+
+Would a quick call or a site visit work this month?
+
+Jackson R. Farley, ISA Certified Arborist
+SavATree · Middleton, MA</div>
+      </div>
+      <div class="strategic-note">
+        <div class="strategic-note-title">🏢 Portfolio Multiplier — 600+ Cummings Properties</div>
+        <div class="strategic-note-text">Cummings manages 10M+ sq ft across 600+ properties in eastern Massachusetts with HQ in Woburn — SavATree Middleton's home territory. One foot in the door at their Wilmington campus is the entry point to an enterprise preferred vendor agreement worth potentially tens of thousands annually in recurring tree care contracts.</div>
+      </div>
+      <textarea class="notes-area" id="notes-cummings" placeholder="Jackson's notes (auto-saved)..." oninput="saveNotes('cummings', this)"></textarea>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       LEAD 5 — Crowninshield Management (Wilmington)
+  ══════════════════════════════════════════════════ -->
+  <div class="lead-card tier-a">
+    <div class="card-header" onclick="toggleCard('crown')">
+      <div class="card-left">
+        <div class="property-name">Crowninshield Management — Wilmington HOA Portfolio</div>
+        <div class="property-meta"><strong>Multiple Properties, Wilmington MA 01887</strong> · HOA / Condo Management · Regional PM Firm</div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="badge badge-tier-a">A-TIER</span>
+          <span class="badge badge-cross">🔗 Wakefield + Wilmington</span>
+          <span class="badge badge-verified">✓ Contacts in Hand</span>
+        </div>
+      </div>
+      <div class="card-right">
+        <select class="status-select" id="status-crown" onchange="updateStatus('crown', this)">
+          <option value="new">🔵 New</option>
+          <option value="contacted">📤 Contacted</option>
+          <option value="replied">💬 Replied</option>
+          <option value="meeting">📅 Meeting Set</option>
+          <option value="proposal">📋 Proposal Sent</option>
+          <option value="closed">✅ Closed</option>
+          <option value="not-interested">❌ Not Interested</option>
+        </select>
+        <div class="score-ring a" style="--pct:252deg">
+          <div class="score-inner">70</div>
+        </div>
+        <div class="chevron" id="chevron-crown">▼</div>
+      </div>
+    </div>
+    <div class="card-body" id="body-crown">
+      <div class="two-col">
+        <div class="data-section">
+          <div class="data-section-title">📋 Contacts (Same as Wakefield Sequences)</div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">Jacqueline Goohs</div>
+              <div class="contact-title">Property Manager — Crowninshield Management Corp</div>
+              <div class="contact-email">jgoohs@crowninshield.com</div>
+              <div style="margin-top:4px"><span class="badge badge-verified">✓ Verified</span></div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('jgoohs@crowninshield.com', this)">Copy Email</button>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">Janet Perez-Frye</div>
+              <div class="contact-title">Senior Property Manager — Crowninshield Management Corp</div>
+              <div class="contact-email">Escalation / secondary contact</div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('crowninshield.com', this)">Copy Domain</button>
+            </div>
+          </div>
+        </div>
+        <div class="data-section">
+          <div class="data-section-title">📊 Strategic Context</div>
+          <div class="ndvi-row"><span class="ndvi-label">Wakefield portfolio</span><span class="ndvi-value green">Confirmed (Gates of Greenwood)</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Wilmington portfolio</span><span class="ndvi-value green">Confirmed (multiple HOAs)</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Opportunity</span><span class="ndvi-value">1 vendor → 2 towns</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Property type</span><span class="ndvi-value">Full-service HOA / condo mgmt</span></div>
+          <div class="hotspot-info"><div class="hotspot-dot orange"></div>Crowninshield confirmed managing communities in both Wakefield AND Wilmington — one preferred vendor relationship delivers immediate multi-town coverage</div>
+        </div>
+      </div>
+      <div class="pitch-box">
+        <div class="pitch-box-title">✉ Recommended Angle — Cross-Town Preferred Vendor</div>
+        <button class="pitch-copy-btn" onclick="copyPitch('pitch-crown', this)">Copy</button>
+        <div class="pitch-text" id="pitch-crown">Subject: SavATree — Tree Care Across Your Wakefield & Wilmington Communities
+
+Hi Jacqueline,
+
+I'm Jackson Farley, ISA Certified Arborist with SavATree's Middleton branch. Our team specializes in HOA and property management accounts throughout northern Middlesex County.
+
+Our recent satellite canopy analysis flagged properties in both Wakefield and Wilmington that fall within Crowninshield's portfolio. Rather than reaching out property by property, I wanted to connect with you directly — because if SavATree can serve as a preferred tree care vendor across your portfolio, I can offer something more valuable than a one-time quote: consistency, volume pricing, and a single ISA-certified arborist who knows the tree history on every property.
+
+For HOA communities specifically, we offer ISA assessments boards can use for annual budgeting, maintenance documentation, and 24-hour emergency response for storm events.
+
+Would it make sense to get on a call and talk through what your current tree care setup looks like? I'm in the area regularly and can meet in person if that works better.
+
+Jackson R. Farley, ISA Certified Arborist
+SavATree · Middleton, MA</div>
+      </div>
+      <div class="strategic-note">
+        <div class="strategic-note-title">🎯 Force Multiplier — Two Towns, One Relationship</div>
+        <div class="strategic-note-text">This is the single highest-leverage relationship in the combined Wakefield + Wilmington pipeline. Coordinate the Wakefield and Wilmington outreach sequences so they land at roughly the same time — it demonstrates cross-town coverage and makes SavATree's value proposition much harder to ignore. A preferred vendor agreement here delivers recurring access to Crowninshield's entire northern MA portfolio.</div>
+      </div>
+      <textarea class="notes-area" id="notes-crown" placeholder="Jackson's notes (auto-saved)..." oninput="saveNotes('crown', this)"></textarea>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       LEAD 6 — The Alice (Right Way Realty)
+  ══════════════════════════════════════════════════ -->
+  <div class="lead-card tier-b">
+    <div class="card-header" onclick="toggleCard('alice')">
+      <div class="card-left">
+        <div class="property-name">The Alice — 203 Lowell St (Right Way Realty LLC)</div>
+        <div class="property-meta"><strong>203 Lowell St, Wilmington MA 01887</strong> · Boutique Multifamily · Local Independent Owner</div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="badge badge-tier-b">B-TIER</span>
+          <span class="badge badge-moderate">🟡 Lowell St Corridor</span>
+          <span class="badge" style="background:#1a1a2a;border:1px solid #718096;color:#a0aec0;">Local Owner</span>
+        </div>
+      </div>
+      <div class="card-right">
+        <select class="status-select" id="status-alice" onchange="updateStatus('alice', this)">
+          <option value="new">🔵 New</option>
+          <option value="contacted">📤 Contacted</option>
+          <option value="replied">💬 Replied</option>
+          <option value="meeting">📅 Meeting Set</option>
+          <option value="proposal">📋 Proposal Sent</option>
+          <option value="closed">✅ Closed</option>
+          <option value="not-interested">❌ Not Interested</option>
+        </select>
+        <div class="score-ring b" style="--pct:194deg">
+          <div class="score-inner">54</div>
+        </div>
+        <div class="chevron" id="chevron-alice">▼</div>
+      </div>
+    </div>
+    <div class="card-body" id="body-alice">
+      <div class="two-col">
+        <div class="data-section">
+          <div class="data-section-title">📋 Contacts</div>
+          <div class="contact-row">
+            <div class="contact-info">
+              <div class="contact-name">Donna Gay</div>
+              <div class="contact-title">Owner / Property Manager — Right Way Realty LLC</div>
+              <div class="contact-email">donna@rightwayrealtyllc.com</div>
+              <div class="contact-phone">📞 (781) 710-2739</div>
+            </div>
+            <div class="contact-actions">
+              <button class="copy-btn" onclick="copyText('donna@rightwayrealtyllc.com', this)">Copy Email</button>
+              <button class="copy-btn" onclick="copyText('(781) 710-2739', this)">Copy Phone</button>
+            </div>
+          </div>
+        </div>
+        <div class="data-section">
+          <div class="data-section-title">📊 Property Intel</div>
+          <div class="ndvi-row"><span class="ndvi-label">Address</span><span class="ndvi-value">203 Lowell St, N. Wilmington</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Owner type</span><span class="ndvi-value orange">Local independent</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Priority</span><span class="ndvi-value">B-Tier — work after S/A leads</span></div>
+          <div class="ndvi-row"><span class="ndvi-label">Corridor signal</span><span class="ndvi-value orange">Lowell St canopy decline</span></div>
+          <div class="hotspot-info"><div class="hotspot-dot orange"></div>Local independent owners respond well to personal, direct outreach — a brief call or in-person visit often works better than formal emails</div>
+        </div>
+      </div>
+      <div class="pitch-box">
+        <div class="pitch-box-title">✉ Recommended Opening (Keep it Conversational)</div>
+        <button class="pitch-copy-btn" onclick="copyPitch('pitch-alice', this)">Copy</button>
+        <div class="pitch-text" id="pitch-alice">Subject: Tree Health Check — 203 Lowell St
+
+Hi Donna,
+
+I'm Jackson Farley, an ISA Certified Arborist with SavATree in Middleton. I was in the area and noticed some canopy stress along the Lowell Street corridor that came up in our satellite monitoring.
+
+If you're responsible for the property at 203 Lowell, I'd be glad to take a quick look at the trees at no charge. A lot of small property owners don't realize there's measurable stress until it becomes a visible problem — catching it early is almost always the more cost-effective path.
+
+Happy to stop by at your convenience, or give me a call.
+
+Jackson R. Farley, ISA Certified Arborist
+SavATree · Middleton, MA · (978) [phone]</div>
+      </div>
+      <textarea class="notes-area" id="notes-alice" placeholder="Jackson's notes (auto-saved)..." oninput="saveNotes('alice', this)"></textarea>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <div class="footer-grid">
+    <div class="footer-card">
+      <div class="footer-card-title">🛰 Sentinel-2 Analysis Summary</div>
+      <div class="footer-item"><strong>Baseline NDVI:</strong> 0.7201 (Summer 2023)</div>
+      <div class="footer-item"><strong>Recent NDVI:</strong> 0.6921 (Summer 2025)</div>
+      <div class="footer-item"><strong>Mean change:</strong> −0.0297 (−3.97%)</div>
+      <div class="footer-item"><strong>Vegetated pixels:</strong> 467,609 (~11,554 acres)</div>
+      <div class="footer-item"><strong>Moderate decline:</strong> 40,711 px · 1,006 acres (8.71%)</div>
+      <div class="footer-item"><strong>Severe decline:</strong> 12,735 px · 315 acres (2.72%)</div>
+      <div class="footer-item"><strong>Total hotspot clusters:</strong> 3,666</div>
+      <div class="footer-item" style="margin-top:6px;color:#718096;font-size:11px;">Script: ndvi_wilmington.py · bbox −71.190, 42.525, −71.105, 42.590</div>
+    </div>
+    <div class="footer-card">
+      <div class="footer-card-title">🎯 Top 5 Hotspot Coordinates</div>
+      <div class="footer-item"><strong>#1:</strong> 42.558, −71.160 → eaves Wilmington (16.1 ac severe)</div>
+      <div class="footer-item"><strong>#2:</strong> 42.540, −71.164 → Metro at Wilmington Station (9.7 ac)</div>
+      <div class="footer-item"><strong>#3:</strong> 42.528, −71.106 → Ballardvale Portfolio (7.1 ac)</div>
+      <div class="footer-item"><strong>#4:</strong> 42.556, −71.166 → eaves Wilmington West (6.1 ac)</div>
+      <div class="footer-item"><strong>#5:</strong> 42.563, −71.181 → NW Wilmington — TBD (Silver Lake / Baldwin Crossing area)</div>
+      <div class="footer-item" style="margin-top:8px;color:#718096;font-size:11px;">Hotspot 5 property identity pending — coordinate investigation needed</div>
+    </div>
+    <div class="footer-card">
+      <div class="footer-card-title">📌 Next Steps</div>
+      <div class="footer-item">1. Begin outreach — eaves + Metro first (hotspots #1 &amp; #2)</div>
+      <div class="footer-item">2. Time Crowninshield Wakefield + Wilmington pitches to land same week</div>
+      <div class="footer-item">3. Investigate hotspot #5 — identify property at 42.563, −71.181</div>
+      <div class="footer-item">4. Enrich AvalonBay regional FM via Apollo (avalonbay.com)</div>
+      <div class="footer-item">5. Run satellite analysis — Stoneham or Reading next</div>
+      <div class="footer-item">6. Build Smartsheet pipeline to track all leads across towns</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const LEADS = ['eaves', 'metro', 'ballard', 'cummings', 'crown', 'alice'];
+
+  function toggleCard(id) {
+    const body = document.getElementById('body-' + id);
+    const chevron = document.getElementById('chevron-' + id);
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+  }
+
+  function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+    });
+  }
+
+  function copyPitch(id, btn) {
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text.trim()).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function updateStatus(id, select) {
+    const val = select.value;
+    select.className = 'status-select ' + val;
+    localStorage.setItem('wil_status_' + id, val);
+    updatePipeline();
+  }
+
+  function saveNotes(id, textarea) {
+    localStorage.setItem('wil_notes_' + id, textarea.value);
+  }
+
+  function updatePipeline() {
+    const counts = { new: 0, contacted: 0, replied: 0, meeting: 0, proposal: 0, closed: 0, 'not-interested': 0 };
+    LEADS.forEach(id => {
+      const val = localStorage.getItem('wil_status_' + id) || 'new';
+      counts[val] = (counts[val] || 0) + 1;
+    });
+    document.getElementById('cnt-new').textContent = counts['new'] || 0;
+    document.getElementById('cnt-contacted').textContent = counts['contacted'] || 0;
+    document.getElementById('cnt-replied').textContent = counts['replied'] || 0;
+    document.getElementById('cnt-meeting').textContent = counts['meeting'] || 0;
+    document.getElementById('cnt-proposal').textContent = counts['proposal'] || 0;
+    document.getElementById('cnt-closed').textContent = counts['closed'] || 0;
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    LEADS.forEach(id => {
+      const status = localStorage.getItem('wil_status_' + id);
+      if (status) {
+        const sel = document.getElementById('status-' + id);
+        if (sel) { sel.value = status; sel.className = 'status-select ' + status; }
+      }
+      const notes = localStorage.getItem('wil_notes_' + id);
+      if (notes) {
+        const n = document.getElementById('notes-' + id);
+        if (n) n.value = notes;
+      }
+    });
+    updatePipeline();
+  });
+</script>
+</body>
+</html>
